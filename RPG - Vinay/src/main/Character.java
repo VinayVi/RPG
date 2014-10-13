@@ -4,10 +4,23 @@ public abstract class Character {
 	protected int x;
 	protected int y;
 	protected int tileSize;
-	protected int health; 
+	protected int lastHealed;
+	protected int currentHealth;
+	protected int health;
+	protected int str;
+	protected int agi;
+	protected int dex;
+	protected int fort;
+	protected int luck;
+	protected int damage;
+	protected int weaponDmg;
+	protected int dodge;
+	protected int cdr;
+	protected int crit;
 	protected double tps; //seconds per tiles
 	protected boolean moving;
 	protected int state;
+	protected String name;
 	
 	public Character() {
 		tileSize = 48;

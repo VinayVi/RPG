@@ -22,7 +22,9 @@ public class Player extends Character{
 	}
 	
 	public void pickUp(Item i) {
-		//inventory.add(i);
+		if(i.getType().equals("WEAPON")) {
+			inventoryW.add(i);
+		}
 	}
 	
 	public void equip(Item i) {

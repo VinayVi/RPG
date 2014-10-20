@@ -3,6 +3,12 @@ import main.*;
 
 public abstract class Item {
 
+	String type; 
+	
+	public String getType() {
+		return type;
+	}
+	
 	protected double str;
 
 	protected double agi;

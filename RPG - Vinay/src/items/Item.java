@@ -3,7 +3,7 @@ import main.*;
 
 public abstract class Item {
 
-	String type; 
+	protected String type; 
 	
 	public String getType() {
 		return type;

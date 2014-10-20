@@ -1,7 +1,7 @@
 package items.Equipable;
 
-public class Stick extends Equipable{
-	public Stick()
+public class Sting extends Equipable{
+	public Sting()
 	{
 		
 	}

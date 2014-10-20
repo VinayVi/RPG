@@ -42,7 +42,6 @@ public abstract class Character {
 				for(int i=0; i<48; i++) {
 					y-=1;
 					state = (i/12)%4;
-					//System.out.println(state + "- " + i);
 					try {
 						Thread.sleep((long) (tps*1000/tileSize));
 					} catch (InterruptedException e) {
@@ -66,7 +65,6 @@ public abstract class Character {
 				for(int i=0; i<48; i++) {
 					y++;
 					state = (i/12)%4;
-					System.out.println(state);
 					try {
 						Thread.sleep((long) (tps*1000/tileSize));
 					} catch (InterruptedException e) {

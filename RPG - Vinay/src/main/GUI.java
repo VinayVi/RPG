@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -94,7 +93,6 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 			Tile t = map.getTile(x, y);
 			if(t!=null && t.walkable()) {
 				if(p.moveRight()) {
-					player_sprite = player_rs;
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
@@ -117,7 +115,6 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 			Tile t = map.getTile(x, y);
 			if(t!=null && t.walkable()) {
 				if(p.moveLeft()) {
-					player_sprite = player_ls;
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
@@ -141,7 +138,6 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 			Tile t = map.getTile(x, y);
 			if(t!=null && t.walkable()) {
 				if(p.moveUp()) {
-					player_sprite = player_bs;
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
@@ -164,7 +160,6 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 			Tile t = map.getTile(x, y);
 			if(t!=null && t.walkable()) {
 				if(p.moveDown()) {
-					player_sprite = player_fs;
 					new Thread(new Runnable() {
 						@Override
 						public void run() {

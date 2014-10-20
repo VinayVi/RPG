@@ -1,4 +1,5 @@
 package main;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import tiles.Tile;
 
@@ -111,6 +113,7 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 					}).start();
 				}
 			}
+			
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
 			int x = p.getX()-48;
 			int y = p.getY();
@@ -181,8 +184,29 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 					}).start();
 				}
 			}
+		}else if (e.getKeyCode() == KeyEvent.VK_I){
+			JPanel inventory = new JPanel();
+			JFrame invframe = new JFrame("Inventory");
+			JScrollPane scroller = new JScrollPane(inventory);
+			invframe.setSize(400, 400);
+			invframe.setVisible(true);
+			invframe.setContentPane(inventory);
+			invframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		}else if (e.getKeyCode() == KeyEvent.VK_M){
+			JPanel map = new JPanel();
+			JFrame mapframe = new JFrame("Map");
+			JLabel 
+			mapframe.setSize(800, 800);
+			mapframe.setVisible(true);
+			mapframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		}
-		
+		else if (e.getKeyCode() == KeyEvent.VK_O){
+			JPanel options = new JPanel();
+			JFrame optframe = new JFrame("Options");
+			optframe.setSize(400, 400);
+			optframe.setVisible(true);
+			optframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		}
 	}
 
 	@Override
@@ -200,10 +224,10 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 	@Override
 	public void run() {
 		while(true) {
-			if(currentHealth<health)
+			/*if(currentHealth<health)
 			{
 				
-			}
+			}*/
 			
 			
 			repaint();

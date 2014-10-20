@@ -1,6 +1,6 @@
 package items.Equipable;
 
-public class Buckler extends Equipable{
+public class Buckler extends Weapon{
 	public Buckler()
 	{
 		

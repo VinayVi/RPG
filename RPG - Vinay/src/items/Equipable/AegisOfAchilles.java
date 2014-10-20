@@ -1,6 +1,6 @@
 package items.Equipable;
 
-public class AegisOfAchilles extends Equipable{
+public class AegisOfAchilles extends Weapon{
 	public AegisOfAchilles()
 	{
 		

@@ -1,6 +1,6 @@
 package items.Equipable;
 
-public class Gladius extends Equipable{
+public class Gladius extends Weapon{
 	public Gladius()
 	{
 		

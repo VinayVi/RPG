@@ -1,6 +1,6 @@
 package items.Equipable;
 
-public class Claymore extends Equipable{
+public class Claymore extends Weapon{
 	public Claymore()
 	{
 		

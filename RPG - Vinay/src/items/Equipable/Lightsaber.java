@@ -1,6 +1,6 @@
 package items.Equipable;
 
-public class Lightsaber extends Equipable{
+public class Lightsaber extends Weapon{
 	public Lightsaber()
 	{
 		

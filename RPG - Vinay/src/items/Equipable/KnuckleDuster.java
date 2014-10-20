@@ -1,6 +1,6 @@
 package items.Equipable;
 
-public class KnuckleDuster extends Equipable{
+public class KnuckleDuster extends Weapon{
 	public KnuckleDuster()
 	{
 		

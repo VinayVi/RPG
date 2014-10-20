@@ -1,6 +1,6 @@
 package items.Equipable;
 
-public class Sting extends Equipable{
+public class Sting extends Weapon{
 	public Sting()
 	{
 		

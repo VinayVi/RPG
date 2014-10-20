@@ -1,6 +1,6 @@
 package items.Equipable;
 
-public class Fortress extends Equipable{
+public class Fortress extends Weapon{
 	public Fortress()
 	{
 		

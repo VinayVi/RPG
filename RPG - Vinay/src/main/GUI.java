@@ -195,10 +195,7 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 	@Override
 	public void run() {
 		while(true) {
-			if(currentHealth<health)
-			{
-				
-			}
+
 			
 			
 			repaint();

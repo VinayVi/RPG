@@ -4,14 +4,17 @@ import java.util.ArrayList;
 
 public class Player extends Character{
 	
-	private int strMultiplier;
-	private int agiMultiplier;
-	private int fortMultiplier;
-	private int dexMultiplier;
-	private int luckMultiplier;
+	private double strMultiplier;
+	private double agiMultiplier;
+	private double fortMultiplier;
+	private double dexMultiplier;
+	private double luckMultiplier;
 	
 	
-	private ArrayList<Item> inventory;
+	private ArrayList<Item> inventoryW;//Weapons
+	private ArrayList<Item> inventoryA;//Armor
+	
+	private int weaponsEquipped;
 	
 	public Player() {
 		x = 0;
@@ -19,32 +22,58 @@ public class Player extends Character{
 	}
 	
 	public void pickUp(Item i) {
-		inventory.add(i);
-		i.setOwner(this);
+		//inventory.add(i);
+	}
+	
+	public void equip(Item i) {
+		i.equipped = true;
+		
+		str += i.getStr();
+		agi += i.getAgi();
+		dex += i.getDex();
+		fort += i.getFort();
+		luck += i.getLuck();
+		damage += i.getDamage();
+		dodge += i.getDodge();
+		cdr += i.getCdr();
+		crit += i.getCdr();
+	}
+	
+	public void unEquip(Item i) {
+		i.equipped = false;
+		
+		str -= i.getStr();
+		agi -= i.getAgi();
+		dex -= i.getDex();
+		fort -= i.getFort();
+		luck -= i.getLuck();
+		damage -= i.getDamage();
+		dodge -= i.getDodge();
+		cdr -= i.getCdr();
+		crit -= i.getCdr();
 	}
 	
 	//Stat Accessors
-	public int getDmg()
+	public double getDmg()
 	{
-		damage=(str*strMultiplier)+weaponDmg;
-		return damage;
+		return str*strMultiplier + damage;
 	}
-	public int getHealth()
+	public double getHealth()
 	{
-		health=(fort*fortMultiplier);
-		return health;
+		maxHealth=(fort*fortMultiplier);
+		return maxHealth;
 	}
-	public int getDodge()
+	public double getDodge()
 	{
 		dodge=dex*dexMultiplier;
-		return dex;
+		return dodge;
 	}
-	public int getCrit()
+	public double getCrit()
 	{
 		crit=luck*luckMultiplier;
 		return crit;
 	}
-	public int getCDR()
+	public double getCDR()
 	{
 		cdr=agi*agiMultiplier;
 		return cdr;

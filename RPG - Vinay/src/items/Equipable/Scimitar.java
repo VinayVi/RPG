@@ -1,6 +1,6 @@
 package items.Equipable;
 
-public class Scimitar extends Equipable{
+public class Scimitar extends Weapon{
 	public Scimitar()
 	{
 		

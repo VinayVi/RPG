@@ -1,6 +1,6 @@
 package items.Equipable;
 
-public class Longsword extends Equipable{
+public class Longsword extends Weapon{
 	public Longsword()
 	{
 		

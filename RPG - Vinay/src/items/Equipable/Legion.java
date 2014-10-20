@@ -1,6 +1,6 @@
 package items.Equipable;
 
-public class Legion extends Equipable{
+public class Legion extends Weapon{
 	public Legion()
 	{
 		

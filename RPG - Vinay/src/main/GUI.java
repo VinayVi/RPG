@@ -196,8 +196,6 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 	public void run() {
 		while(true) {
 
-			
-			
 			repaint();
 			leftX = p.getX() - getWidth() / 2;
 			rightX = p.getX() + getWidth() / 2;

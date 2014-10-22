@@ -17,18 +17,27 @@ import tiles.Tile;
 public class Map {
 	int tileSize = 48;
 	Tile tiles[][];
-	int length = 4800, width = 4800;
+	int length = 1200, width = 1200;
 	
 	public Map() {
 		tiles = new Tile[length/tileSize][width/tileSize];
-		//Grass
-		for(int i=0; i<100; i++) {
-			for(int j=0; j<100; j++) {
-				Tile tile = new Tile(1, i*48, j*48, true);
-				tiles[i][j] = tile;
-				
+		for(int x=0;x<25;x++)
+		{
+			for(int y=0;y<25;y++)
+			{
+				if(x==12)
+				{
+					tiles[x][y]= new Tile(5,x*48,y*48,true);
+				}
+				else if(x==13)
+				{
+					tiles[x][y]=new Tile(3,x*48,y*48,true);
+				}
+				else
+					tiles[x][y]=new Tile(1,x*48,y*48,true);
 			}
 		}
+		
 		drawMap();
 	}
 	
@@ -42,8 +51,12 @@ public class Map {
 		BufferedImage pic = new BufferedImage(4800, 4800, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = pic.createGraphics();
 		Image grass = null;
+		Image RoadGR = null;
+		Image RoadGL = null;
 		try {
 			grass = ImageIO.read(new File("src//tiles//GrassTile.png"));
+			RoadGR = ImageIO.read(new File("src//tiles//Grass-Road Tile Right.png"));
+			RoadGL = ImageIO.read(new File("src//tiles//Grass-Road Tile Left.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,6 +67,10 @@ public class Map {
 				Vector v = t.getLoc();
 				switch(type) {
 				case 1: g.drawImage(grass, v.getX(), v.getY(), new JFrame());
+				break;
+				case 3: g.drawImage(RoadGR, v.getX(), v.getY(), new JFrame());
+				break;
+				case 5: g.drawImage(RoadGL, v.getX(), v.getY(), new JFrame());
 				break;
 				}
 			}

@@ -23,11 +23,13 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 	private Graphics second;
 	private Player p;
 	private Map map;
-	private int leftX, rightX, topY, botY;
+	private int leftX, rightX, topY, botY, length, width;
 	
 	public GUI() {
 		bg = null;
 		map = new Map();
+		length = map.length;
+		width = map.width;
 		try {
 			player_fs = ImageIO.read(new File("src//sprites//Kirito//Kirito FS.png"));
 			player_fr = ImageIO.read(new File("src//sprites//Kirito//Kirito FR.png"));
@@ -63,12 +65,12 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 		second.setColor(Color.black);
 		if (leftX + 24 < 0)
 			second.fillRect(0, 0, -(24 + leftX), getHeight());
-		else if (rightX - 24 > 4752)
-			second.fillRect(4776 - leftX, 0, getWidth(), getHeight());
+		if (rightX - 24 > width - 48)
+			second.fillRect(width - 24 - leftX, 0, getWidth(), getHeight());
 		if (topY + 24 < 0)
 			second.fillRect(0, 0, getWidth(), -(24 + topY));
-		else if (botY - 24 > 4752)
-			second.fillRect(0, 4776 - topY, getWidth(), getHeight());
+		if (botY - 24 > length - 48)
+			second.fillRect(0, length - 24 - topY, getWidth(), getHeight());
 			
 		g.drawImage(image, 0, 0, this);
 	}

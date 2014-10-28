@@ -26,11 +26,13 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 	private Graphics second;
 	private Player p;
 	private Map map;
-	private int leftX, rightX, topY, botY;
+	private int leftX, rightX, topY, botY, length, width;
 	
 	public GUI() {
 		bg = null;
 		map = new Map();
+		length = map.length;
+		width = map.width;
 		try {
 			player_fs = ImageIO.read(new File("src//sprites//Kirito//Kirito FS.png"));
 			player_fr = ImageIO.read(new File("src//sprites//Kirito//Kirito FR.png"));
@@ -66,11 +68,11 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 		second.setColor(Color.black);
 		if (leftX + 24 < 0)
 			second.fillRect(0, 0, -(24 + leftX), getHeight());
-		else if (rightX - 24 > 4752)
+		else if (rightX - 24 > width - 48)
 			second.fillRect(4776 - leftX, 0, getWidth(), getHeight());
 		if (topY + 24 < 0)
 			second.fillRect(0, 0, getWidth(), -(24 + topY));
-		else if (botY - 24 > 4752)
+		else if (botY - 24 > length - 48)
 			second.fillRect(0, 4776 - topY, getWidth(), getHeight());
 			
 		g.drawImage(image, 0, 0, this);
@@ -228,17 +230,18 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 	@Override
 	public void run() {
 		while(true) {
-			/*if(currentHealth<health)
-			{
-				
-			}*/
-			
-			
+			System.out.println(Runtime.getRuntime().freeMemory());
 			repaint();
 			leftX = p.getX() - getWidth() / 2;
 			rightX = p.getX() + getWidth() / 2;
 			topY = p.getY() - getHeight() / 2;
 			botY = p.getY() + getHeight() / 2;
+			try {
+				Thread.sleep(16);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}		
 	}
 }

@@ -46,14 +46,27 @@ public class Map {
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = pic.createGraphics();
 		Image grass = null;
+		Image Road = null;
+		Image RoadGT = null;
+		Image RoadGB = null;
 		Image RoadGR = null;
 		Image RoadGL = null;
+		Image RoadGTL = null;
+		Image RoadGTR = null;
+		Image RoadGBL = null;
+		Image RoadGBR = null;
 		try {
 			grass = ImageIO.read(new File("src//tiles//GrassTile.png"));
-			RoadGR = ImageIO.read(new File(
-					"src//tiles//Grass-Road Tile Right.png"));
-			RoadGL = ImageIO.read(new File(
-					"src//tiles//Grass-Road Tile Left.png"));
+			Road = ImageIO.read(new File("src//tiles//RoadTile.png"));
+			RoadGT = ImageIO.read(new File("src//tiles//Grass-Road Tile Top.png"));
+			RoadGB = ImageIO.read(new File("src//tiles//Grass-Road Tile Bottom.png"));
+			RoadGR = ImageIO.read(new File("src//tiles//Grass-Road Tile Right.png"));
+			RoadGL = ImageIO.read(new File("src//tiles//Grass-Road Tile Left.png"));
+			RoadGTL = ImageIO.read(new File("src//tiles//Grass-Road Tile TopLeft.png"));
+			RoadGTR = ImageIO.read(new File("src//tiles//Grass-Road Tile TopRight.png"));
+			RoadGBL = ImageIO.read(new File("src//tiles//Grass-Road Tile BottomLeft.png"));
+			RoadGBR = ImageIO.read(new File("src//tiles//Grass-Road Tile BottomRight.png"));
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -66,11 +79,32 @@ public class Map {
 				case 1:
 					g.drawImage(grass, v.getX(), v.getY(), new JFrame());
 					break;
+				case 2:
+					g.drawImage(Road, v.getX(), v.getY(), new JFrame());
+					break;
 				case 3:
 					g.drawImage(RoadGR, v.getX(), v.getY(), new JFrame());
 					break;
+				case 4:
+					g.drawImage(RoadGT, v.getX(), v.getY(), new JFrame());
+					break;
 				case 5:
 					g.drawImage(RoadGL, v.getX(), v.getY(), new JFrame());
+					break;
+				case 6:
+					g.drawImage(RoadGB, v.getX(), v.getY(), new JFrame());
+					break;
+				case 7:
+					g.drawImage(RoadGTL, v.getX(), v.getY(), new JFrame());
+					break;
+				case 8:
+					g.drawImage(RoadGTR, v.getX(), v.getY(), new JFrame());
+					break;
+				case 9:
+					g.drawImage(RoadGBL, v.getX(), v.getY(), new JFrame());
+					break;
+				case 10:
+					g.drawImage(RoadGBR, v.getX(), v.getY(), new JFrame());
 					break;
 				}
 			}

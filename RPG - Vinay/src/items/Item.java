@@ -10,7 +10,6 @@ public abstract class Item {
 	}
 	
 	protected double str;
-
 	protected double agi;
 	protected double dex;
 	protected double fort;

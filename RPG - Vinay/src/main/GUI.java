@@ -196,13 +196,19 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 
 	@Override
 	public void run() {
-		while(true) {
-
+			while(true) {
+			System.out.println(Runtime.getRuntime().freeMemory());
 			repaint();
 			leftX = p.getX() - getWidth() / 2;
 			rightX = p.getX() + getWidth() / 2;
 			topY = p.getY() - getHeight() / 2;
 			botY = p.getY() + getHeight() / 2;
+			try {
+				Thread.sleep(16);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}		
 	}
 }

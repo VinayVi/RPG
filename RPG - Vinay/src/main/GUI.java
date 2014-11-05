@@ -27,6 +27,9 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 	private Player p;
 	private Map map;
 	private int leftX, rightX, topY, botY, length, width;
+	JFrame mapframe = new JFrame();
+	JPanel mappane = new JPanel();
+	boolean close = false;
 	
 	public GUI() {
 		bg = null;
@@ -57,6 +60,16 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 			e.printStackTrace();
 		}
 		p = new Player();
+		mappane = new JPanel();
+		mapframe = new JFrame("Map");
+		ImageIcon mapicon= new ImageIcon("src//tiles//minimap.png");
+		JLabel mapimage = new JLabel(mapicon);
+		mapimage.setBackground(Color.BLACK);
+		mappane.add(mapimage);
+		mapframe.setContentPane(mappane);
+		mapframe.setSize(300, 300);
+		mapframe.setVisible(true);
+		mapframe.addKeyListener(new mapListener());
 	}
 	
 	public void paint(Graphics g) {
@@ -68,12 +81,12 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 		second.setColor(Color.black);
 		if (leftX + 24 < 0)
 			second.fillRect(0, 0, -(24 + leftX), getHeight());
-		else if (rightX - 24 > width - 48)
-			second.fillRect(4776 - leftX, 0, getWidth(), getHeight());
+		if (rightX - 24 > width - 48)
+			second.fillRect(width - 24 - leftX, 0, getWidth(), getHeight());
 		if (topY + 24 < 0)
 			second.fillRect(0, 0, getWidth(), -(24 + topY));
-		else if (botY - 24 > length - 48)
-			second.fillRect(0, 4776 - topY, getWidth(), getHeight());
+		if (botY - 24 > length - 48)
+			second.fillRect(0, length - 24 - topY, getWidth(), getHeight());
 			
 		g.drawImage(image, 0, 0, this);
 	}
@@ -90,6 +103,30 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 		frame.setResizable(true);
 		new Thread(gui).start();
 	}
+	
+	public class mapListener implements KeyListener {
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_M){
+				mapframe.setVisible(!mapframe.isVisible());
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyTyped(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
@@ -195,16 +232,7 @@ public class GUI extends JPanel implements Runnable, KeyListener{
 			invframe.setContentPane(inventory);
 			invframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		}else if (e.getKeyCode() == KeyEvent.VK_M){
-			JPanel map = new JPanel();
-			JFrame mapframe = new JFrame("Map");
-			ImageIcon mapicon= new ImageIcon("src//tiles//minimap.png");
-			JLabel mapimage = new JLabel(mapicon);
-			mapimage.setBackground(Color.BLACK);
-			map.add(mapimage);
-			mapframe.setContentPane(map);
-			mapframe.setSize(300, 300);
-			mapframe.setVisible(true);
-			mapframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			mapframe.setVisible(!mapframe.isVisible());
 		}
 		else if (e.getKeyCode() == KeyEvent.VK_O){
 			JPanel options = new JPanel();

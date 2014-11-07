@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -89,7 +90,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		mapFrame.setSize(300, 300);
 		mapFrame.setLocation(xSize - 300, 0);
 		mapFrame.setVisible(false);
-		//mapFrame.addKeyListener(new mapListener());
 		mapFrame.addKeyListener(this);
 		mapFrame.setUndecorated(true);
 
@@ -148,13 +148,16 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		
 		JFrame frame = new JFrame("RPG");
 		GUI gui = new GUI();
+		gui.setPreferredSize(new Dimension(xSize, ySize));
+		frame.setUndecorated(true);
 		frame.add(gui);
-		frame.setSize(xSize, ySize);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setFocusable(true);
 		frame.addKeyListener(gui);
+		frame.pack();
 		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
 		new Thread(gui).start();
 	}
 
@@ -344,6 +347,8 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			mapFrame.setVisible(!mapFrame.isVisible());
 		} else if (e.getKeyCode() == KeyEvent.VK_O) {
 			optFrame.setVisible(!optFrame.isVisible());
+		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			System.exit(1);
 		}
 	}
 

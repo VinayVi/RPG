@@ -16,7 +16,8 @@ public class Player extends Character{
 	
 	private int weaponsEquipped;
 	
-	public Player() {
+	public Player(String name) {
+		super(name);
 		x = 0;
 		y = 0;
 	}

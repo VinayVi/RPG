@@ -21,7 +21,7 @@ import tiles.Tile;
 public class GUI extends JPanel implements Runnable, KeyListener {
 	private Image image, bg;
 	private Graphics second;
-	private Player p;
+	private Character p;
 	private Map map;
 	private int leftX, rightX, topY, botY, length, width;
 	JFrame mapFrame, optFrame, invFrame;
@@ -45,7 +45,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		p = new Player("Kirito");
+		p = new Character("Kirito");
 
 		// Set up the minimap
 		mapPane = new JPanel();

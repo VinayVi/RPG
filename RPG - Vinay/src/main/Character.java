@@ -5,55 +5,33 @@ import items.Item;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.Serializable;
 
 import javax.imageio.ImageIO;
 
 import tiles.Tile;
 
-public class Character {
-	protected int x;
-	protected int y;
+public class Character implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	public Info info;
+
 	protected int tileSize;
-	protected long lastHealed;
-	protected double currentHealth;
-	protected double maxHealth;
-	protected double str;
-	protected double agi;
-	protected double dex;
-	protected double fort;
-	protected double luck;
-	protected double damage;
-	protected double dodge;
-	protected double cdr;
-	protected double crit;
-	protected double tps; //seconds per tiles
-	protected boolean moving;
-	protected int state;
-	protected String name;
+	protected double tps; //seconds per tile, aka how long it takes to move 1 tile
 	
 	public Image currSprite;
 	public Image BL, BR, BS, FL, FR, FS, LL, LR, LS, RL, RR, RS;
 	
-	private double strMultiplier;
-	private double agiMultiplier;
-	private double fortMultiplier;
-	private double dexMultiplier;
-	private double luckMultiplier;
-	
-	
-	private ArrayList<Item> inventoryW;//Weapons
-	private ArrayList<Item> inventoryA;//Armor
-	
-	private int weaponsEquipped;
-	
-	
 	public Character(String name) {
+		info = new Info();
 		tileSize = 48;
 		tps = 0.25;
-		moving = false;
-		state = 1;
-		this.name = name;
+		info.moving = false;
+		info.state = 1;
+		this.info.name = name;
 		try {
 			BL = ImageIO.read(new File("src//sprites//" + name + "//" + name + " BL.png"));
 			BR = ImageIO.read(new File("src//sprites//" + name + "//" + name + " BR.png"));
@@ -76,29 +54,29 @@ public class Character {
 			e.printStackTrace();
 		}
 		
-		x = 0;
-		y = 0;
+		info.x = 0;
+		info.y = 0;
 			
 	}
 	
 	public int getX() {
-		return x;
+		return info.x;
 	}
 
 	public void setX(int x) {
-		this.x = x;
+		this.info.x = x;
 	}
 
 	public int getY() {
-		return y;
+		return info.y;
 	}
 
 	public void setY(int y) {
-		this.y = y;
+		this.info.y = y;
 	}
 
 	public void moveUp(final Tile t) {
-		if(moving)
+		if(info.moving)
 			return;
 		new Thread(new Runnable() {
 			@Override
@@ -108,14 +86,14 @@ public class Character {
 					return;
 				}
 				
-				moving = true;
+				info.moving = true;
 				for(int i=0; i<48; i++) {
-					y-=1;
-					state = (i/12);
+					info.y-=1;
+					info.state = (i/12);
 					
-					if (state == 0)
+					if (info.state == 0)
 						currSprite = BL;
-					else if (state == 1 || state == 3)
+					else if (info.state == 1 || info.state == 3)
 						currSprite = BS;
 					else
 						currSprite = BR;
@@ -127,14 +105,14 @@ public class Character {
 						e.printStackTrace();
 					}
 				}
-				moving = false;
+				info.moving = false;
 			}			
 		}).start();
 		return;
 	}
 	
 	public void moveDown(final Tile t) {
-		if(moving)
+		if(info.moving)
 			return;
 		new Thread(new Runnable() {
 			@Override
@@ -144,14 +122,14 @@ public class Character {
 					return;
 				}
 				
-				moving = true;
+				info.moving = true;
 				for(int i=0; i<48; i++) {
-					y++;
-					state = (i/12);
+					info.y++;
+					info.state = (i/12);
 
-					if (state == 0)
+					if (info.state == 0)
 						currSprite = FL;
-					else if (state == 1 || state == 3)
+					else if (info.state == 1 || info.state == 3)
 						currSprite = FS;
 					else
 						currSprite = FR;
@@ -162,14 +140,14 @@ public class Character {
 						System.out.println(1);
 					}
 				}
-				moving = false;					
+				info.moving = false;					
 			}			
 		}).start();
 		return;
 	}
 	
 	public void moveLeft(final Tile t) {
-		if(moving)
+		if(info.moving)
 			return;
 		new Thread(new Runnable() {
 			@Override
@@ -179,14 +157,14 @@ public class Character {
 					return;
 				}
 				
-				moving = true;
+				info.moving = true;
 				for(int i=0; i<48; i++) {
-					x-=1;
-					state = (i/12);
+					info.x-=1;
+					info.state = (i/12);
 
-					if (state == 0)
+					if (info.state == 0)
 						currSprite = LL;
-					else if (state == 1 || state == 3)
+					else if (info.state == 1 || info.state == 3)
 						currSprite = LS;
 					else
 						currSprite = LR;
@@ -198,14 +176,14 @@ public class Character {
 						e.printStackTrace();
 					}
 				}
-				moving = false;					
+				info.moving = false;					
 			}
 		}).start();
 		return;
 	}
 	
 	public void moveRight(final Tile t) {
-		if(moving)
+		if(info.moving)
 			return;
 		new Thread(new Runnable() {
 			@Override
@@ -215,14 +193,14 @@ public class Character {
 					return;
 				}
 				
-				moving = true;
+				info.moving = true;
 				for(int i=0; i<48; i++) {
-					x+=1;
-					state = (i/12);
+					info.x+=1;
+					info.state = (i/12);
 
-					if (state == 0)
+					if (info.state == 0)
 						currSprite = RL;
-					else if (state == 1 || state == 3)
+					else if (info.state == 1 || info.state == 3)
 						currSprite = RS;
 					else
 						currSprite = RR;
@@ -234,7 +212,7 @@ public class Character {
 						e.printStackTrace();
 					}
 				}
-				moving = false;
+				info.moving = false;
 			}
 			
 		}).start();
@@ -243,62 +221,62 @@ public class Character {
 	
 	public void pickUp(Item i) {
 		if(i.getType().equals("WEAPON")) {
-			inventoryW.add(i);
+			info.getInventoryW().add(i);
 		}
 	}
 	
 	public void equip(Item i) {
 		i.equipped = true;
 		
-		str += i.getStr();
-		agi += i.getAgi();
-		dex += i.getDex();
-		fort += i.getFort();
-		luck += i.getLuck();
-		damage += i.getDamage();
-		dodge += i.getDodge();
-		cdr += i.getCdr();
-		crit += i.getCdr();
+		info.str += i.getStr();
+		info.agi += i.getAgi();
+		info.dex += i.getDex();
+		info.fort += i.getFort();
+		info.luck += i.getLuck();
+		info.damage += i.getDamage();
+		info.dodge += i.getDodge();
+		info.cdr += i.getCdr();
+		info.crit += i.getCdr();
 	}
 	
 	public void unEquip(Item i) {
 		i.equipped = false;
 		
-		str -= i.getStr();
-		agi -= i.getAgi();
-		dex -= i.getDex();
-		fort -= i.getFort();
-		luck -= i.getLuck();
-		damage -= i.getDamage();
-		dodge -= i.getDodge();
-		cdr -= i.getCdr();
-		crit -= i.getCdr();
+		info.str -= i.getStr();
+		info.agi -= i.getAgi();
+		info.dex -= i.getDex();
+		info.fort -= i.getFort();
+		info.luck -= i.getLuck();
+		info.damage -= i.getDamage();
+		info.dodge -= i.getDodge();
+		info.cdr -= i.getCdr();
+		info.crit -= i.getCdr();
 	}
 	
 	//Stat Accessors
 	public double getDmg()
 	{
-		return str*strMultiplier + damage;
+		return info.str*info.getStrMultiplier() + info.damage;
 	}
 	public double getHealth()
 	{
-		maxHealth=(fort*fortMultiplier);
-		return maxHealth;
+		info.maxHealth=(info.fort*info.getFortMultiplier());
+		return info.maxHealth;
 	}
 	public double getDodge()
 	{
-		dodge=dex*dexMultiplier;
-		return dodge;
+		info.dodge=info.dex*info.getDexMultiplier();
+		return info.dodge;
 	}
 	public double getCrit()
 	{
-		crit=luck*luckMultiplier;
-		return crit;
+		info.crit=info.luck*info.getLuckMultiplier();
+		return info.crit;
 	}
 	public double getCDR()
 	{
-		cdr=agi*agiMultiplier;
-		return cdr;
+		info.cdr=info.agi*info.getAgiMultiplier();
+		return info.cdr;
 	}
 	
 	

@@ -5,15 +5,23 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import tiles.Tile;
@@ -27,6 +35,9 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	JFrame mapFrame, optFrame, invFrame;
 	JPanel mapPane, optPane, invPane;
 	boolean close = false;
+	
+	//Options Buttons
+	JButton load, save, exit, resume;
 
 	public GUI() {
 		
@@ -67,9 +78,23 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		optFrame.setSize(400, 400);
 		optFrame.setVisible(false);
 		optFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		optFrame.addKeyListener(new optListener());
 		optFrame.setLocationRelativeTo(null);
 		optFrame.setUndecorated(true);
+		
+		//Set up the Options Buttons
+		load = new JButton("Load Game");
+		load.addActionListener(new buttonListener());
+		save = new JButton("Save Game");
+		save.addActionListener(new buttonListener());
+		exit = new JButton("Exit Game");
+		exit.addActionListener(new buttonListener());
+		resume = new JButton("Resume Game");
+		resume.addActionListener(new buttonListener());
+		optPane.add(load);
+		optPane.add(save);
+		optPane.add(exit);
+		optPane.add(resume);
+
 		
 
 		// Set up the Inventory
@@ -154,29 +179,40 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		}
 
 	}
-
-	public class optListener implements KeyListener {
+	
+	public class buttonListener implements ActionListener {
 
 		@Override
-		public void keyPressed(KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_O) {
+		public void actionPerformed(ActionEvent e) {
+			if(e.getActionCommand().equals("Save Game")) {
+				try {
+					save(p.info);
+					JOptionPane.showMessageDialog(new JFrame(), "Successfully Saved");
+					optFrame.setVisible(!optFrame.isVisible());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			} else if(e.getActionCommand().equals("Load Game")) {
+				try {
+					Info o = load();
+					if(o!=null) {
+						p.info = o;
+						JOptionPane.showMessageDialog(new JFrame(), "Successfully Loaded");
+						optFrame.setVisible(!optFrame.isVisible());
+					}
+				} catch (ClassNotFoundException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			} else if(e.getActionCommand().equals("Exit Game")) {
+				System.exit(1);
+			} else if(e.getActionCommand().equals("Resume Game")) {
 				optFrame.setVisible(!optFrame.isVisible());
-			}
-
+			}	
+			
 		}
-
-		@Override
-		public void keyReleased(KeyEvent arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void keyTyped(KeyEvent arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
+		
 	}
 
 	public class mapListener implements KeyListener {
@@ -233,11 +269,24 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			invFrame.setVisible(!invFrame.isVisible());
 		} else if (e.getKeyCode() == KeyEvent.VK_M) {
 			mapFrame.setVisible(!mapFrame.isVisible());
-		} else if (e.getKeyCode() == KeyEvent.VK_O) {
-			optFrame.setVisible(!optFrame.isVisible());
 		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			System.exit(1);
-		}
+			optFrame.setVisible(!optFrame.isVisible());
+		} 
+	}
+	
+	public Info load() throws ClassNotFoundException, IOException {
+		FileInputStream fin = new FileInputStream(p.info.name+".sav");
+		ObjectInputStream ois = new ObjectInputStream(fin);
+		Info info = (Info) ois.readObject();
+		ois.close();
+		return info;
+	}
+	
+	public void save(Info o) throws IOException {
+		FileOutputStream fout = new FileOutputStream(p.info.name+".sav");
+		ObjectOutputStream oos = new ObjectOutputStream(fout);
+		oos.writeObject(p.info);
+		oos.close();
 	}
 
 	@Override
@@ -269,4 +318,5 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			}
 		}
 	}
+
 }

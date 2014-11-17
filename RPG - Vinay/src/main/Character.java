@@ -6,6 +6,8 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.imageio.ImageIO;
 
@@ -24,6 +26,9 @@ public class Character implements Serializable {
 	
 	public Image currSprite;
 	public Image BL, BR, BS, FL, FR, FS, LL, LR, LS, RL, RR, RS;
+	private Runnable up, down, left, right;
+	private Tile newTile;
+	ExecutorService e = Executors.newSingleThreadExecutor();
 	
 	public Character(String name) {
 		info = new Info();
@@ -54,34 +59,10 @@ public class Character implements Serializable {
 			e.printStackTrace();
 		}
 		
-		info.x = 0;
-		info.y = 0;
-			
-	}
-	
-	public int getX() {
-		return info.x;
-	}
-
-	public void setX(int x) {
-		this.info.x = x;
-	}
-
-	public int getY() {
-		return info.y;
-	}
-
-	public void setY(int y) {
-		this.info.y = y;
-	}
-
-	public void moveUp(final Tile t) {
-		if(info.moving)
-			return;
-		new Thread(new Runnable() {
+		up = new Runnable() {
 			@Override
 			public void run() {
-				if(t == null || !t.walkable()) {
+				if(newTile == null || !newTile.walkable()) {
 					currSprite = BS;
 					return;
 				}
@@ -107,17 +88,12 @@ public class Character implements Serializable {
 				}
 				info.moving = false;
 			}			
-		}).start();
-		return;
-	}
-	
-	public void moveDown(final Tile t) {
-		if(info.moving)
-			return;
-		new Thread(new Runnable() {
+		};
+		
+		down = new Runnable() {
 			@Override
 			public void run() {	
-				if(t == null || !t.walkable()) {
+				if(newTile == null || !newTile.walkable()) {
 					currSprite = FS;
 					return;
 				}
@@ -142,17 +118,12 @@ public class Character implements Serializable {
 				}
 				info.moving = false;					
 			}			
-		}).start();
-		return;
-	}
-	
-	public void moveLeft(final Tile t) {
-		if(info.moving)
-			return;
-		new Thread(new Runnable() {
+		};
+		
+		left = new Runnable() {
 			@Override
 			public void run() {
-				if(t == null || !t.walkable()) {
+				if(newTile == null || !newTile.walkable()) {
 					currSprite = LS;
 					return;
 				}
@@ -178,17 +149,12 @@ public class Character implements Serializable {
 				}
 				info.moving = false;					
 			}
-		}).start();
-		return;
-	}
-	
-	public void moveRight(final Tile t) {
-		if(info.moving)
-			return;
-		new Thread(new Runnable() {
+		};
+		
+		right = new Runnable() {
 			@Override
 			public void run() {
-				if(t == null || !t.walkable()) {
+				if(newTile == null || !newTile.walkable()) {
 					currSprite = RS;
 					return;
 				}
@@ -215,7 +181,58 @@ public class Character implements Serializable {
 				info.moving = false;
 			}
 			
-		}).start();
+		};
+		
+		info.x = 0;
+		info.y = 0;
+			
+	}
+	
+	public int getX() {
+		return info.x;
+	}
+
+	public void setX(int x) {
+		this.info.x = x;
+	}
+
+	public int getY() {
+		return info.y;
+	}
+
+	public void setY(int y) {
+		this.info.y = y;
+	}
+
+	public void moveUp(final Tile t) {
+		if(info.moving)
+			return;
+		newTile = t;
+		e.execute(up);
+		return;
+	}
+	
+	public void moveDown(final Tile t) {
+		if(info.moving)
+			return;
+		newTile = t;
+		e.execute(down);
+		return;
+	}
+	
+	public void moveLeft(final Tile t) {
+		if(info.moving)
+			return;
+		newTile = t;
+		e.execute(left);
+		return;
+	}
+	
+	public void moveRight(final Tile t) {
+		if(info.moving)
+			return;
+		newTile = t;
+		e.execute(right);
 		return;
 	}
 	

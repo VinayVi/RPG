@@ -313,7 +313,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				Thread.sleep(16);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				System.out.println(2);
 
 			}
 		}

@@ -249,22 +249,25 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			int y = p.getY();
 			Tile t = map.getTile(x, y);
 			p.moveRight(t);
+			p.info.mR = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
 			int x = p.getX() - 48;
 			int y = p.getY();
 			Tile t = map.getTile(x, y);
 			p.moveLeft(t);
+			p.info.mL = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
 			int x = p.getX();
 			int y = p.getY() - 48;
 			Tile t = map.getTile(x, y);
 			p.moveUp(t);
+			p.info.mU = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			int x = p.getX();
 			int y = p.getY() + 48;
 			Tile t = map.getTile(x, y);
 			p.moveDown(t);
-			
+			p.info.mD = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_I) {
 			invFrame.setVisible(!invFrame.isVisible());
 		} else if (e.getKeyCode() == KeyEvent.VK_M) {
@@ -290,8 +293,18 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	}
 
 	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
+	public void keyReleased(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			p.info.mR = false;
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+			p.info.mL = false;
+
+		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+			p.info.mU = false;
+
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+			p.info.mD = false;
+		} 
 
 	}
 

@@ -18,176 +18,185 @@ public class Character implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	public Info info;
 
 	protected int tileSize;
-	protected double tps; //seconds per tile, aka how long it takes to move 1 tile
-	
+	protected double tps; // seconds per tile, aka how long it takes to move 1
+							// tile
+
 	public Image currSprite;
 	public Image BL, BR, BS, FL, FR, FS, LL, LR, LS, RL, RR, RS;
-	private Runnable up, down, left, right;
 	private Tile newTile;
-	ExecutorService e = Executors.newSingleThreadExecutor();
-	
+	int dir;
+	private Thread thread;
+
 	public Character(String name) {
 		info = new Info();
 		tileSize = 48;
 		tps = 0.25;
 		info.moving = false;
+		info.mU = false;
+		info.mR = false;
+		info.mD = false;
+		info.mL = false;
 		info.state = 1;
 		this.info.name = name;
 		try {
-			BL = ImageIO.read(new File("src//sprites//" + name + "//" + name + " BL.png"));
-			BR = ImageIO.read(new File("src//sprites//" + name + "//" + name + " BR.png"));
-			BS = ImageIO.read(new File("src//sprites//" + name + "//" + name + " BS.png"));
-			FL = ImageIO.read(new File("src//sprites//" + name + "//" + name + " FL.png"));
-			FR = ImageIO.read(new File("src//sprites//" + name + "//" + name + " FR.png"));
-			FS = ImageIO.read(new File("src//sprites//" + name + "//" + name + " FS.png"));
-			LL = ImageIO.read(new File("src//sprites//" + name + "//" + name + " LL.png"));
-			LR = ImageIO.read(new File("src//sprites//" + name + "//" + name + " LR.png"));
-			LS = ImageIO.read(new File("src//sprites//" + name + "//" + name + " LS.png"));
-			RL = ImageIO.read(new File("src//sprites//" + name + "//" + name + " RL.png"));
-			RR = ImageIO.read(new File("src//sprites//" + name + "//" + name + " RR.png"));
-			RS = ImageIO.read(new File("src//sprites//" + name + "//" + name + " RS.png"));
+			BL = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " BL.png"));
+			BR = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " BR.png"));
+			BS = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " BS.png"));
+			FL = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " FL.png"));
+			FR = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " FR.png"));
+			FS = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " FS.png"));
+			LL = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " LL.png"));
+			LR = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " LR.png"));
+			LS = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " LS.png"));
+			RL = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " RL.png"));
+			RR = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " RR.png"));
+			RS = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " RS.png"));
 
-			
 			currSprite = FS;
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		up = new Runnable() {
+
+		thread = new Thread(new Runnable() {
+
 			@Override
 			public void run() {
-				if(newTile == null || !newTile.walkable()) {
-					currSprite = BS;
-					return;
-				}
-				
-				info.moving = true;
-				for(int i=0; i<48; i++) {
-					info.y-=1;
-					info.state = (i/12);
-					
-					if (info.state == 0)
-						currSprite = BL;
-					else if (info.state == 1 || info.state == 3)
-						currSprite = BS;
-					else
-						currSprite = BR;
-					
-					try {
-						Thread.sleep((long) (tps*1000/tileSize));
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				info.moving = false;
-			}			
-		};
-		
-		down = new Runnable() {
-			@Override
-			public void run() {	
-				if(newTile == null || !newTile.walkable()) {
-					currSprite = FS;
-					return;
-				}
-				
-				info.moving = true;
-				for(int i=0; i<48; i++) {
-					info.y++;
-					info.state = (i/12);
+				while (true) {
+					if(dir==0) {
 
-					if (info.state == 0)
-						currSprite = FL;
-					else if (info.state == 1 || info.state == 3)
-						currSprite = FS;
-					else
-						currSprite = FR;
-					
-					try {
-						Thread.sleep((long) (tps*1000/tileSize));
-					} catch (InterruptedException e) {
-						System.out.println(1);
-					}
-				}
-				info.moving = false;					
-			}			
-		};
-		
-		left = new Runnable() {
-			@Override
-			public void run() {
-				if(newTile == null || !newTile.walkable()) {
-					currSprite = LS;
-					return;
-				}
-				
-				info.moving = true;
-				for(int i=0; i<48; i++) {
-					info.x-=1;
-					info.state = (i/12);
+					} else if (dir == 1) {
+						if (newTile == null || !newTile.walkable()) {
+							currSprite = BS;
+						} else {
+							for (int i = 0; i < 48; i++) {
+								info.y -= 1;
+								info.state = (i / 12);
 
-					if (info.state == 0)
-						currSprite = LL;
-					else if (info.state == 1 || info.state == 3)
-						currSprite = LS;
-					else
-						currSprite = LR;
-					
-					try {
-						Thread.sleep((long) (tps*1000/tileSize));
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+								if (info.state == 0)
+									currSprite = BL;
+								else if (info.state == 1 || info.state == 3)
+									currSprite = BS;
+								else
+									currSprite = BR;
+
+								try {
+									Thread.sleep((long) (tps * 1000 / tileSize));
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						}
+						if(!info.mU)
+							dir = 0;
+					} else if (dir == 2) {
+						if (newTile == null || !newTile.walkable()) {
+							currSprite = RS;
+						}
+						else {
+							for (int i = 0; i < 48; i++) {
+								info.x += 1;
+								info.state = (i / 12);
+
+								if (info.state == 0)
+									currSprite = RL;
+								else if (info.state == 1 || info.state == 3)
+									currSprite = RS;
+								else
+									currSprite = RR;
+
+								try {
+									Thread.sleep((long) (tps * 1000 / tileSize));
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						}
+						if(!info.mR)
+							dir = 0;
+					} else if (dir == 3) {
+						if (newTile == null || !newTile.walkable()) {
+							currSprite = FS;
+						}
+						else {
+							for (int i = 0; i < 48; i++) {
+								info.y += 1;
+								info.state = (i / 12);
+
+								if (info.state == 0)
+									currSprite = FL;
+								else if (info.state == 1 || info.state == 3)
+									currSprite = FS;
+								else
+									currSprite = FR;
+
+								try {
+									Thread.sleep((long) (tps * 1000 / tileSize));
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						}
+						if(!info.mD)
+							dir = 0;
+					} else if (dir == 4) {
+						if (newTile == null || !newTile.walkable()) {
+							currSprite = LS;
+						}
+						else {
+							for (int i = 0; i < 48; i++) {
+								info.x -= 1;
+								info.state = (i / 12);
+
+								if (info.state == 0)
+									currSprite = LS;
+								else if (info.state == 1 || info.state == 3)
+									currSprite = LS;
+								else
+									currSprite = LR;
+
+								try {
+									Thread.sleep((long) (tps * 1000 / tileSize));
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						}
+						if(!info.mL)
+							dir = 0;
 					}
 				}
-				info.moving = false;					
 			}
-		};
-		
-		right = new Runnable() {
-			@Override
-			public void run() {
-				if(newTile == null || !newTile.walkable()) {
-					currSprite = RS;
-					return;
-				}
-				
-				info.moving = true;
-				for(int i=0; i<48; i++) {
-					info.x+=1;
-					info.state = (i/12);
 
-					if (info.state == 0)
-						currSprite = RL;
-					else if (info.state == 1 || info.state == 3)
-						currSprite = RS;
-					else
-						currSprite = RR;
-					
-					try {
-						Thread.sleep((long) (tps*1000/tileSize));
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				info.moving = false;
-			}
-			
-		};
-		
+		});
+		thread.start();
+
 		info.x = 0;
 		info.y = 0;
-			
+
 	}
-	
+
 	public int getX() {
 		return info.x;
 	}
@@ -205,46 +214,46 @@ public class Character implements Serializable {
 	}
 
 	public void moveUp(final Tile t) {
-		if(info.moving)
+		if (info.moving)
 			return;
 		newTile = t;
-		e.execute(up);
+		dir=1;
 		return;
 	}
-	
+
 	public void moveDown(final Tile t) {
-		if(info.moving)
+		if (info.moving)
 			return;
 		newTile = t;
-		e.execute(down);
+		dir=3;
 		return;
 	}
-	
+
 	public void moveLeft(final Tile t) {
-		if(info.moving)
+		if (info.moving)
 			return;
 		newTile = t;
-		e.execute(left);
+		dir=4;
 		return;
 	}
-	
+
 	public void moveRight(final Tile t) {
-		if(info.moving)
+		if (info.moving)
 			return;
 		newTile = t;
-		e.execute(right);
+		dir=2;
 		return;
 	}
-	
+
 	public void pickUp(Item i) {
-		if(i.getType().equals("WEAPON")) {
+		if (i.getType().equals("WEAPON")) {
 			info.getInventoryW().add(i);
 		}
 	}
-	
+
 	public void equip(Item i) {
 		i.equipped = true;
-		
+
 		info.str += i.getStr();
 		info.agi += i.getAgi();
 		info.dex += i.getDex();
@@ -255,10 +264,10 @@ public class Character implements Serializable {
 		info.cdr += i.getCdr();
 		info.crit += i.getCdr();
 	}
-	
+
 	public void unEquip(Item i) {
 		i.equipped = false;
-		
+
 		info.str -= i.getStr();
 		info.agi -= i.getAgi();
 		info.dex -= i.getDex();
@@ -269,32 +278,30 @@ public class Character implements Serializable {
 		info.cdr -= i.getCdr();
 		info.crit -= i.getCdr();
 	}
-	
-	//Stat Accessors
-	public double getDmg()
-	{
-		return info.str*info.getStrMultiplier() + info.damage;
+
+	// Stat Accessors
+	public double getDmg() {
+		return info.str * info.getStrMultiplier() + info.damage;
 	}
-	public double getHealth()
-	{
-		info.maxHealth=(info.fort*info.getFortMultiplier());
+
+	public double getHealth() {
+		info.maxHealth = (info.fort * info.getFortMultiplier());
 		return info.maxHealth;
 	}
-	public double getDodge()
-	{
-		info.dodge=info.dex*info.getDexMultiplier();
+
+	public double getDodge() {
+		info.dodge = info.dex * info.getDexMultiplier();
 		return info.dodge;
 	}
-	public double getCrit()
-	{
-		info.crit=info.luck*info.getLuckMultiplier();
+
+	public double getCrit() {
+		info.crit = info.luck * info.getLuckMultiplier();
 		return info.crit;
 	}
-	public double getCDR()
-	{
-		info.cdr=info.agi*info.getAgiMultiplier();
+
+	public double getCDR() {
+		info.cdr = info.agi * info.getAgiMultiplier();
 		return info.cdr;
 	}
-	
-	
+
 }

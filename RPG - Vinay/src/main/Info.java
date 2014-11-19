@@ -26,6 +26,7 @@ public class Info implements Serializable{
 	protected double cdr;
 	protected double crit;
 	protected boolean moving;
+	protected boolean mU, mR, mD, mL;
 	protected int state;
 	protected String name;
 	

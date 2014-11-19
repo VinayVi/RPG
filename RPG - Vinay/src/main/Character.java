@@ -14,17 +14,11 @@ import javax.imageio.ImageIO;
 import tiles.Tile;
 
 public class Character implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
 	public Info info;
-
 	protected int tileSize;
 	protected double tps; // seconds per tile, aka how long it takes to move 1
 							// tile
-
 	public Image currSprite;
 	public Image BL, BR, BS, FL, FR, FS, LL, LR, LS, RL, RR, RS;
 	private Tile newTile;
@@ -67,47 +61,35 @@ public class Character implements Serializable {
 					+ " RR.png"));
 			RS = ImageIO.read(new File("src//sprites//" + name + "//" + name
 					+ " RS.png"));
-
 			currSprite = FS;
-
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-
 		thread = new Thread(new Runnable() {
-
 			@Override
 			public void run() {
 				while (true) {
 					if (dir == 0) {
-
 					} else if (dir == 1) {
-						if (newTile == null || !newTile.walkable() || !currSprite.equals(BS)) {
+						if (newTile == null || !newTile.walkable()
+								|| !currSprite.equals(BS)) {
 							currSprite = BS;
 							try {
 								Thread.sleep((long) (250));
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
 							}
 						} else {
 							for (int i = 0; i < 48; i++) {
 								info.y -= 1;
 								info.state = (i / 12);
-
 								if (info.state == 0)
 									currSprite = BL;
 								else if (info.state == 1 || info.state == 3)
 									currSprite = BS;
 								else
 									currSprite = BR;
-
 								try {
 									Thread.sleep((long) (tps * 1000 / tileSize));
 								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
 								}
 							}
 						}
@@ -119,28 +101,20 @@ public class Character implements Serializable {
 							currSprite = RS;
 							try {
 								Thread.sleep((long) (250));
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+							} catch (InterruptedException e) {}
 						} else {
 							for (int i = 0; i < 48; i++) {
 								info.x += 1;
 								info.state = (i / 12);
-
 								if (info.state == 0)
 									currSprite = RL;
 								else if (info.state == 1 || info.state == 3)
 									currSprite = RS;
 								else
 									currSprite = RR;
-
 								try {
 									Thread.sleep((long) (tps * 1000 / tileSize));
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
+								} catch (InterruptedException e) {}
 							}
 						}
 						if (!info.mR)
@@ -151,28 +125,20 @@ public class Character implements Serializable {
 							currSprite = FS;
 							try {
 								Thread.sleep((long) (250));
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+							} catch (InterruptedException e) {}
 						} else {
 							for (int i = 0; i < 48; i++) {
 								info.y += 1;
 								info.state = (i / 12);
-
 								if (info.state == 0)
 									currSprite = FL;
 								else if (info.state == 1 || info.state == 3)
 									currSprite = FS;
 								else
 									currSprite = FR;
-
 								try {
 									Thread.sleep((long) (tps * 1000 / tileSize));
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
+								} catch (InterruptedException e) {}
 							}
 						}
 						if (!info.mD)
@@ -183,28 +149,20 @@ public class Character implements Serializable {
 							currSprite = LS;
 							try {
 								Thread.sleep((long) (250));
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+							} catch (InterruptedException e) {}
 						} else {
 							for (int i = 0; i < 48; i++) {
 								info.x -= 1;
 								info.state = (i / 12);
-
 								if (info.state == 0)
 									currSprite = LL;
 								else if (info.state == 1 || info.state == 3)
 									currSprite = LS;
 								else
 									currSprite = LR;
-
 								try {
 									Thread.sleep((long) (tps * 1000 / tileSize));
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
+								} catch (InterruptedException e) {}
 							}
 						}
 						if (!info.mL)
@@ -215,10 +173,8 @@ public class Character implements Serializable {
 
 		});
 		thread.start();
-
 		info.x = 0;
 		info.y = 0;
-
 	}
 
 	public int getX() {
@@ -277,7 +233,6 @@ public class Character implements Serializable {
 
 	public void equip(Item i) {
 		i.equipped = true;
-
 		info.str += i.getStr();
 		info.agi += i.getAgi();
 		info.dex += i.getDex();
@@ -291,7 +246,6 @@ public class Character implements Serializable {
 
 	public void unEquip(Item i) {
 		i.equipped = false;
-
 		info.str -= i.getStr();
 		info.agi -= i.getAgi();
 		info.dex -= i.getDex();

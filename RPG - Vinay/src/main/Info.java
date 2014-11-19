@@ -6,10 +6,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Info implements Serializable{
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	protected int x;
 	protected int y;
@@ -26,23 +22,19 @@ public class Info implements Serializable{
 	protected double cdr;
 	protected double crit;
 	protected boolean moving;
+	/**Directional Moving booleans*/
 	protected boolean mU, mR, mD, mL;
 	protected int state;
 	protected String name;
-	
-	
 	private double strMultiplier;
-
 	private double agiMultiplier;
 	private double fortMultiplier;
 	private double dexMultiplier;
 	private double luckMultiplier;
-	
-	
 	private ArrayList<Item> inventoryW;//Weapons
 	private ArrayList<Item> inventoryA;//Armor
-	
 	private int weaponsEquipped;
+	
 	public double getStrMultiplier() {
 		return strMultiplier;
 	}

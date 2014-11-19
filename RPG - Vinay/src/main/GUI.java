@@ -35,31 +35,21 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	JFrame mapFrame, optFrame, invFrame;
 	JPanel mapPane, optPane, invPane;
 	boolean close = false;
-	
-	//Options Buttons
-	JButton load, save, exit, resume;
+	JButton load, save, exit, resume; //Options Buttons
 
 	public GUI() {
-		
 		Toolkit tk = Toolkit.getDefaultToolkit();  
 		int xSize = ((int) tk.getScreenSize().getWidth());  
 		int ySize = ((int) tk.getScreenSize().getHeight());  
-
 		bg = null;
 		map = new Map();
 		length = map.length;
 		width = map.width;
-		
 		try {
 			bg = ImageIO.read(new File("src//tiles//map.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (IOException e) {}
 		p = new Character("Kirito");
-
-		// Set up the minimap
-		mapPane = new JPanel();
+		mapPane = new JPanel(); 	
 		mapFrame = new JFrame("Map");
 		JLabel mapImage = new JLabel(new ImageIcon("src//tiles//minimap.png"));
 		mapImage.setBackground(Color.BLACK);
@@ -70,9 +60,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		mapFrame.setVisible(false);
 		mapFrame.addKeyListener(this);
 		mapFrame.setUndecorated(true);
-
-		// Set up the Options
-		optPane = new JPanel();
+		optPane = new JPanel();		
 		optFrame = new JFrame("Options");
 		optFrame.setContentPane(optPane);
 		optFrame.setSize(400, 400);
@@ -80,8 +68,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		optFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		optFrame.setLocationRelativeTo(null);
 		optFrame.setUndecorated(true);
-		
-		//Set up the Options Buttons
 		load = new JButton("Load Game");
 		load.addActionListener(new buttonListener());
 		save = new JButton("Save Game");
@@ -94,10 +80,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		optPane.add(save);
 		optPane.add(exit);
 		optPane.add(resume);
-
-		
-
-		// Set up the Inventory
 		invPane = new JPanel();
 		invFrame = new JFrame("Inventory");
 		invFrame.setContentPane(invPane);
@@ -107,8 +89,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		invFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		invFrame.addKeyListener(new invListener());
 		invFrame.setUndecorated(true);
-
-
 	}
 
 	public void paint(Graphics g) {
@@ -133,11 +113,9 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	}
 
 	public static void main(String[] args) {
-		
 		Toolkit tk = Toolkit.getDefaultToolkit();  
 		int xSize = ((int) tk.getScreenSize().getWidth());  
 		int ySize = ((int) tk.getScreenSize().getHeight());  
-		
 		JFrame frame = new JFrame("RPG");
 		GUI gui = new GUI();
 		gui.setPreferredSize(new Dimension(xSize, ySize));
@@ -154,7 +132,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	}
 
 	public class invListener implements KeyListener {
-
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_M) {
@@ -165,23 +142,13 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				invFrame.setVisible(!invFrame.isVisible());
 			}
 		}
-
 		@Override
-		public void keyReleased(KeyEvent arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
+		public void keyReleased(KeyEvent arg0) {}
 		@Override
-		public void keyTyped(KeyEvent arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
+		public void keyTyped(KeyEvent arg0) {}
 	}
 	
 	public class buttonListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("Save Game")) {
@@ -190,7 +157,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 					JOptionPane.showMessageDialog(new JFrame(), "Successfully Saved");
 					optFrame.setVisible(!optFrame.isVisible());
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			} else if(e.getActionCommand().equals("Load Game")) {
@@ -202,7 +168,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 						optFrame.setVisible(!optFrame.isVisible());
 					}
 				} catch (ClassNotFoundException | IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			} else if(e.getActionCommand().equals("Exit Game")) {
@@ -210,13 +175,10 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			} else if(e.getActionCommand().equals("Resume Game")) {
 				optFrame.setVisible(!optFrame.isVisible());
 			}	
-			
 		}
-		
 	}
 
 	public class mapListener implements KeyListener {
-
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_M) {
@@ -227,21 +189,35 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				invFrame.setVisible(!invFrame.isVisible());
 			}
 		}
-
 		@Override
-		public void keyReleased(KeyEvent arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
+		public void keyReleased(KeyEvent arg0) {}
 		@Override
-		public void keyTyped(KeyEvent arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
+		public void keyTyped(KeyEvent arg0) {}
+	}
+	
+	/**
+	 * Loads a save file
+	 * @return Info file with saved data in it
+	 */
+	public Info load() throws ClassNotFoundException, IOException {
+		FileInputStream fin = new FileInputStream(p.info.name+".sav");
+		ObjectInputStream ois = new ObjectInputStream(fin);
+		Info info = (Info) ois.readObject();
+		ois.close();
+		return info;
 	}
 
+	/**
+	 * Saves the Info file to access later
+	 * @param Info file to be saved
+	 */
+	public void save(Info o) throws IOException {
+		FileOutputStream fout = new FileOutputStream(p.info.name+".sav");
+		ObjectOutputStream oos = new ObjectOutputStream(fout);
+		oos.writeObject(p.info);
+		oos.close();
+	}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
@@ -276,21 +252,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			optFrame.setVisible(!optFrame.isVisible());
 		} 
 	}
-	
-	public Info load() throws ClassNotFoundException, IOException {
-		FileInputStream fin = new FileInputStream(p.info.name+".sav");
-		ObjectInputStream ois = new ObjectInputStream(fin);
-		Info info = (Info) ois.readObject();
-		ois.close();
-		return info;
-	}
-	
-	public void save(Info o) throws IOException {
-		FileOutputStream fout = new FileOutputStream(p.info.name+".sav");
-		ObjectOutputStream oos = new ObjectOutputStream(fout);
-		oos.writeObject(p.info);
-		oos.close();
-	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -298,21 +259,15 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			p.info.mR = false;
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
 			p.info.mL = false;
-
 		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
 			p.info.mU = false;
-
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			p.info.mD = false;
-		} 
-
+		}
 	}
 
 	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
+	public void keyTyped(KeyEvent arg0) {}
 
 	@Override
 	public void run() {
@@ -324,10 +279,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			botY = p.getY() + getHeight() / 2;
 			try {
 				Thread.sleep(16);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-
-			}
+			} catch (InterruptedException e) {}
 		}
 	}
 

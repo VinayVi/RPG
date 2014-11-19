@@ -80,11 +80,17 @@ public class Character implements Serializable {
 			@Override
 			public void run() {
 				while (true) {
-					if(dir==0) {
+					if (dir == 0) {
 
 					} else if (dir == 1) {
-						if (newTile == null || !newTile.walkable()) {
+						if (newTile == null || !newTile.walkable() || !currSprite.equals(BS)) {
 							currSprite = BS;
+							try {
+								Thread.sleep((long) (250));
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						} else {
 							for (int i = 0; i < 48; i++) {
 								info.y -= 1;
@@ -105,13 +111,19 @@ public class Character implements Serializable {
 								}
 							}
 						}
-						if(!info.mU)
+						if (!info.mU)
 							dir = 0;
 					} else if (dir == 2) {
-						if (newTile == null || !newTile.walkable()) {
+						if (newTile == null || !newTile.walkable()
+								|| !currSprite.equals(RS)) {
 							currSprite = RS;
-						}
-						else {
+							try {
+								Thread.sleep((long) (250));
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						} else {
 							for (int i = 0; i < 48; i++) {
 								info.x += 1;
 								info.state = (i / 12);
@@ -131,13 +143,19 @@ public class Character implements Serializable {
 								}
 							}
 						}
-						if(!info.mR)
+						if (!info.mR)
 							dir = 0;
 					} else if (dir == 3) {
-						if (newTile == null || !newTile.walkable()) {
+						if (newTile == null || !newTile.walkable()
+								|| !currSprite.equals(FS)) {
 							currSprite = FS;
-						}
-						else {
+							try {
+								Thread.sleep((long) (250));
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						} else {
 							for (int i = 0; i < 48; i++) {
 								info.y += 1;
 								info.state = (i / 12);
@@ -157,19 +175,25 @@ public class Character implements Serializable {
 								}
 							}
 						}
-						if(!info.mD)
+						if (!info.mD)
 							dir = 0;
 					} else if (dir == 4) {
-						if (newTile == null || !newTile.walkable()) {
+						if (newTile == null || !newTile.walkable()
+								|| !currSprite.equals(LS)) {
 							currSprite = LS;
-						}
-						else {
+							try {
+								Thread.sleep((long) (250));
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						} else {
 							for (int i = 0; i < 48; i++) {
 								info.x -= 1;
 								info.state = (i / 12);
 
 								if (info.state == 0)
-									currSprite = LS;
+									currSprite = LL;
 								else if (info.state == 1 || info.state == 3)
 									currSprite = LS;
 								else
@@ -183,7 +207,7 @@ public class Character implements Serializable {
 								}
 							}
 						}
-						if(!info.mL)
+						if (!info.mL)
 							dir = 0;
 					}
 				}
@@ -217,7 +241,7 @@ public class Character implements Serializable {
 		if (info.moving)
 			return;
 		newTile = t;
-		dir=1;
+		dir = 1;
 		return;
 	}
 
@@ -225,7 +249,7 @@ public class Character implements Serializable {
 		if (info.moving)
 			return;
 		newTile = t;
-		dir=3;
+		dir = 3;
 		return;
 	}
 
@@ -233,7 +257,7 @@ public class Character implements Serializable {
 		if (info.moving)
 			return;
 		newTile = t;
-		dir=4;
+		dir = 4;
 		return;
 	}
 
@@ -241,7 +265,7 @@ public class Character implements Serializable {
 		if (info.moving)
 			return;
 		newTile = t;
-		dir=2;
+		dir = 2;
 		return;
 	}
 

@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -16,21 +17,33 @@ import tiles.Tile;
 public class Map {
 	int tileSize = 48;
 	Tile tiles[][];
-	int length = 1200, width = 1200;
+	int length, width;
 
 	public Map() {
-		tiles = new Tile[length / tileSize][width / tileSize];
-		for (int x = 0; x < 25; x++) {
-			for (int y = 0; y < 25; y++) {
-				if (x == 12) {
-					tiles[x][y] = new Tile(5, x * 48, y * 48, true);
-				} else if (x == 13) {
-					tiles[x][y] = new Tile(3, x * 48, y * 48, true);
-				} else
-					tiles[x][y] = new Tile(1, x * 48, y * 48, true);
-			}
+		final Color grass = new Color(0, 166, 81);
+		BufferedImage bi = null;
+		try {
+			bi=ImageIO.read(new File("Map1.gif"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
+		tiles = new Tile[bi.getWidth()][bi.getHeight()];
+		Color[][] colors = new Color[bi.getWidth()][bi.getHeight()];
+		for (int x = 0; x <bi.getWidth(); x++) 
+		    for (int y = 0; y < bi.getHeight(); y++) {
+		    	Color c = new Color(bi.getRGB(x, y));
+		        colors[x][y] = c;
+		        if(c.equals(grass)) {
+		        	tiles[x][y] = new Tile(1, x*48, y*48, true);
+		        	
+		        }
+		        else {
+		        	tiles[x][y] = new Tile(2, x*48, y*48, true);
+		        }
+		    }
+		length = bi.getWidth()*tileSize;
+		width = bi.getHeight()*tileSize;
 		drawMap();
 	}
 
@@ -42,8 +55,7 @@ public class Map {
 	}
 
 	public void drawMap() {
-		BufferedImage pic = new BufferedImage(4800, 4800,
-				BufferedImage.TYPE_INT_ARGB);
+		BufferedImage pic = new BufferedImage(length - 2000, width,BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = pic.createGraphics();
 		Image grass = null;
 		Image Road = null;

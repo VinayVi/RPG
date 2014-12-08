@@ -5,8 +5,7 @@ public class Tile {
 	private Vector loc;
 	private int type;
 	private boolean walkable;
-	/*
-	 * 1 = Grass
+	/* 1 = Grass
 	 * 2 = Road
 	 * 3 = Road with Grass on right
 	 * 4 = Road with Grass on top
@@ -16,6 +15,11 @@ public class Tile {
 	 * 8 = Road with Grass on top-right corner
 	 * 9 = Road with Grass on bottom-left corner
 	 * 10 = Road with Grass on bottom-right corner
+	 * 11 = Rock
+	 * 12 = Tree Bottom
+	 * 13 = Tree Top
+	 * 14 = Water
+	 * 15 = Bridge
 	 */
 	
 	public boolean walkable() {

@@ -21,6 +21,7 @@ public class Map {
 
 	public Map() {
 		final Color grass = new Color(0, 166, 81);
+		final Color road = new Color(226, 174, 127);
 		BufferedImage bi = null;
 		try {
 			bi=ImageIO.read(new File("Map1.gif"));
@@ -38,8 +39,11 @@ public class Map {
 		        	tiles[x][y] = new Tile(1, x*48, y*48, true);
 		        	
 		        }
-		        else {
+		        else if(c.equals(road)) {
 		        	tiles[x][y] = new Tile(2, x*48, y*48, true);
+		        }
+		        else {
+		        	tiles[x][y] = new Tile(3, x*48, y*48, false);
 		        }
 		    }
 		length = bi.getWidth()*tileSize;
@@ -55,7 +59,7 @@ public class Map {
 	}
 
 	public void drawMap() {
-		BufferedImage pic = new BufferedImage(length - 2000, width,BufferedImage.TYPE_INT_ARGB);
+		BufferedImage pic = new BufferedImage(length, width,BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = pic.createGraphics();
 		Image grass = null;
 		Image Road = null;

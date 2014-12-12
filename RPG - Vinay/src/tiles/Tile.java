@@ -11,15 +11,34 @@ public class Tile {
 	 * 4 = Road with Grass on top
 	 * 5 = Road with Grass on left
 	 * 6 = Road with Grass on bottom
-	 * 7 = Road with Grass on top-left corner
-	 * 8 = Road with Grass on top-right corner
-	 * 9 = Road with Grass on bottom-left corner
-	 * 10 = Road with Grass on bottom-right corner
-	 * 11 = Rock
-	 * 12 = Tree Bottom
-	 * 13 = Tree Top
-	 * 14 = Water
-	 * 15 = Bridge
+	 * 7 = Road with Road on bottom-right corner
+	 * 8 = Road with Road on bottom-left corner
+	 * 9 = Road with Road on top right corner
+	 * 10 = Road with Road on top left corner
+	 * 11 = Road with Grass on bottom right corner
+	 * 12 = Road with Grass on bottom left corner
+	 * 13 = Road with Grass on top right corner
+	 * 14 = Road with Grass on top left corner
+	 * 15 = Rock
+	 * 16 = Tree Bottom
+	 * 17 = Tree Top
+	 * 18 = Water
+	 * 19 = Bridge
+	 * 20 = Dirt Road
+	 * 21 = Dirt Road with Grass on right
+	 * 22 = Dirt Road with Grass on top
+	 * 23 = Dirt Road with Grass on left
+	 * 24 = Dirt Road with Grass on bottom
+	 * 25 = Dirt Road with Road on bottom-right corner
+	 * 26 = Dirt Road with Road on bottom-left corner
+	 * 27 = Dirt Road with Road on top right corner
+	 * 28 = Dirt Road with Road on top left corner
+	 * 29 = Dirt Road with Grass on bottom right corner
+	 * 30 = Dirt Road with Grass on bottom left corner
+	 * 31 = Dirt Road with Grass on top right corner
+	 * 32 = Dirt Road with Grass on top left corner
+	 * 101 = Bear
+	 * 102 = Wolf
 	 */
 	
 	public boolean walkable() {

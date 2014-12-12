@@ -22,32 +22,67 @@ public class Map {
 	public Map() {
 		final Color grass = new Color(0, 166, 81);
 		final Color road = new Color(226, 174, 127);
+		final Color water = new Color(0, 0, 255);
+		final Color bridge = new Color(64, 20, 0);
 		BufferedImage bi = null;
 		try {
-			bi=ImageIO.read(new File("Map1.gif"));
+			bi = ImageIO.read(new File("src//tiles//Map1.gif"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		tiles = new Tile[bi.getWidth()][bi.getHeight()];
 		Color[][] colors = new Color[bi.getWidth()][bi.getHeight()];
-		for (int x = 0; x <bi.getWidth(); x++) 
-		    for (int y = 0; y < bi.getHeight(); y++) {
-		    	Color c = new Color(bi.getRGB(x, y));
-		        colors[x][y] = c;
-		        if(c.equals(grass)) {
-		        	tiles[x][y] = new Tile(1, x*48, y*48, true);
-		        	
-		        }
-		        else if(c.equals(road)) {
-		        	tiles[x][y] = new Tile(2, x*48, y*48, true);
-		        }
-		        else {
-		        	tiles[x][y] = new Tile(3, x*48, y*48, false);
-		        }
-		    }
-		length = bi.getWidth()*tileSize;
-		width = bi.getHeight()*tileSize;
+		for (int x = 0; x < bi.getWidth(); x++)
+			for (int y = 0; y < bi.getHeight(); y++) {
+				Color c = new Color(bi.getRGB(x, y));
+				colors[x][y] = c;
+				if (c.equals(grass)) {
+					tiles[x][y] = new Tile(1, x * 48, y * 48, true);
+				} else if (c.equals(road)) {
+					tiles[x][y] = new Tile(20, x * 48, y * 48, true);
+				} else if (c.equals(water)) {
+					tiles[x][y] = new Tile(18, x * 48, y * 48, false);
+				} else if (c.equals(bridge)) {
+					tiles[x][y] = new Tile(19, x * 48, y * 48, true);
+				} else {
+					tiles[x][y] = new Tile(3, x * 48, y * 48, false);
+				}
+
+			}
+		for (int x = 1; x < bi.getWidth() - 1; x++) {
+			for (int y = 1; y < bi.getHeight() - 1; y++) {
+				if (tiles[x][y].getType() == 20) {
+					boolean topright = (tiles[x + 1][y - 1].getType() == 1);
+					boolean top = (tiles[x][y - 1].getType() == 1);
+					boolean topleft = (tiles[x - 1][y - 1].getType() == 1);
+					boolean left = (tiles[x - 1][y].getType() == 1);
+					boolean bottomleft = (tiles[x - 1][y + 1].getType() == 1);
+					boolean bottom = (tiles[x][y + 1].getType() == 1);
+					boolean bottomright = (tiles[x + 1][y + 1].getType() == 1);
+					boolean right = (tiles[x + 1][y].getType() == 1);
+					if (topright && top && right) {
+						tiles[x][y] = new Tile(26, x * 48, y * 48, true);
+					} else if (right && bottomright && bottom) {
+						tiles[x][y] = new Tile(28, x * 48, y * 48, true);
+					} else if (top && topleft && left) {
+						tiles[x][y] = new Tile(25, x * 48, y * 48, true);
+					} else if (left && bottomleft && bottom) {
+						tiles[x][y] = new Tile(27, x * 48, y * 48, true);
+					} else if (top) {
+						tiles[x][y] = new Tile(22, x * 48, y * 48, true);
+					} else if (right) {
+						tiles[x][y] = new Tile(21, x * 48, y * 48, true);
+					} else if (left) {
+						tiles[x][y] = new Tile(23, x * 48, y * 48, true);
+					} else if (bottom) {
+						tiles[x][y] = new Tile(24, x * 48, y * 48, true);
+					}
+				}
+			}
+		}
+		length = bi.getWidth() * tileSize;
+		width = bi.getHeight() * tileSize;
 		drawMap();
 	}
 
@@ -59,7 +94,8 @@ public class Map {
 	}
 
 	public void drawMap() {
-		BufferedImage pic = new BufferedImage(length, width,BufferedImage.TYPE_INT_RGB);
+		BufferedImage pic = new BufferedImage(length, width,
+				BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = pic.createGraphics();
 		Image grass = null;
 		Image Road = null;
@@ -71,18 +107,60 @@ public class Map {
 		Image RoadGTR = null;
 		Image RoadGBL = null;
 		Image RoadGBR = null;
+		Image Water = null;
+		Image Bridge = null;
+		Image Bear = null;
+		Image Wolf = null;
+		Image DirtRoad = null;
+		Image DirtRoadGT = null;
+		Image DirtRoadGB = null;
+		Image DirtRoadGR = null;
+		Image DirtRoadGL = null;
+		Image DirtRoadGTR = null;
+		Image DirtRoadGTL = null;
+		Image DirtRoadGBR = null;
+		Image DirtRoadGBL = null;
 		try {
 			grass = ImageIO.read(new File("src//tiles//GrassTile.png"));
 			Road = ImageIO.read(new File("src//tiles//RoadTile.png"));
-			RoadGT = ImageIO.read(new File("src//tiles//Grass-Road Tile Top.png"));
-			RoadGB = ImageIO.read(new File("src//tiles//Grass-Road Tile Bottom.png"));
-			RoadGR = ImageIO.read(new File("src//tiles//Grass-Road Tile Right.png"));
-			RoadGL = ImageIO.read(new File("src//tiles//Grass-Road Tile Left.png"));
-			RoadGTL = ImageIO.read(new File("src//tiles//Grass-Road Tile TopLeft.png"));
-			RoadGTR = ImageIO.read(new File("src//tiles//Grass-Road Tile TopRight.png"));
-			RoadGBL = ImageIO.read(new File("src//tiles//Grass-Road Tile BottomLeft.png"));
-			RoadGBR = ImageIO.read(new File("src//tiles//Grass-Road Tile BottomRight.png"));
-			
+			RoadGT = ImageIO.read(new File(
+					"src//tiles//Grass-Road Tile Top.png"));
+			RoadGB = ImageIO.read(new File(
+					"src//tiles//Grass-Road Tile Bottom.png"));
+			RoadGR = ImageIO.read(new File(
+					"src//tiles//Grass-Road Tile Right.png"));
+			RoadGL = ImageIO.read(new File(
+					"src//tiles//Grass-Road Tile Left.png"));
+			RoadGTL = ImageIO.read(new File(
+					"src//tiles//Grass-Road Tile TopLeft.png"));
+			RoadGTR = ImageIO.read(new File(
+					"src//tiles//Grass-Road Tile TopRight.png"));
+			RoadGBL = ImageIO.read(new File(
+					"src//tiles//Grass-Road Tile BottomLeft.png"));
+			RoadGBR = ImageIO.read(new File(
+					"src//tiles//Grass-Road Tile BottomRight.png"));
+			Water = ImageIO.read(new File("src//tiles//Water.png"));
+			Bridge = ImageIO.read(new File("src//tiles//Bridge Tile.png"));
+			DirtRoad = ImageIO.read(new File("src//tiles//Dirt Road.png"));
+			DirtRoadGT = ImageIO.read(new File(
+					"src//tiles//Dirt Road Top.png"));
+			DirtRoadGB = ImageIO.read(new File(
+					"src//tiles//Dirt Road Bottom.png"));
+			DirtRoadGR = ImageIO.read(new File(
+					"src//tiles//Dirt Road Right.png"));
+			DirtRoadGL = ImageIO.read(new File(
+					"src//tiles//Dirt Road Left.png"));
+			DirtRoadGTL = ImageIO.read(new File(
+					"src//tiles//Dirt Road TopLeft.png"));
+			DirtRoadGTR = ImageIO.read(new File(
+					"src//tiles//Dirt Road TopRight.png"));
+			DirtRoadGBL = ImageIO.read(new File(
+					"src//tiles//Dirt Road BottomLeft.png"));
+			DirtRoadGBR = ImageIO.read(new File(
+					"src//tiles//Dirt Road BottomRight.png"));
+			Bear = ImageIO.read(new File("src//tiles//Bear.png"));
+			Wolf = ImageIO.read(new File("src//tiles//Wolf.png"));
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -121,6 +199,45 @@ public class Map {
 					break;
 				case 10:
 					g.drawImage(RoadGBR, v.getX(), v.getY(), new JFrame());
+					break;
+				case 18:
+					g.drawImage(Water, v.getX(), v.getY(), new JFrame());
+					break;
+				case 19:
+					g.drawImage(Bridge, v.getX(), v.getY(), new JFrame());
+					break;
+				case 20:
+					g.drawImage(DirtRoad, v.getX(), v.getY(), new JFrame());
+					break;
+				case 21:
+					g.drawImage(DirtRoadGR, v.getX(), v.getY(), new JFrame());
+					break;
+				case 22:
+					g.drawImage(DirtRoadGT, v.getX(), v.getY(), new JFrame());
+					break;
+				case 23:
+					g.drawImage(DirtRoadGL, v.getX(), v.getY(), new JFrame());
+					break;
+				case 24:
+					g.drawImage(DirtRoadGB, v.getX(), v.getY(), new JFrame());
+					break;
+				case 25:
+					g.drawImage(DirtRoadGTL, v.getX(), v.getY(), new JFrame());
+					break;
+				case 26:
+					g.drawImage(DirtRoadGTR, v.getX(), v.getY(), new JFrame());
+					break;
+				case 27:
+					g.drawImage(DirtRoadGBL, v.getX(), v.getY(), new JFrame());
+					break;
+				case 28:
+					g.drawImage(DirtRoadGBR, v.getX(), v.getY(), new JFrame());
+					break;
+				case 101:
+					g.drawImage(Bear, v.getX(), v.getY(), new JFrame());
+					break;
+				case 102:
+					g.drawImage(Wolf, v.getX(), v.getY(), new JFrame());
 					break;
 				}
 			}

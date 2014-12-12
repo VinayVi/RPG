@@ -29,7 +29,6 @@ public class Character implements Serializable {
 		info = new Info();
 		tileSize = 48;
 		tps = 0.25;
-		info.moving = false;
 		info.mU = false;
 		info.mR = false;
 		info.mD = false;
@@ -74,7 +73,7 @@ public class Character implements Serializable {
 								|| !currSprite.equals(BS)) {
 							currSprite = BS;
 							try {
-								Thread.sleep((long) (250));
+								Thread.sleep((long) (100));
 							} catch (InterruptedException e) {
 							}
 						} else {
@@ -93,15 +92,17 @@ public class Character implements Serializable {
 								}
 							}
 						}
-						if (!info.mU)
+						//if (!info.mU)
 							dir = 0;
 					} else if (dir == 2) {
 						if (newTile == null || !newTile.walkable()
 								|| !currSprite.equals(RS)) {
 							currSprite = RS;
 							try {
-								Thread.sleep((long) (250));
-							} catch (InterruptedException e) {}
+								Thread.sleep((long) (100));
+							} catch (InterruptedException e) {
+								System.out.println(true);
+							}
 						} else {
 							for (int i = 0; i < 48; i++) {
 								info.x += 1;
@@ -114,17 +115,18 @@ public class Character implements Serializable {
 									currSprite = RR;
 								try {
 									Thread.sleep((long) (tps * 1000 / tileSize));
-								} catch (InterruptedException e) {}
+								} catch (InterruptedException e) {
+								}
 							}
 						}
-						if (!info.mR)
+						//if (!info.mR)
 							dir = 0;
 					} else if (dir == 3) {
 						if (newTile == null || !newTile.walkable()
 								|| !currSprite.equals(FS)) {
 							currSprite = FS;
 							try {
-								Thread.sleep((long) (250));
+								Thread.sleep((long) (100));
 							} catch (InterruptedException e) {}
 						} else {
 							for (int i = 0; i < 48; i++) {
@@ -141,14 +143,14 @@ public class Character implements Serializable {
 								} catch (InterruptedException e) {}
 							}
 						}
-						if (!info.mD)
+						//if (!info.mD)
 							dir = 0;
 					} else if (dir == 4) {
 						if (newTile == null || !newTile.walkable()
 								|| !currSprite.equals(LS)) {
 							currSprite = LS;
 							try {
-								Thread.sleep((long) (250));
+								Thread.sleep((long) (100));
 							} catch (InterruptedException e) {}
 						} else {
 							for (int i = 0; i < 48; i++) {
@@ -165,7 +167,7 @@ public class Character implements Serializable {
 								} catch (InterruptedException e) {}
 							}
 						}
-						if (!info.mL)
+						//if (!info.mL)
 							dir = 0;
 					}
 				}
@@ -194,35 +196,23 @@ public class Character implements Serializable {
 	}
 
 	public void moveUp(final Tile t) {
-		if (info.moving)
-			return;
 		newTile = t;
 		dir = 1;
-		return;
 	}
 
 	public void moveDown(final Tile t) {
-		if (info.moving)
-			return;
 		newTile = t;
 		dir = 3;
-		return;
 	}
 
 	public void moveLeft(final Tile t) {
-		if (info.moving)
-			return;
 		newTile = t;
 		dir = 4;
-		return;
 	}
 
 	public void moveRight(final Tile t) {
-		if (info.moving)
-			return;
 		newTile = t;
 		dir = 2;
-		return;
 	}
 
 	public void pickUp(Item i) {

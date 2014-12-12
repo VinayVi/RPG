@@ -119,14 +119,14 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		JFrame frame = new JFrame("RPG");
 		GUI gui = new GUI();
 		gui.setPreferredSize(new Dimension(xSize, ySize));
-		frame.setUndecorated(true);
+		//frame.setUndecorated(true);
 		frame.add(gui);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setFocusable(true);
 		frame.addKeyListener(gui);
 		frame.pack();
-		frame.setResizable(false);
+		frame.setResizable(true);
 		frame.setLocationRelativeTo(null);
 		new Thread(gui).start();
 	}

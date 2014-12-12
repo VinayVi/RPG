@@ -52,8 +52,10 @@ public class Map {
 	}
 
 	public Tile getTile(int x, int y) {
-		if (x >= 0 && y >= 0 && x < width && y < length)
-			return tiles[x / 48][y / 48];
+		if (x >= 0 && y >= 0 && x < width && y < length) {
+			Tile t = tiles[x/48][y/48];
+			return t;
+		}
 		else
 			return null;
 	}

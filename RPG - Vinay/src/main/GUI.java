@@ -223,26 +223,36 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
 			int x = p.getX() + 48;
 			int y = p.getY();
+			if(x%48!=0) {
+				x+=48;
+			}
 			Tile t = map.getTile(x, y);
-			p.moveRight(t);
+			p.move(t);
+			p.dir=2;
 			p.info.mR = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
 			int x = p.getX() - 48;
 			int y = p.getY();
 			Tile t = map.getTile(x, y);
-			p.moveLeft(t);
+			p.move(t);
+			p.dir=4;
 			p.info.mL = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
 			int x = p.getX();
 			int y = p.getY() - 48;
 			Tile t = map.getTile(x, y);
-			p.moveUp(t);
+			p.move(t);
+			p.dir=1;
 			p.info.mU = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			int x = p.getX();
 			int y = p.getY() + 48;
+			if(y%48!=0) {
+				y+=48;
+			}
 			Tile t = map.getTile(x, y);
-			p.moveDown(t);
+			p.move(t);
+			p.dir=3;
 			p.info.mD = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_I) {
 			invFrame.setVisible(!invFrame.isVisible());
@@ -256,12 +266,16 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			p.dir=0;
 			p.info.mR = false;
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+			p.dir=0;
 			p.info.mL = false;
 		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+			p.dir=0;
 			p.info.mU = false;
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+			p.dir=0;
 			p.info.mD = false;
 		}
 	}

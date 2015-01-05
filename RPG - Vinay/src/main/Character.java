@@ -22,7 +22,7 @@ public class Character implements Serializable {
 	public Image currSprite;
 	public Image BL, BR, BS, FL, FR, FS, LL, LR, LS, RL, RR, RS;
 	private Tile newTile;
-	int dir;
+	volatile int dir;
 	private Thread thread;
 
 	public Character(String name) {

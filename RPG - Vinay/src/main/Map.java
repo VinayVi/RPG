@@ -84,6 +84,37 @@ public class Map {
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;
 		drawMap();
+		drawBorders();
+	}
+
+	private void drawBorders() {
+		BufferedImage pic = new BufferedImage(length+2000, width+2000,
+				BufferedImage.TYPE_INT_RGB);
+		Image bg = null;
+		try {
+			bg = ImageIO.read(new File("src//tiles//map.png"));
+		} catch (IOException e) {}
+		Graphics2D g = (Graphics2D) pic.getGraphics();
+		g.drawImage(bg, 1000, 1000, new JFrame());
+		g.setColor(Color.black);
+		g.fillRect(0, 0, width+2000, 1000);
+		g.fillRect(0, length+1000, width+2000, length+2000);
+		g.fillRect(0, 0, 1000, length+2000);
+		g.fillRect(width+1000, 0, width+2000, length+2000);
+		try {
+			java.util.Iterator<ImageWriter> writers = ImageIO
+					.getImageWritersByFormatName("png");
+			ImageWriter writer = writers.next();
+
+			File f = new File("src//tiles//map.png");
+
+			ImageOutputStream ios = ImageIO.createImageOutputStream(f);
+			writer.setOutput(ios);
+			writer.write(pic);
+			ios.close();
+		} catch (Exception e) {
+			System.out.println("Failed");
+		}
 	}
 
 	public Tile getTile(int x, int y) {

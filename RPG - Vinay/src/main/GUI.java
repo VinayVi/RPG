@@ -94,21 +94,13 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	public void paint(Graphics g) {
 		image = createImage(this.getWidth(), this.getHeight());
 		second = image.getGraphics();
-		second.drawImage(bg, 0, 0, getWidth(), getHeight(), leftX + 24,
-				topY + 24, rightX + 24, botY + 24, this);
+		second.drawImage(bg, 0, 0, getWidth(), getHeight(), leftX + 1024,
+				topY + 1024, rightX + 1024, botY + 1024, this);
 		second.drawImage(p.currSprite, getWidth() / 2 - 24,
 				getHeight() / 2 - 24, this);
 
 		second.setColor(Color.black);
-		if (leftX + 24 < 0)
-			second.fillRect(0, 0, -(24 + leftX), getHeight());
-		if (rightX - 24 > width - 48)
-			second.fillRect(width - 24 - leftX, 0, getWidth(), getHeight());
-		if (topY + 24 < 0)
-			second.fillRect(0, 0, getWidth(), -(24 + topY));
-		if (botY - 24 > length - 48)
-			second.fillRect(0, length - 24 - topY, getWidth(), getHeight());
-
+		
 		g.drawImage(image, 0, 0, this);
 	}
 

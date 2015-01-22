@@ -14,6 +14,14 @@ public class Vector{
 		y = j;
 	}
 	
+	public boolean isZero() {
+		if(x!=0)
+			return false;
+		if(y!=0)
+			return false;
+		return true;
+	}
+	
 	public void Scalar(int d) {
 		x*=d;
 		y*=d;

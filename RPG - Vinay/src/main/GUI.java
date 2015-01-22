@@ -36,6 +36,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	JPanel mapPane, optPane, invPane;
 	boolean close = false;
 	JButton load, save, exit, resume; //Options Buttons
+	private Thread mover;
 
 	public GUI() {
 		Toolkit tk = Toolkit.getDefaultToolkit();  
@@ -89,6 +90,18 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		invFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		invFrame.addKeyListener(new invListener());
 		invFrame.setUndecorated(true);
+		mover = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				while(true) {
+					update(p);
+				}
+				
+			}
+			
+		});
+		mover.start();
 	}
 
 	public void paint(Graphics g) {
@@ -111,7 +124,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		JFrame frame = new JFrame("RPG");
 		GUI gui = new GUI();
 		gui.setPreferredSize(new Dimension(xSize, ySize));
-		frame.setUndecorated(true);
+		//frame.setUndecorated(true);
 		frame.add(gui);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -213,38 +226,24 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-			int x = p.getX() + 48;
-			int y = p.getY();
-			if(x%48!=0) {
-				x+=48;
-			}
-			Tile t = map.getTile(x, y);
-			p.move(t);
-			p.dir=2;
+			if(!p.getSpeed().isZero())
+				return;
+			p.setSpeed(1, 0);
 			p.info.mR = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-			int x = p.getX() - 48;
-			int y = p.getY();
-			Tile t = map.getTile(x, y);
-			p.move(t);
-			p.dir=4;
+			if(!p.getSpeed().isZero())
+				return;
+			p.setSpeed(-1, 0);
 			p.info.mL = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-			int x = p.getX();
-			int y = p.getY() - 48;
-			Tile t = map.getTile(x, y);
-			p.move(t);
-			p.dir=1;
+			if(!p.getSpeed().isZero())
+				return;
+			p.setSpeed(0, -1);
 			p.info.mU = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-			int x = p.getX();
-			int y = p.getY() + 48;
-			if(y%48!=0) {
-				y+=48;
-			}
-			Tile t = map.getTile(x, y);
-			p.move(t);
-			p.dir=3;
+			if(!p.getSpeed().isZero())
+				return;
+			p.setSpeed(0, 1);
 			p.info.mD = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_I) {
 			invFrame.setVisible(!invFrame.isVisible());
@@ -258,17 +257,13 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-			p.dir=0;
-			p.info.mR = false;
+			p.info.mR=false;
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-			p.dir=0;
-			p.info.mL = false;
+			p.info.mL=false;
 		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-			p.dir=0;
-			p.info.mU = false;
+			p.info.mU=false;
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-			p.dir=0;
-			p.info.mD = false;
+			p.info.mD=false;
 		}
 	}
 
@@ -288,5 +283,26 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			} catch (InterruptedException e) {}
 		}
 	}
-
+	
+	public void update(Character c) {
+		c.setCurr(System.currentTimeMillis());
+		if(c.getCurr()-c.getWait()>c.getMoveTime()) {
+			int newX=c.info.x+c.getSpeed().getX();
+			int newY=c.info.y+c.getSpeed().getY();
+			Tile newTile = map.getTile(newX, newY);
+			if(newTile!=null)
+				System.out.println(newTile.getLoc());
+			if(newTile == null || !newTile.walkable()) {
+				c.setSpeed(0, 0);
+				return;
+			}
+			
+			c.info.x = newX;
+			c.info.y = newY;
+			c.setMoveTime(c.getCurr());
+			if(c.info.x%48==0&&c.info.y%48==0&&!c.moving()) {
+				c.setSpeed(0, 0);
+			}
+		}
+	}
 }

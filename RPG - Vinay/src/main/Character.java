@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -21,9 +22,21 @@ public class Character implements Serializable {
 							// tile
 	public Image currSprite;
 	public Image BL, BR, BS, FL, FR, FS, LL, LR, LS, RL, RR, RS;
-	private Tile newTile;
 	volatile int dir;
-	private Thread thread;
+	private volatile Vector speed;
+	private long moveTime;
+	private long curr;
+	private long wait;
+
+	
+	
+	
+	
+	public boolean moving() {
+		return info.mD||info.mL||info.mU||info.mR;
+	}
+
+
 
 	public Character(String name) {
 		info = new Info();
@@ -63,107 +76,11 @@ public class Character implements Serializable {
 			currSprite = FS;
 		} catch (IOException e) {
 		}
-		thread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (true) {
-					if (dir == 0) {
-					} else if (dir == 1) {
-						if (newTile == null || !newTile.walkable() || !currSprite.equals(BS)) {
-							currSprite = BS;
-							try {
-								Thread.sleep((long) (100));
-							} catch (InterruptedException e) {
-							}
-						} else {
-							for (int i = 0; i < 48; i++) {
-								info.y -= 1;
-								info.state = (i / 12);
-								if (info.state == 0)
-									currSprite = BL;
-								else if (info.state == 1 || info.state == 3)
-									currSprite = BS;
-								else
-									currSprite = BR;
-								try {
-									Thread.sleep((long) (tps * 1000 / tileSize));
-								} catch (InterruptedException e) {
-								}
-							}
-						}
-					} else if (dir == 2) {
-						if (newTile == null || !newTile.walkable() || !currSprite.equals(RS)) {
-							currSprite = RS;
-							try {
-								Thread.sleep((long) (100));
-							} catch (InterruptedException e) {
-							}
-						} else {
-							for (int i = 0; i < 48; i++) {
-								info.x += 1;
-								info.state = (i / 12);
-								if (info.state == 0)
-									currSprite = RL;
-								else if (info.state == 1 || info.state == 3)
-									currSprite = RS;
-								else
-									currSprite = RR;
-								try {
-									Thread.sleep((long) (tps * 1000 / tileSize));
-								} catch (InterruptedException e) {
-								}
-							}
-						}
-					} else if (dir == 3) {
-						if (newTile == null || !newTile.walkable() || !currSprite.equals(FS)) {
-							currSprite = FS;
-							try {
-								Thread.sleep((long) (100));
-							} catch (InterruptedException e) {}
-						} else {
-							for (int i = 0; i < 48; i++) {
-								info.y += 1;
-								info.state = (i / 12);
-								if (info.state == 0)
-									currSprite = FL;
-								else if (info.state == 1 || info.state == 3)
-									currSprite = FS;
-								else
-									currSprite = FR;
-								try {
-									Thread.sleep((long) (tps * 1000 / tileSize));
-								} catch (InterruptedException e) {}
-							}
-						}
-					} else if (dir == 4) {
-						if (newTile == null || !newTile.walkable() || !currSprite.equals(LS)) {
-							currSprite = LS;
-							try {
-								Thread.sleep((long) (100));
-							} catch (InterruptedException e) {}
-						} else {
-							for (int i = 0; i < 48; i++) {
-								info.x -= 1;
-								info.state = (i / 12);
-								if (info.state == 0)
-									currSprite = LL;
-								else if (info.state == 1 || info.state == 3)
-									currSprite = LS;
-								else
-									currSprite = LR;
-								try {
-									Thread.sleep((long) (tps * 1000 / tileSize));
-								} catch (InterruptedException e) {}
-							}
-						}
-					}
-				}
-			}
-
-		});
-		thread.start();
+		setWait((long) (1));
+		setMoveTime(0);
 		info.x = 0;
 		info.y = 0;
+		speed = new Vector();
 	}
 
 	public int getX() {
@@ -182,10 +99,10 @@ public class Character implements Serializable {
 		this.info.y = y;
 	}
 
-	public void move(final Tile t) {
+	/*public void move(final Tile t) {
 		newTile = t;
 	}
-
+*/
 	public void pickUp(Item i) {
 		if (i.getType().equals("WEAPON")) {
 			info.getInventoryW().add(i);
@@ -217,6 +134,19 @@ public class Character implements Serializable {
 		info.cdr -= i.getCdr();
 		info.crit -= i.getCdr();
 	}
+	
+	public Vector getSpeed() {
+		return speed;
+	}
+	
+	public void setSpeed(Vector v) {
+		speed = v;
+	}
+	
+	public void setSpeed(int x, int y) {
+		speed.setX(x);
+		speed.setY(y);
+	}
 
 	// Stat Accessors
 	public double getDmg() {
@@ -241,6 +171,42 @@ public class Character implements Serializable {
 	public double getCDR() {
 		info.cdr = info.agi * info.getAgiMultiplier();
 		return info.cdr;
+	}
+
+
+
+	public long getCurr() {
+		return curr;
+	}
+
+
+
+	public void setCurr(long curr) {
+		this.curr = curr;
+	}
+
+
+
+	public long getWait() {
+		return wait;
+	}
+
+
+
+	public void setWait(long wait) {
+		this.wait = wait;
+	}
+
+
+
+	public long getMoveTime() {
+		return moveTime;
+	}
+
+
+
+	public void setMoveTime(long moveTime) {
+		this.moveTime = moveTime;
 	}
 
 }

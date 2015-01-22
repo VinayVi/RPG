@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class Info implements Serializable{
 	private static final long serialVersionUID = 1L;
-	protected int x;
-	protected int y;
+	protected volatile int x;
+	protected volatile int y;
 	protected long lastHealed;
 	protected double currentHealth;
 	protected double maxHealth;

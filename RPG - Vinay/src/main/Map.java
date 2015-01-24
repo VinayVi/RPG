@@ -116,6 +116,10 @@ public class Map {
 			System.out.println("Failed");
 		}
 	}
+	
+	public Tile getTile(Vector v) {
+		return getTile(v.getX(), v.getY());
+	}
 
 	public Tile getTile(int x, int y) {
 		if (x >= 0 && y >= 0 && x < width && y < length) {

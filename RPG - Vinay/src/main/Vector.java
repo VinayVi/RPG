@@ -14,6 +14,15 @@ public class Vector{
 		y = j;
 	}
 	
+	public Vector(Vector v) {
+		x = v.getX();
+		y = v.getY();
+	}
+	
+	public double mag() {
+		return Math.sqrt(x*x+y*y);
+	}
+
 	public boolean isZero() {
 		if(x!=0)
 			return false;
@@ -30,6 +39,21 @@ public class Vector{
 	public void add(Vector v) {
 		x = x + v.getX();
 		y = y + v.getY();
+	}
+	
+	public void add(int x, int y) {
+		this.x += x;
+		this.y += y;
+	}
+	
+	public void sub(int x, int y) {
+		this.x -= x;
+		this.y -= y;
+	}
+	
+	public void sub(Vector v) {
+		x = x - v.getX();
+		y = y - v.getY();
 	}
 	
 	public int getX() {

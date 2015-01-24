@@ -21,7 +21,7 @@ public class Character implements Serializable {
 	protected double tps; // seconds per tile, aka how long it takes to move 1
 							// tile
 	public Image currSprite;
-	public Image BL, BR, BS, FL, FR, FS, LL, LR, LS, RL, RR, RS;
+	public final Image[][] sprites;
 	volatile int dir;
 	private volatile Vector speed;
 	private long moveTime;
@@ -48,55 +48,65 @@ public class Character implements Serializable {
 		info.mL = false;
 		info.state = 1;
 		this.info.name = name;
+		sprites = new Image[4][4];
 		try {
-			BL = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " BL.png"));
-			BR = ImageIO.read(new File("src//sprites//" + name + "//" + name
+			//First Number - Up Right Down Left
+			//Second Number - Right Straight Left Straight
+			sprites[0][3] = ImageIO.read(new File("src//sprites//" + name + "//" + name
 					+ " BR.png"));
-			BS = ImageIO.read(new File("src//sprites//" + name + "//" + name
+			sprites[0][2] = ImageIO.read(new File("src//sprites//" + name + "//" + name
 					+ " BS.png"));
-			FL = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " FL.png"));
-			FR = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " FR.png"));
-			FS = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " FS.png"));
-			LL = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " LL.png"));
-			LR = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " LR.png"));
-			LS = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " LS.png"));
-			RL = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " RL.png"));
-			RR = ImageIO.read(new File("src//sprites//" + name + "//" + name
+			sprites[0][1] = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " BL.png"));
+			sprites[0][0] = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " BS.png"));
+			sprites[1][3] = ImageIO.read(new File("src//sprites//" + name + "//" + name
 					+ " RR.png"));
-			RS = ImageIO.read(new File("src//sprites//" + name + "//" + name
+			sprites[1][2] = ImageIO.read(new File("src//sprites//" + name + "//" + name
 					+ " RS.png"));
-			currSprite = FS;
+			sprites[1][1] = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " RL.png"));
+			sprites[1][0] = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " RS.png"));
+			sprites[2][3] = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " FR.png"));
+			sprites[2][2] = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " FS.png"));
+			sprites[2][1] = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " FL.png"));
+			sprites[2][0] = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " FS.png"));
+			sprites[3][3] = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " LR.png"));
+			sprites[3][2] = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " LS.png"));
+			sprites[3][1] = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " LL.png"));
+			sprites[3][0] = ImageIO.read(new File("src//sprites//" + name + "//" + name
+					+ " LS.png"));
+			currSprite = sprites[2][3];
 		} catch (IOException e) {
 		}
-		setWait((long) (1));
+		setWait((long) (4));
 		setMoveTime(0);
-		info.x = 0;
-		info.y = 0;
+		info.setLoc(new Vector(0, 0));
 		speed = new Vector();
 	}
 
 	public int getX() {
-		return info.x;
+		return info.getLoc().getX();
 	}
 
 	public void setX(int x) {
-		this.info.x = x;
+		this.info.getLoc().setX(x);
 	}
 
 	public int getY() {
-		return info.y;
+		return info.getLoc().getY();
 	}
 
 	public void setY(int y) {
-		this.info.y = y;
+		this.info.getLoc().setY(y);
 	}
 
 	/*public void move(final Tile t) {

@@ -7,8 +7,6 @@ import java.util.ArrayList;
 
 public class Info implements Serializable{
 	private static final long serialVersionUID = 1L;
-	protected volatile int x;
-	protected volatile int y;
 	protected long lastHealed;
 	protected double currentHealth;
 	protected double maxHealth;
@@ -34,6 +32,7 @@ public class Info implements Serializable{
 	private ArrayList<Item> inventoryW;//Weapons
 	private ArrayList<Item> inventoryA;//Armor
 	private int weaponsEquipped;
+	private volatile Vector loc;
 	
 	public double getStrMultiplier() {
 		return strMultiplier;
@@ -97,5 +96,13 @@ public class Info implements Serializable{
 	
 	public void setWeaponsEquipped(int weaponsEquipped) {
 		this.weaponsEquipped = weaponsEquipped;
+	}
+
+	public Vector getLoc() {
+		return loc;
+	}
+
+	public void setLoc(Vector loc) {
+		this.loc = loc;
 	}
 }

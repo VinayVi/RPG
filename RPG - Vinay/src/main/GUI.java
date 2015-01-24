@@ -284,23 +284,47 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		}
 	}
 	
+	public int facing(Vector speed) {
+		if(speed.getY() == -1)
+			return 0;
+		else if(speed.getX() == 1)
+			return 1;
+		else if(speed.getY() == 1)
+			return 2;
+		else 
+			return 3;
+	}
+	
 	public void update(Character c) {
+		if(c.getSpeed().isZero())
+			return;
 		c.setCurr(System.currentTimeMillis());
 		if(c.getCurr()-c.getWait()>c.getMoveTime()) {
-			int newX=c.info.x+c.getSpeed().getX();
-			int newY=c.info.y+c.getSpeed().getY();
-			Tile newTile = map.getTile(newX, newY);
-			if(newTile!=null)
-				System.out.println(newTile.getLoc());
+			Vector newLoc = new Vector(c.info.getLoc());
+			newLoc.add(c.getSpeed());
+			if(c.info.mR) {
+				newLoc.add(47, 0);
+			}
+			if(c.info.mD) {
+				newLoc.add(0, 47);
+			}
+			Tile newTile = map.getTile(newLoc);
 			if(newTile == null || !newTile.walkable()) {
+				c.currSprite = c.sprites[facing(c.getSpeed())][0];
 				c.setSpeed(0, 0);
 				return;
 			}
 			
-			c.info.x = newX;
-			c.info.y = newY;
+			Vector distanceTo = new Vector(c.info.getLoc());
+			distanceTo.sub(newTile.getLoc());
+			int state = (int)distanceTo.mag()/12;
+			if(state==4)
+				state--;
+			c.currSprite = c.sprites[facing(c.getSpeed())][state];
+			
+			c.info.getLoc().add(c.getSpeed());
 			c.setMoveTime(c.getCurr());
-			if(c.info.x%48==0&&c.info.y%48==0&&!c.moving()) {
+			if(c.info.getLoc().getX()%48==0&&c.info.getLoc().getY()%48==0&&!c.moving()) {
 				c.setSpeed(0, 0);
 			}
 		}

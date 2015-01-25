@@ -26,12 +26,13 @@ import javax.swing.JPanel;
 
 import tiles.Tile;
 
+@SuppressWarnings("serial")
 public class GUI extends JPanel implements Runnable, KeyListener {
 	private Image image, bg;
 	private Graphics second;
 	private Character p;
 	private Map map;
-	private int leftX, rightX, topY, botY, length, width;
+	private int leftX, rightX, topY, botY;
 	JFrame mapFrame, optFrame, invFrame;
 	JPanel mapPane, optPane, invPane;
 	boolean close = false;
@@ -44,8 +45,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		int ySize = ((int) tk.getScreenSize().getHeight());  
 		bg = null;
 		map = new Map();
-		length = map.length;
-		width = map.width;
 		try {
 			bg = ImageIO.read(new File("src//tiles//map.png"));
 		} catch (IOException e) {}

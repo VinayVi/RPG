@@ -16,6 +16,7 @@ public class Character implements Serializable {
 	public Image currSprite;
 	public final Image[][] sprites;
 	private volatile Vector speed;
+	final long true_wait;
 	private long moveTime;
 	private long curr;
 	private long wait;
@@ -40,7 +41,8 @@ public class Character implements Serializable {
 			}
 			currSprite = sprites[2][0];
 		} catch (IOException e) {}
-		setWait((long) (4));
+		true_wait = 4;
+		setWait(true_wait);
 		setMoveTime(0);
 		info.setLoc(new Vector(0, 0));
 		speed = new Vector();

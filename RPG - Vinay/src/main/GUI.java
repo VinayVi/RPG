@@ -35,7 +35,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	private int leftX, rightX, topY, botY;
 	JFrame mapFrame, optFrame, invFrame;
 	JPanel mapPane, optPane, invPane;
-	boolean close = false;
 	JButton load, save, exit, resume; //Options Buttons
 	private Thread mover;
 
@@ -90,15 +89,12 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		invFrame.addKeyListener(new invListener());
 		invFrame.setUndecorated(true);
 		mover = new Thread(new Runnable() {
-
 			@Override
 			public void run() {
 				while(true) {
 					update(p);
 				}
-				
 			}
-			
 		});
 		mover.start();
 	}
@@ -250,7 +246,9 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			mapFrame.setVisible(!mapFrame.isVisible());
 		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			optFrame.setVisible(!optFrame.isVisible());
-		} 
+		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			p.setWait(0);
+		}
 	}
 
 	@Override
@@ -263,6 +261,8 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			p.info.mU=false;
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
 			p.info.mD=false;
+		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			p.setWait(p.true_wait);
 		}
 	}
 
@@ -320,7 +320,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			if(state==4)
 				state--;
 			c.currSprite = c.sprites[facing(c.getSpeed())][state];
-			
 			c.info.getLoc().add(c.getSpeed());
 			c.setMoveTime(c.getCurr());
 			if(c.info.getLoc().getX()%48==0&&c.info.getLoc().getY()%48==0&&!c.moving()) {

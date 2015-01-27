@@ -19,7 +19,6 @@ public class Info implements Serializable{
 	protected double dodge;
 	protected double cdr;
 	protected double crit;
-	//protected boolean moving;
 	/**Directional Moving Booleans*/
 	protected boolean mU, mR, mD, mL;
 	protected int state;

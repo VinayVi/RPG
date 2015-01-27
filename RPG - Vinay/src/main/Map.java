@@ -83,8 +83,13 @@ public class Map {
 		}
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;
-		drawMap();
-		drawBorders();
+		File f = new File("src//tiles//map.png");
+		if(!(f.exists() && !f.isDirectory())) {
+			drawMap();
+			drawBorders();			
+		}
+		/*drawMap();
+		drawBorders();*/
 	}
 
 	private void drawBorders() {
@@ -285,7 +290,6 @@ public class Map {
 			ImageWriter writer = writers.next();
 
 			File f = new File("src//tiles//map.png");
-
 			ImageOutputStream ios = ImageIO.createImageOutputStream(f);
 			writer.setOutput(ios);
 			writer.write(pic);

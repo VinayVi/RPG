@@ -10,33 +10,22 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-=======
->>>>>>> refs/heads/walking
 
 import javax.imageio.ImageIO;
 
 @SuppressWarnings("serial")
 public class Character implements Serializable {
 	public Info info;
-<<<<<<< HEAD
 	protected int tileSize;
 	protected double tps; // seconds per tile, aka how long it takes to move 1 tile
-=======
->>>>>>> refs/heads/walking
 	public Image currSprite;
-<<<<<<< HEAD
 	public Image BL, BR, BS, FL, FR, FS, LL, LR, LS, RL, RR, RS;
-	private Tile newTile;
 	volatile int dir;
-	private Thread thread;
 	public ArrayList<Equipable> Inventory = new ArrayList();
 	
-	
-=======
 	public final Image[][] sprites;
 	private volatile Vector speed;
 	final long true_wait;
@@ -45,7 +34,6 @@ public class Character implements Serializable {
 	private long wait;
 
 
->>>>>>> refs/heads/walking
 	public Character(String name) {
 		Equipable weapon=new Equipable("Daniel's Weeny","Dagger");
 		Inventory.add(weapon);
@@ -98,35 +86,6 @@ public class Character implements Serializable {
 			info.getInventoryW().add(i);
 		}
 	}
-
-<<<<<<< HEAD
-	
-=======
-	public void equip(Item i) {
-		i.equipped = true;
-		info.str += i.getStr();
-		info.agi += i.getAgi();
-		info.dex += i.getDex();
-		info.fort += i.getFort();
-		info.luck += i.getLuck();
-		info.damage += i.getDamage();
-		info.dodge += i.getDodge();
-		info.cdr += i.getCdr();
-		info.crit += i.getCdr();
-	}
-
-	public void unEquip(Item i) {
-		i.equipped = false;
-		info.str -= i.getStr();
-		info.agi -= i.getAgi();
-		info.dex -= i.getDex();
-		info.fort -= i.getFort();
-		info.luck -= i.getLuck();
-		info.damage -= i.getDamage();
-		info.dodge -= i.getDodge();
-		info.cdr -= i.getCdr();
-		info.crit -= i.getCdr();
-	}
 	
 	public Vector getSpeed() {
 		return speed;
@@ -140,8 +99,6 @@ public class Character implements Serializable {
 		speed.setX(x);
 		speed.setY(y);
 	}
-
->>>>>>> refs/heads/walking
 	// Stat Accessors
 	public double getDmg() {
 		return info.str * info.getStrMultiplier() + info.damage;

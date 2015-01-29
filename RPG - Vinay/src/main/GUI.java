@@ -105,10 +105,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		second.drawImage(bg, 0, 0, getWidth(), getHeight(), leftX + 1024,
 				topY + 1024, rightX + 1024, botY + 1024, this);
 		second.drawImage(p.currSprite, getWidth() / 2 - 24,
-				getHeight() / 2 - 24, this);
-
-		second.setColor(Color.black);
-		
+				getHeight() / 2 - 24, this);		
 		g.drawImage(image, 0, 0, this);
 	}
 
@@ -277,9 +274,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			rightX = p.getX() + getWidth() / 2;
 			topY = p.getY() - getHeight() / 2;
 			botY = p.getY() + getHeight() / 2;
-			try {
-				Thread.sleep(16);
-			} catch (InterruptedException e) {}
 		}
 	}
 	
@@ -299,6 +293,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			return;
 		c.setCurr(System.currentTimeMillis());
 		if(c.getCurr()-c.getWait()>c.getMoveTime()) {
+			System.out.println(c.getCurr());
 			Vector newLoc = new Vector(c.info.getLoc());
 			newLoc.add(c.getSpeed());
 			if(c.info.mR) {

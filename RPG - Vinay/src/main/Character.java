@@ -36,7 +36,6 @@ public class Character implements Serializable {
 			for(int i=0; i<=3; i++) {
 				for(int j=0; j<=3; j++) {
 					sprites[i][j] = spritesheet.getSubimage(0, (4*i+j)*48, 48, 48);
-
 				}
 			}
 			currSprite = sprites[2][0];
@@ -138,37 +137,25 @@ public class Character implements Serializable {
 		return info.cdr;
 	}
 
-
-
 	public long getCurr() {
 		return curr;
 	}
-
-
 
 	public void setCurr(long curr) {
 		this.curr = curr;
 	}
 
-
-
 	public long getWait() {
 		return wait;
 	}
-
-
 
 	public void setWait(long wait) {
 		this.wait = wait;
 	}
 
-
-
 	public long getMoveTime() {
 		return moveTime;
 	}
-
-
 
 	public void setMoveTime(long moveTime) {
 		this.moveTime = moveTime;

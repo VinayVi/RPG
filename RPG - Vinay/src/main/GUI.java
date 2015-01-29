@@ -3,6 +3,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -33,7 +34,9 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	private Map map;
 	private int leftX, rightX, topY, botY, length, width;
 	JFrame mapFrame, optFrame, invFrame;
+	JButton inventory;
 	JPanel mapPane, optPane, invPane;
+	GridLayout invLayout=new GridLayout(4, 8, 5, 5);
 	boolean close = false;
 	JButton load, save, exit, resume; //Options Buttons
 
@@ -89,6 +92,21 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		invFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		invFrame.addKeyListener(new invListener());
 		invFrame.setUndecorated(true);
+		invFrame.setLayout(invLayout);
+		//Displaying Inventory
+		
+		inventory=new JButton();
+		JButton inventoryyy = new JButton();
+		inventoryyy.setText("Sharp Twig");
+		String temp = "";
+		for(int x=0;x<p.Inventory.size();x++)
+		{
+			temp+=p.Inventory.get(x).getName()+"\n";
+		}
+		inventory.setText(temp);
+		invFrame.add(inventory);
+
+		
 	}
 
 	public void paint(Graphics g) {

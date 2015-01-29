@@ -24,9 +24,12 @@ public class Map {
 		final Color road = new Color(226, 174, 127);
 		final Color water = new Color(0, 0, 255);
 		final Color bridge = new Color(64, 20, 0);
+		final Color sand = new Color(253, 198, 137);
+		final Color cactus = new Color(0, 88, 38);
+		final Color bear = new Color(96, 57, 19);
 		BufferedImage bi = null;
 		try {
-			bi = ImageIO.read(new File("src//tiles//Map1.gif"));
+			bi = ImageIO.read(new File("src//tiles//Map2.gif"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -40,11 +43,17 @@ public class Map {
 				if (c.equals(grass)) {
 					tiles[x][y] = new Tile(1, x * 48, y * 48, true);
 				} else if (c.equals(road)) {
-					tiles[x][y] = new Tile(20, x * 48, y * 48, true);
+					tiles[x][y] = new Tile(2, x * 48, y * 48, true);
 				} else if (c.equals(water)) {
 					tiles[x][y] = new Tile(18, x * 48, y * 48, false);
 				} else if (c.equals(bridge)) {
 					tiles[x][y] = new Tile(19, x * 48, y * 48, true);
+				} else if (c.equals(sand)) {
+					tiles[x][y] = new Tile(33, x * 48, y * 48, true);
+				} else if (c.equals(cactus)) {
+					tiles[x][y] = new Tile(34, x * 48, y * 48, false);
+				} else if (c.equals(bear)) {
+					tiles[x][y] = new Tile(101, x * 48, y * 48, false);
 				} else {
 					tiles[x][y] = new Tile(3, x * 48, y * 48, false);
 				}
@@ -88,19 +97,20 @@ public class Map {
 	}
 
 	private void drawBorders() {
-		BufferedImage pic = new BufferedImage(length+2000, width+2000,
+		BufferedImage pic = new BufferedImage(length + 2000, width + 2000,
 				BufferedImage.TYPE_INT_RGB);
 		Image bg = null;
 		try {
 			bg = ImageIO.read(new File("src//tiles//map.png"));
-		} catch (IOException e) {}
+		} catch (IOException e) {
+		}
 		Graphics2D g = (Graphics2D) pic.getGraphics();
 		g.drawImage(bg, 1000, 1000, new JFrame());
 		g.setColor(Color.black);
-		g.fillRect(0, 0, width+2000, 1000);
-		g.fillRect(0, length+1000, width+2000, length+2000);
-		g.fillRect(0, 0, 1000, length+2000);
-		g.fillRect(width+1000, 0, width+2000, length+2000);
+		g.fillRect(0, 0, width + 2000, 1000);
+		g.fillRect(0, length + 1000, width + 2000, length + 2000);
+		g.fillRect(0, 0, 1000, length + 2000);
+		g.fillRect(width + 1000, 0, width + 2000, length + 2000);
 		try {
 			java.util.Iterator<ImageWriter> writers = ImageIO
 					.getImageWritersByFormatName("png");
@@ -119,10 +129,9 @@ public class Map {
 
 	public Tile getTile(int x, int y) {
 		if (x >= 0 && y >= 0 && x < width && y < length) {
-			Tile t = tiles[x/48][y/48];
+			Tile t = tiles[x / 48][y / 48];
 			return t;
-		}
-		else
+		} else
 			return null;
 	}
 
@@ -153,6 +162,8 @@ public class Map {
 		Image DirtRoadGTL = null;
 		Image DirtRoadGBR = null;
 		Image DirtRoadGBL = null;
+		Image Sand = null;
+		Image Cactus = null;
 		try {
 			grass = ImageIO.read(new File("src//tiles//GrassTile.png"));
 			Road = ImageIO.read(new File("src//tiles//RoadTile.png"));
@@ -175,14 +186,14 @@ public class Map {
 			Water = ImageIO.read(new File("src//tiles//Water.png"));
 			Bridge = ImageIO.read(new File("src//tiles//Bridge Tile.png"));
 			DirtRoad = ImageIO.read(new File("src//tiles//Dirt Road.png"));
-			DirtRoadGT = ImageIO.read(new File(
-					"src//tiles//Dirt Road Top.png"));
+			DirtRoadGT = ImageIO
+					.read(new File("src//tiles//Dirt Road Top.png"));
 			DirtRoadGB = ImageIO.read(new File(
 					"src//tiles//Dirt Road Bottom.png"));
 			DirtRoadGR = ImageIO.read(new File(
 					"src//tiles//Dirt Road Right.png"));
-			DirtRoadGL = ImageIO.read(new File(
-					"src//tiles//Dirt Road Left.png"));
+			DirtRoadGL = ImageIO
+					.read(new File("src//tiles//Dirt Road Left.png"));
 			DirtRoadGTL = ImageIO.read(new File(
 					"src//tiles//Dirt Road TopLeft.png"));
 			DirtRoadGTR = ImageIO.read(new File(
@@ -191,6 +202,8 @@ public class Map {
 					"src//tiles//Dirt Road BottomLeft.png"));
 			DirtRoadGBR = ImageIO.read(new File(
 					"src//tiles//Dirt Road BottomRight.png"));
+			Sand = ImageIO.read(new File("src//tiles//Sand Tile.png"));
+			Cactus = ImageIO.read(new File("src//tiles//Cactus.png"));
 			Bear = ImageIO.read(new File("src//tiles//Bear.png"));
 			Wolf = ImageIO.read(new File("src//tiles//Wolf.png"));
 
@@ -265,6 +278,12 @@ public class Map {
 					break;
 				case 28:
 					g.drawImage(DirtRoadGBR, v.getX(), v.getY(), new JFrame());
+					break;
+				case 33:
+					g.drawImage(Sand, v.getX(), v.getY(), new JFrame());
+					break;
+				case 34:
+					g.drawImage(Cactus, v.getX(), v.getY(), new JFrame());
 					break;
 				case 101:
 					g.drawImage(Bear, v.getX(), v.getY(), new JFrame());

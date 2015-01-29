@@ -37,6 +37,8 @@ public class Tile {
 	 * 30 = Dirt Road with Grass on bottom left corner
 	 * 31 = Dirt Road with Grass on top right corner
 	 * 32 = Dirt Road with Grass on top left corner
+	 * 33 = Sand
+	 * 34 = Cactus
 	 * 101 = Bear
 	 * 102 = Wolf
 	 */

@@ -1,11 +1,15 @@
 package main;
 
-import items.Item;
+
+import item.Item;
+import items.Equipable.Equipable;
+import java.util.ArrayList;
 
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,15 +21,18 @@ public class Character implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public Info info;
 	protected int tileSize;
-	protected double tps; // seconds per tile, aka how long it takes to move 1
-							// tile
+	protected double tps; // seconds per tile, aka how long it takes to move 1 tile
 	public Image currSprite;
 	public Image BL, BR, BS, FL, FR, FS, LL, LR, LS, RL, RR, RS;
 	private Tile newTile;
 	volatile int dir;
 	private Thread thread;
-
+	public ArrayList<Equipable> Inventory = new ArrayList();
+	
+	
 	public Character(String name) {
+		Equipable weapon=new Equipable("Daniel's Weeny","Dagger");
+		Inventory.add(weapon);
 		info = new Info();
 		tileSize = 48;
 		tps = 0.25;

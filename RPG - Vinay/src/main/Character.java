@@ -199,32 +199,7 @@ public class Character implements Serializable {
 		}
 	}
 
-	public void equip(Item i) {
-		i.equipped = true;
-		info.str += i.getStr();
-		info.agi += i.getAgi();
-		info.dex += i.getDex();
-		info.fort += i.getFort();
-		info.luck += i.getLuck();
-		info.damage += i.getDamage();
-		info.dodge += i.getDodge();
-		info.cdr += i.getCdr();
-		info.crit += i.getCdr();
-	}
-
-	public void unEquip(Item i) {
-		i.equipped = false;
-		info.str -= i.getStr();
-		info.agi -= i.getAgi();
-		info.dex -= i.getDex();
-		info.fort -= i.getFort();
-		info.luck -= i.getLuck();
-		info.damage -= i.getDamage();
-		info.dodge -= i.getDodge();
-		info.cdr -= i.getCdr();
-		info.crit -= i.getCdr();
-	}
-
+	
 	// Stat Accessors
 	public double getDmg() {
 		return info.str * info.getStrMultiplier() + info.damage;

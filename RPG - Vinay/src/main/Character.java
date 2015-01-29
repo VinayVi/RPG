@@ -6,23 +6,29 @@ import items.Equipable.Equipable;
 import java.util.ArrayList;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+=======
+>>>>>>> refs/heads/walking
 
 import javax.imageio.ImageIO;
 
-import tiles.Tile;
-
+@SuppressWarnings("serial")
 public class Character implements Serializable {
-	private static final long serialVersionUID = 1L;
 	public Info info;
+<<<<<<< HEAD
 	protected int tileSize;
 	protected double tps; // seconds per tile, aka how long it takes to move 1 tile
+=======
+>>>>>>> refs/heads/walking
 	public Image currSprite;
+<<<<<<< HEAD
 	public Image BL, BR, BS, FL, FR, FS, LL, LR, LS, RL, RR, RS;
 	private Tile newTile;
 	volatile int dir;
@@ -30,167 +36,61 @@ public class Character implements Serializable {
 	public ArrayList<Equipable> Inventory = new ArrayList();
 	
 	
+=======
+	public final Image[][] sprites;
+	private volatile Vector speed;
+	final long true_wait;
+	private long moveTime;
+	private long curr;
+	private long wait;
+
+
+>>>>>>> refs/heads/walking
 	public Character(String name) {
 		Equipable weapon=new Equipable("Daniel's Weeny","Dagger");
 		Inventory.add(weapon);
 		info = new Info();
-		tileSize = 48;
-		tps = 0.25;
 		info.mU = false;
 		info.mR = false;
 		info.mD = false;
 		info.mL = false;
 		info.state = 1;
 		this.info.name = name;
+		sprites = new Image[4][4];
 		try {
-			BL = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " BL.png"));
-			BR = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " BR.png"));
-			BS = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " BS.png"));
-			FL = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " FL.png"));
-			FR = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " FR.png"));
-			FS = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " FS.png"));
-			LL = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " LL.png"));
-			LR = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " LR.png"));
-			LS = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " LS.png"));
-			RL = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " RL.png"));
-			RR = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " RR.png"));
-			RS = ImageIO.read(new File("src//sprites//" + name + "//" + name
-					+ " RS.png"));
-			currSprite = FS;
-		} catch (IOException e) {
-		}
-		thread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (true) {
-					if (dir == 0) {
-					} else if (dir == 1) {
-						if (newTile == null || !newTile.walkable() || !currSprite.equals(BS)) {
-							currSprite = BS;
-							try {
-								Thread.sleep((long) (100));
-							} catch (InterruptedException e) {
-							}
-						} else {
-							for (int i = 0; i < 48; i++) {
-								info.y -= 1;
-								info.state = (i / 12);
-								if (info.state == 0)
-									currSprite = BL;
-								else if (info.state == 1 || info.state == 3)
-									currSprite = BS;
-								else
-									currSprite = BR;
-								try {
-									Thread.sleep((long) (tps * 1000 / tileSize));
-								} catch (InterruptedException e) {
-								}
-							}
-						}
-					} else if (dir == 2) {
-						if (newTile == null || !newTile.walkable() || !currSprite.equals(RS)) {
-							currSprite = RS;
-							try {
-								Thread.sleep((long) (100));
-							} catch (InterruptedException e) {
-							}
-						} else {
-							for (int i = 0; i < 48; i++) {
-								info.x += 1;
-								info.state = (i / 12);
-								if (info.state == 0)
-									currSprite = RL;
-								else if (info.state == 1 || info.state == 3)
-									currSprite = RS;
-								else
-									currSprite = RR;
-								try {
-									Thread.sleep((long) (tps * 1000 / tileSize));
-								} catch (InterruptedException e) {
-								}
-							}
-						}
-					} else if (dir == 3) {
-						if (newTile == null || !newTile.walkable() || !currSprite.equals(FS)) {
-							currSprite = FS;
-							try {
-								Thread.sleep((long) (100));
-							} catch (InterruptedException e) {}
-						} else {
-							for (int i = 0; i < 48; i++) {
-								info.y += 1;
-								info.state = (i / 12);
-								if (info.state == 0)
-									currSprite = FL;
-								else if (info.state == 1 || info.state == 3)
-									currSprite = FS;
-								else
-									currSprite = FR;
-								try {
-									Thread.sleep((long) (tps * 1000 / tileSize));
-								} catch (InterruptedException e) {}
-							}
-						}
-					} else if (dir == 4) {
-						if (newTile == null || !newTile.walkable() || !currSprite.equals(LS)) {
-							currSprite = LS;
-							try {
-								Thread.sleep((long) (100));
-							} catch (InterruptedException e) {}
-						} else {
-							for (int i = 0; i < 48; i++) {
-								info.x -= 1;
-								info.state = (i / 12);
-								if (info.state == 0)
-									currSprite = LL;
-								else if (info.state == 1 || info.state == 3)
-									currSprite = LS;
-								else
-									currSprite = LR;
-								try {
-									Thread.sleep((long) (tps * 1000 / tileSize));
-								} catch (InterruptedException e) {}
-							}
-						}
-					}
+			BufferedImage spritesheet = ImageIO.read(new File("src//sprites//"+name+".png"));
+			for(int i=0; i<=3; i++) {
+				for(int j=0; j<=3; j++) {
+					sprites[i][j] = spritesheet.getSubimage(0, (4*i+j)*48, 48, 48);
 				}
 			}
-
-		});
-		thread.start();
-		info.x = 0;
-		info.y = 0;
+			currSprite = sprites[2][0];
+		} catch (IOException e) {}
+		true_wait = 4;
+		setWait(true_wait);
+		setMoveTime(0);
+		info.setLoc(new Vector(0, 0));
+		speed = new Vector();
+	}
+	
+	public boolean moving() {
+		return info.mD||info.mL||info.mU||info.mR;
 	}
 
 	public int getX() {
-		return info.x;
+		return info.getLoc().getX();
 	}
 
 	public void setX(int x) {
-		this.info.x = x;
+		this.info.getLoc().setX(x);
 	}
 
 	public int getY() {
-		return info.y;
+		return info.getLoc().getY();
 	}
 
 	public void setY(int y) {
-		this.info.y = y;
-	}
-
-	public void move(final Tile t) {
-		newTile = t;
+		this.info.getLoc().setY(y);
 	}
 
 	public void pickUp(Item i) {
@@ -199,7 +99,49 @@ public class Character implements Serializable {
 		}
 	}
 
+<<<<<<< HEAD
 	
+=======
+	public void equip(Item i) {
+		i.equipped = true;
+		info.str += i.getStr();
+		info.agi += i.getAgi();
+		info.dex += i.getDex();
+		info.fort += i.getFort();
+		info.luck += i.getLuck();
+		info.damage += i.getDamage();
+		info.dodge += i.getDodge();
+		info.cdr += i.getCdr();
+		info.crit += i.getCdr();
+	}
+
+	public void unEquip(Item i) {
+		i.equipped = false;
+		info.str -= i.getStr();
+		info.agi -= i.getAgi();
+		info.dex -= i.getDex();
+		info.fort -= i.getFort();
+		info.luck -= i.getLuck();
+		info.damage -= i.getDamage();
+		info.dodge -= i.getDodge();
+		info.cdr -= i.getCdr();
+		info.crit -= i.getCdr();
+	}
+	
+	public Vector getSpeed() {
+		return speed;
+	}
+	
+	public void setSpeed(Vector v) {
+		speed = v;
+	}
+	
+	public void setSpeed(int x, int y) {
+		speed.setX(x);
+		speed.setY(y);
+	}
+
+>>>>>>> refs/heads/walking
 	// Stat Accessors
 	public double getDmg() {
 		return info.str * info.getStrMultiplier() + info.damage;
@@ -223,6 +165,30 @@ public class Character implements Serializable {
 	public double getCDR() {
 		info.cdr = info.agi * info.getAgiMultiplier();
 		return info.cdr;
+	}
+
+	public long getCurr() {
+		return curr;
+	}
+
+	public void setCurr(long curr) {
+		this.curr = curr;
+	}
+
+	public long getWait() {
+		return wait;
+	}
+
+	public void setWait(long wait) {
+		this.wait = wait;
+	}
+
+	public long getMoveTime() {
+		return moveTime;
+	}
+
+	public void setMoveTime(long moveTime) {
+		this.moveTime = moveTime;
 	}
 
 }

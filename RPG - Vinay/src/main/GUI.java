@@ -3,7 +3,6 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -27,18 +26,17 @@ import javax.swing.JPanel;
 
 import tiles.Tile;
 
+@SuppressWarnings("serial")
 public class GUI extends JPanel implements Runnable, KeyListener {
 	private Image image, bg;
 	private Graphics second;
 	private Character p;
 	private Map map;
-	private int leftX, rightX, topY, botY, length, width;
+	private int leftX, rightX, topY, botY;
 	JFrame mapFrame, optFrame, invFrame;
-	JButton inventory;
 	JPanel mapPane, optPane, invPane;
-	GridLayout invLayout=new GridLayout(4, 8, 5, 5);
-	boolean close = false;
 	JButton load, save, exit, resume; //Options Buttons
+	private Thread mover;
 
 	public GUI() {
 		Toolkit tk = Toolkit.getDefaultToolkit();  
@@ -46,8 +44,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		int ySize = ((int) tk.getScreenSize().getHeight());  
 		bg = null;
 		map = new Map();
-		length = map.length;
-		width = map.width;
 		try {
 			bg = ImageIO.read(new File("src//tiles//map.png"));
 		} catch (IOException e) {}
@@ -92,21 +88,15 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		invFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		invFrame.addKeyListener(new invListener());
 		invFrame.setUndecorated(true);
-		invFrame.setLayout(invLayout);
-		//Displaying Inventory
-		
-		inventory=new JButton();
-		JButton inventoryyy = new JButton();
-		inventoryyy.setText("Sharp Twig");
-		String temp = "";
-		for(int x=0;x<p.Inventory.size();x++)
-		{
-			temp+=p.Inventory.get(x).getName()+"\n";
-		}
-		inventory.setText(temp);
-		invFrame.add(inventory);
-
-		
+		mover = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(true) {
+					update(p);
+				}
+			}
+		});
+		mover.start();
 	}
 
 	public void paint(Graphics g) {
@@ -115,10 +105,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		second.drawImage(bg, 0, 0, getWidth(), getHeight(), leftX + 1024,
 				topY + 1024, rightX + 1024, botY + 1024, this);
 		second.drawImage(p.currSprite, getWidth() / 2 - 24,
-				getHeight() / 2 - 24, this);
-
-		second.setColor(Color.black);
-		
+				getHeight() / 2 - 24, this);		
 		g.drawImage(image, 0, 0, this);
 	}
 
@@ -129,7 +116,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		JFrame frame = new JFrame("RPG");
 		GUI gui = new GUI();
 		gui.setPreferredSize(new Dimension(xSize, ySize));
-		frame.setUndecorated(true);
+		//frame.setUndecorated(true);
 		frame.add(gui);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -231,38 +218,24 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-			int x = p.getX() + 48;
-			int y = p.getY();
-			if(x%48!=0) {
-				x+=48;
-			}
-			Tile t = map.getTile(x, y);
-			p.move(t);
-			p.dir=2;
+			if(!p.getSpeed().isZero())
+				return;
+			p.setSpeed(1, 0);
 			p.info.mR = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-			int x = p.getX() - 48;
-			int y = p.getY();
-			Tile t = map.getTile(x, y);
-			p.move(t);
-			p.dir=4;
+			if(!p.getSpeed().isZero())
+				return;
+			p.setSpeed(-1, 0);
 			p.info.mL = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-			int x = p.getX();
-			int y = p.getY() - 48;
-			Tile t = map.getTile(x, y);
-			p.move(t);
-			p.dir=1;
+			if(!p.getSpeed().isZero())
+				return;
+			p.setSpeed(0, -1);
 			p.info.mU = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-			int x = p.getX();
-			int y = p.getY() + 48;
-			if(y%48!=0) {
-				y+=48;
-			}
-			Tile t = map.getTile(x, y);
-			p.move(t);
-			p.dir=3;
+			if(!p.getSpeed().isZero())
+				return;
+			p.setSpeed(0, 1);
 			p.info.mD = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_I) {
 			invFrame.setVisible(!invFrame.isVisible());
@@ -270,23 +243,23 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			mapFrame.setVisible(!mapFrame.isVisible());
 		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			optFrame.setVisible(!optFrame.isVisible());
-		} 
+		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			p.setWait(0);
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-			p.dir=0;
-			p.info.mR = false;
+			p.info.mR=false;
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-			p.dir=0;
-			p.info.mL = false;
+			p.info.mL=false;
 		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-			p.dir=0;
-			p.info.mU = false;
+			p.info.mU=false;
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-			p.dir=0;
-			p.info.mD = false;
+			p.info.mD=false;
+		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			p.setWait(p.true_wait);
 		}
 	}
 
@@ -301,10 +274,52 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			rightX = p.getX() + getWidth() / 2;
 			topY = p.getY() - getHeight() / 2;
 			botY = p.getY() + getHeight() / 2;
-			try {
-				Thread.sleep(16);
-			} catch (InterruptedException e) {}
 		}
 	}
-
+	
+	public int facing(Vector speed) {
+		if(speed.getY() == -1)
+			return 0;
+		else if(speed.getX() == 1)
+			return 1;
+		else if(speed.getY() == 1)
+			return 2;
+		else 
+			return 3;
+	}
+	
+	public void update(Character c) {
+		if(c.getSpeed().isZero())
+			return;
+		c.setCurr(System.currentTimeMillis());
+		if(c.getCurr()-c.getWait()>c.getMoveTime()) {
+			System.out.println(c.getCurr());
+			Vector newLoc = new Vector(c.info.getLoc());
+			newLoc.add(c.getSpeed());
+			if(c.info.mR) {
+				newLoc.add(47, 0);
+			}
+			if(c.info.mD) {
+				newLoc.add(0, 47);
+			}
+			Tile newTile = map.getTile(newLoc);
+			if(newTile == null || !newTile.walkable()) {
+				c.currSprite = c.sprites[facing(c.getSpeed())][0];
+				c.setSpeed(0, 0);
+				return;
+			}
+			
+			Vector distanceTo = new Vector(c.info.getLoc());
+			distanceTo.sub(newTile.getLoc());
+			int state = (int)distanceTo.mag()/12;
+			if(state==4)
+				state--;
+			c.currSprite = c.sprites[facing(c.getSpeed())][state];
+			c.info.getLoc().add(c.getSpeed());
+			c.setMoveTime(c.getCurr());
+			if(c.info.getLoc().getX()%48==0&&c.info.getLoc().getY()%48==0&&!c.moving()) {
+				c.setSpeed(0, 0);
+			}
+		}
+	}
 }

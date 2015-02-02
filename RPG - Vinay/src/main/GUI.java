@@ -9,21 +9,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.imageio.ImageIO;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import tiles.Tile;
 
 @SuppressWarnings("serial")
@@ -31,7 +28,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	private Image image, bg;
 	private Graphics second;
 	private Character p;
-	private Map map;
+	private ArrayList<Map> maps;
 	private int leftX, rightX, topY, botY;
 	JFrame mapFrame, optFrame, invFrame;
 	JPanel mapPane, optPane, invPane;
@@ -43,10 +40,10 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		int xSize = ((int) tk.getScreenSize().getWidth());  
 		int ySize = ((int) tk.getScreenSize().getHeight());  
 		bg = null;
-		map = new Map();
-		try {
-			bg = ImageIO.read(new File("src//tiles//map.png"));
-		} catch (IOException e) {}
+		maps = new ArrayList<Map>();
+		maps.add(new Map(1));
+		maps.add(new Map(2));
+		bg = maps.get(0).map;
 		p = new Character("Kirito");
 		mapPane = new JPanel(); 	
 		mapFrame = new JFrame("Map");
@@ -102,8 +99,10 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	public void paint(Graphics g) {
 		image = createImage(this.getWidth(), this.getHeight());
 		second = image.getGraphics();
-		second.drawImage(bg, 0, 0, getWidth(), getHeight(), leftX + 1024,
-				topY + 1024, rightX + 1024, botY + 1024, this);
+		second.setColor(Color.BLACK);
+	    second.fillRect(0, 0, getWidth(), getHeight());
+		second.drawImage(bg, 0, 0, getWidth(), getHeight(), leftX + 24,
+				topY + 24, rightX + 24, botY + 24, this);
 		second.drawImage(p.currSprite, getWidth() / 2 - 24,
 				getHeight() / 2 - 24, this);		
 		g.drawImage(image, 0, 0, this);
@@ -163,6 +162,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 						p.info = o;
 						JOptionPane.showMessageDialog(new JFrame(), "Successfully Loaded");
 						optFrame.setVisible(!optFrame.isVisible());
+						bg = maps.get(p.info.getCurrMap()-1).map;
 					}
 				} catch (ClassNotFoundException | IOException e1) {
 					e1.printStackTrace();
@@ -245,6 +245,15 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			optFrame.setVisible(!optFrame.isVisible());
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			p.setWait(0);
+		} else if (e.getKeyCode() == KeyEvent.VK_N){
+			System.out.println(true);
+			if(p.info.getCurrMap()==1)
+				p.info.setCurrMap(2);
+			else
+				p.info.setCurrMap(1);
+			System.out.println(true);
+			p.info.setLoc(new Vector(0, 0));
+			bg = maps.get(p.info.getCurrMap()-1).map;
 		}
 	}
 
@@ -264,7 +273,9 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	}
 
 	@Override
-	public void keyTyped(KeyEvent arg0) {}
+	public void keyTyped(KeyEvent e) {
+		
+	}
 
 	@Override
 	public void run() {
@@ -293,7 +304,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			return;
 		c.setCurr(System.currentTimeMillis());
 		if(c.getCurr()-c.getWait()>c.getMoveTime()) {
-			System.out.println(c.getCurr());
 			Vector newLoc = new Vector(c.info.getLoc());
 			newLoc.add(c.getSpeed());
 			if(c.info.mR) {
@@ -302,7 +312,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			if(c.info.mD) {
 				newLoc.add(0, 47);
 			}
-			Tile newTile = map.getTile(newLoc);
+			Tile newTile = maps.get(c.info.getCurrMap()-1).getTile(newLoc);
 			if(newTile == null || !newTile.walkable()) {
 				c.currSprite = c.sprites[facing(c.getSpeed())][0];
 				c.setSpeed(0, 0);

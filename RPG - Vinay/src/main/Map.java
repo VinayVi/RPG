@@ -12,6 +12,7 @@ import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 import javax.swing.JFrame;
 
+import tiles.Portal;
 import tiles.Tile;
 
 public class Map {
@@ -92,6 +93,11 @@ public class Map {
 				}
 			}
 		}
+		if(num == 2) 
+			tiles[2][2] = new Portal(96, 96, true, new Vector(96, 96), 1);
+		if(num == 1) 
+			tiles[2][2] = new Portal(96, 96, true, new Vector(96, 96), 2);
+		tiles[2][2].setType(101);
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;
 		drawMap(num);
@@ -190,6 +196,8 @@ public class Map {
 				int type = t.getType();
 				Vector v = t.getLoc();
 				switch (type) {
+				case 0:
+					break;
 				case 1:
 					g.drawImage(grass, v.getX(), v.getY(), new JFrame());
 					break;

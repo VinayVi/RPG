@@ -21,6 +21,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import tiles.Portal;
 import tiles.Tile;
 
 @SuppressWarnings("serial")
@@ -115,7 +117,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		JFrame frame = new JFrame("RPG");
 		GUI gui = new GUI();
 		gui.setPreferredSize(new Dimension(xSize, ySize));
-		//frame.setUndecorated(true);
+		frame.setUndecorated(true);
 		frame.add(gui);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -285,6 +287,9 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			rightX = p.getX() + getWidth() / 2;
 			topY = p.getY() - getHeight() / 2;
 			botY = p.getY() + getHeight() / 2;
+			try {
+				Thread.sleep(0);
+			} catch(Exception e) {}
 		}
 	}
 	
@@ -297,7 +302,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			return 2;
 		else 
 			return 3;
-	}
+	} 
 	
 	public void update(Character c) {
 		if(c.getSpeed().isZero())
@@ -329,6 +334,11 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			c.setMoveTime(c.getCurr());
 			if(c.info.getLoc().getX()%48==0&&c.info.getLoc().getY()%48==0&&!c.moving()) {
 				c.setSpeed(0, 0);
+			}
+			if(c.info.getLoc().getX()%48==0&&c.info.getLoc().getY()%48==0&&newTile instanceof Portal) {
+				c.info.setLoc(newTile.getLoc());
+				c.info.setCurrMap(((Portal) newTile).getNewMap());
+				bg = maps.get(p.info.getCurrMap()-1).map;
 			}
 		}
 	}

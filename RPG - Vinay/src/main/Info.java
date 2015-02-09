@@ -33,6 +33,7 @@ public class Info implements Serializable{
 	private ArrayList<Item> inventoryA;//Armor
 	private int weaponsEquipped;
 	private volatile Vector loc;
+	private volatile int currMap = 1;
 	
 	public double getStrMultiplier() {
 		return strMultiplier;
@@ -104,5 +105,13 @@ public class Info implements Serializable{
 
 	public void setLoc(Vector loc) {
 		this.loc = loc;
+	}
+
+	public int getCurrMap() {
+		return currMap;
+	}
+
+	public void setCurrMap(int currMap) {
+		this.currMap = currMap;
 	}
 }

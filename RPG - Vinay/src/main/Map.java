@@ -12,14 +12,16 @@ import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 import javax.swing.JFrame;
 
+import tiles.Portal;
 import tiles.Tile;
 
 public class Map {
 	int tileSize = 48;
 	Tile tiles[][];
 	int length, width;
+	BufferedImage map;
 
-	public Map() {
+	public Map(int num) {
 		final Color grass = new Color(0, 166, 81);
 		final Color road = new Color(226, 174, 127);
 		final Color water = new Color(0, 0, 255);
@@ -29,7 +31,8 @@ public class Map {
 		final Color bear = new Color(96, 57, 19);
 		BufferedImage bi = null;
 		try {
-			bi = ImageIO.read(new File("src//tiles//Map2.gif"));
+			bi = ImageIO.read(new File("src//tiles//Map"+num+".gif"));
+			System.out.println(num);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -90,43 +93,16 @@ public class Map {
 				}
 			}
 		}
+		if(num == 2) 
+			tiles[2][2] = new Portal(96, 96, true, new Vector(96, 96), 1);
+		if(num == 1) 
+			tiles[2][2] = new Portal(96, 96, true, new Vector(0, 0), 2);
+		tiles[2][2].setType(101);
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;
-		drawMap();
-		drawBorders();
+		drawMap(num);
 	}
 
-	private void drawBorders() {
-		BufferedImage pic = new BufferedImage(length + 2000, width + 2000,
-				BufferedImage.TYPE_INT_RGB);
-		Image bg = null;
-		try {
-			bg = ImageIO.read(new File("src//tiles//map.png"));
-		} catch (IOException e) {
-		}
-		Graphics2D g = (Graphics2D) pic.getGraphics();
-		g.drawImage(bg, 1000, 1000, new JFrame());
-		g.setColor(Color.black);
-		g.fillRect(0, 0, width + 2000, 1000);
-		g.fillRect(0, length + 1000, width + 2000, length + 2000);
-		g.fillRect(0, 0, 1000, length + 2000);
-		g.fillRect(width + 1000, 0, width + 2000, length + 2000);
-		try {
-			java.util.Iterator<ImageWriter> writers = ImageIO
-					.getImageWritersByFormatName("png");
-			ImageWriter writer = writers.next();
-
-			File f = new File("src//tiles//map.png");
-
-			ImageOutputStream ios = ImageIO.createImageOutputStream(f);
-			writer.setOutput(ios);
-			writer.write(pic);
-			ios.close();
-		} catch (Exception e) {
-			System.out.println("Failed");
-		}
-	}
-	
 	public Tile getTile(Vector v) {
 		return getTile(v.getX(), v.getY());
 	}
@@ -139,7 +115,7 @@ public class Map {
 			return null;
 	}
 
-	public void drawMap() {
+	public void drawMap(int num) {
 		BufferedImage pic = new BufferedImage(length, width,
 				BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = pic.createGraphics();
@@ -220,6 +196,8 @@ public class Map {
 				int type = t.getType();
 				Vector v = t.getLoc();
 				switch (type) {
+				case 0:
+					break;
 				case 1:
 					g.drawImage(grass, v.getX(), v.getY(), new JFrame());
 					break;
@@ -303,7 +281,7 @@ public class Map {
 					.getImageWritersByFormatName("png");
 			ImageWriter writer = writers.next();
 
-			File f = new File("src//tiles//map.png");
+			File f = new File("src//tiles//map"+num+".png");
 			ImageOutputStream ios = ImageIO.createImageOutputStream(f);
 			writer.setOutput(ios);
 			writer.write(pic);
@@ -311,6 +289,7 @@ public class Map {
 		} catch (Exception e) {
 			System.out.println("Failed");
 		}
+		map = pic;
 
 	}
 

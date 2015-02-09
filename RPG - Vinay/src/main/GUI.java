@@ -117,7 +117,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		JFrame frame = new JFrame("RPG");
 		GUI gui = new GUI();
 		gui.setPreferredSize(new Dimension(xSize, ySize));
-		frame.setUndecorated(true);
+		//frame.setUndecorated(true);
 		frame.add(gui);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -287,9 +287,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			rightX = p.getX() + getWidth() / 2;
 			topY = p.getY() - getHeight() / 2;
 			botY = p.getY() + getHeight() / 2;
-			try {
-				Thread.sleep(0);
-			} catch(Exception e) {}
 		}
 	}
 	
@@ -327,7 +324,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			Vector distanceTo = new Vector(c.info.getLoc());
 			distanceTo.sub(newTile.getLoc());
 			int state = (int)distanceTo.mag()/12;
-			if(state==4)
+			while(state>=4)
 				state--;
 			c.currSprite = c.sprites[facing(c.getSpeed())][state];
 			c.info.getLoc().add(c.getSpeed());
@@ -336,7 +333,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				c.setSpeed(0, 0);
 			}
 			if(c.info.getLoc().getX()%48==0&&c.info.getLoc().getY()%48==0&&newTile instanceof Portal) {
-				c.info.setLoc(newTile.getLoc());
+				c.info.setLoc(((Portal) newTile).getNewLoc());
 				c.info.setCurrMap(((Portal) newTile).getNewMap());
 				bg = maps.get(p.info.getCurrMap()-1).map;
 			}

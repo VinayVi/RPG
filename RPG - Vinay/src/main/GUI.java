@@ -269,11 +269,12 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void run() {
 		while (true) {
-			repaint();
+			/*repaint();
 			leftX = p.getX() - getWidth() / 2;
 			rightX = p.getX() + getWidth() / 2;
 			topY = p.getY() - getHeight() / 2;
-			botY = p.getY() + getHeight() / 2;
+			botY = p.getY() + getHeight() / 2;*/
+			System.out.println(System.currentTimeMillis());
 		}
 	}
 	
@@ -293,7 +294,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			return;
 		c.setCurr(System.currentTimeMillis());
 		if(c.getCurr()-c.getWait()>c.getMoveTime()) {
-			System.out.println(c.getCurr());
 			Vector newLoc = new Vector(c.info.getLoc());
 			newLoc.add(c.getSpeed());
 			if(c.info.mR) {

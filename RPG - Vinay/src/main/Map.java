@@ -92,13 +92,8 @@ public class Map {
 		}
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;
-		File f = new File("src//tiles//map.png");
-		if(!(f.exists() && !f.isDirectory())) {
-			drawMap();
-			drawBorders();			
-		}
-		/*drawMap();
-		drawBorders();*/
+		drawMap();
+		drawBorders();
 	}
 
 	private void drawBorders() {

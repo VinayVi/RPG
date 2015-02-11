@@ -25,10 +25,10 @@ public class Character implements Serializable {
 	
 	public final Image[][] sprites;
 	private volatile Vector speed;
-	final long true_wait;
+	final double true_wait;
 	private long moveTime;
 	private long curr;
-	private long wait;
+	private double wait;
 
 
 	public Character(String name) {
@@ -129,12 +129,12 @@ public class Character implements Serializable {
 		this.curr = curr;
 	}
 
-	public long getWait() {
+	public double getWait() {
 		return wait;
 	}
 
-	public void setWait(long wait) {
-		this.wait = wait;
+	public void setWait(double true_wait2) {
+		this.wait = true_wait2;
 	}
 
 	public long getMoveTime() {

@@ -246,14 +246,13 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			optFrame.setVisible(!optFrame.isVisible());
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			p.setWait(0);
+			p.setWait(0.5);
 		} else if (e.getKeyCode() == KeyEvent.VK_N){
 			System.out.println(true);
 			if(p.info.getCurrMap()==1)
 				p.info.setCurrMap(2);
 			else
 				p.info.setCurrMap(1);
-			System.out.println(true);
 			p.info.setLoc(new Vector(0, 0));
 			bg = maps.get(p.info.getCurrMap()-1).map;
 		}
@@ -282,12 +281,11 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void run() {
 		while (true) {
-			/*repaint();
+			repaint();
 			leftX = p.getX() - getWidth() / 2;
 			rightX = p.getX() + getWidth() / 2;
 			topY = p.getY() - getHeight() / 2;
-			botY = p.getY() + getHeight() / 2;*/
-			System.out.println(System.currentTimeMillis());
+			botY = p.getY() + getHeight() / 2;
 		}
 	}
 	
@@ -299,14 +297,15 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		else if(speed.getY() == 1)
 			return 2;
 		else 
-			return 3;
+			return 3;  
 	} 
 	
 	public void update(Character c) {
 		if(c.getSpeed().isZero())
 			return;
-		c.setCurr(System.currentTimeMillis());
-		if(c.getCurr()-c.getWait()>c.getMoveTime()) {
+		c.setCurr(System.nanoTime());
+		System.out.println(c.getCurr()-c.getMoveTime());
+		if(c.getCurr()-c.getWait()*1000000>c.getMoveTime()) {
 			Vector newLoc = new Vector(c.info.getLoc());
 			newLoc.add(c.getSpeed());
 			if(c.info.mR) {

@@ -100,7 +100,7 @@ public class Map {
 		tiles[2][2].setType(101);
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;
-		drawMap(num);
+		map = drawMap(num);
 	}
 
 	public Tile getTile(Vector v) {
@@ -115,7 +115,7 @@ public class Map {
 			return null;
 	}
 
-	public void drawMap(int num) {
+	public BufferedImage drawMap(int num) {
 		BufferedImage pic = new BufferedImage(length, width,
 				BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = pic.createGraphics();
@@ -289,7 +289,7 @@ public class Map {
 		} catch (Exception e) {
 			System.out.println("Failed");
 		}
-		map = pic;
+		return pic;
 
 	}
 

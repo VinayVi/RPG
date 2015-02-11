@@ -29,6 +29,10 @@ public class Map {
 		final Color sand = new Color(253, 198, 137);
 		final Color cactus = new Color(0, 88, 38);
 		final Color bear = new Color(96, 57, 19);
+		final Color spookyGrass = new Color(0, 89, 82);
+		final Color spookyTree1 = new Color(55, 53, 53);
+		final Color spookyTree2 = new Color(112, 51, 9);
+		final Color spookyRoad = new Color(91, 82, 81);
 		BufferedImage bi = null;
 		try {
 			bi = ImageIO.read(new File("src//tiles//Map"+num+".gif"));
@@ -57,6 +61,14 @@ public class Map {
 					tiles[x][y] = new Tile(34, x * 48, y * 48, false);
 				} else if (c.equals(bear)) {
 					tiles[x][y] = new Tile(101, x * 48, y * 48, false);
+				} else if (c.equals(spookyGrass)) {
+					tiles[x][y] = new Tile(35, x * 48, y * 48, true);
+				} else if (c.equals(spookyTree1)){
+					tiles[x][y] = new Tile(36, x * 48, y * 48, false);
+				} else if (c.equals(spookyTree2)){
+					tiles[x][y] = new Tile(37, x * 48, y * 48, false);
+				} else if (c.equals(spookyRoad)){
+					tiles[x][y] = new Tile(38, x * 48, y * 48, true);
 				} else {
 					tiles[x][y] = new Tile(3, x * 48, y * 48, false);
 				}
@@ -157,6 +169,10 @@ public class Map {
 		Image DirtRoadGBL = null;
 		Image Sand = null;
 		Image Cactus = null;
+		Image SpookyGrass = null;
+		Image SpookyTree1 = null;
+		Image SpookyTree2 = null;
+		Image SpookyRoad = null;
 		try {
 			grass = ImageIO.read(new File("src//tiles//GrassTile.png"));
 			Road = ImageIO.read(new File("src//tiles//RoadTile.png"));
@@ -199,6 +215,10 @@ public class Map {
 			Cactus = ImageIO.read(new File("src//tiles//Cactus.png"));
 			Bear = ImageIO.read(new File("src//tiles//Bear.png"));
 			Wolf = ImageIO.read(new File("src//tiles//Wolf.png"));
+			SpookyGrass = ImageIO.read(new File("src//tiles//Spooky Grass.png"));
+			SpookyTree1 = ImageIO.read(new File("src//tiles//SpookyTree1.png"));
+			SpookyTree2 = ImageIO.read(new File("src//tiles//SpookyTree2.png"));
+			SpookyRoad = ImageIO.read(new File("src//tiles//Spooky Road.png"));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -279,6 +299,18 @@ public class Map {
 					break;
 				case 34:
 					g.drawImage(Cactus, v.getX(), v.getY(), new JFrame());
+					break;
+				case 35:
+					g.drawImage(SpookyGrass, v.getX(), v.getY(), new JFrame());
+					break;
+				case 36:
+					g.drawImage(SpookyTree1, v.getX(), v.getY(), new JFrame());
+					break;
+				case 37:
+					g.drawImage(SpookyTree2, v.getX(), v.getY(), new JFrame());
+					break;
+				case 38:
+					g.drawImage(SpookyRoad, v.getX(), v.getY(), new JFrame());
 					break;
 				case 101:
 					g.drawImage(Bear, v.getX(), v.getY(), new JFrame());

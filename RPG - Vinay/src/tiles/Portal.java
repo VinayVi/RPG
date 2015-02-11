@@ -28,7 +28,7 @@ public class Portal extends Tile {
 	}
 
 	public Vector getNewLoc() {
-		return newLoc;
+		return new Vector(newLoc);
 	}
 
 	public void setNewLoc(Vector newLoc) {

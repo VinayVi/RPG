@@ -93,10 +93,16 @@ public class Map {
 				}
 			}
 		}
+		//Portal Locations
 		if(num == 2) 
+		{
 			tiles[2][2] = new Portal(96, 96, true, new Vector(96, 96), 1);
+			tiles[99][149] = new Portal(99*48,149*48, true, new Vector(103*48, 0), 1);
+		}
 		if(num == 1) 
-			tiles[2][2] = new Portal(96, 96, true, new Vector(0, 0), 2);
+		{
+			tiles[2][2] = new Portal(96, 96, true, new Vector(50*48, 50*48), 2);
+		}
 		tiles[2][2].setType(101);
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;

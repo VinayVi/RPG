@@ -324,8 +324,11 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			Vector distanceTo = new Vector(c.info.getLoc());
 			distanceTo.sub(newTile.getLoc());
 			int state = (int)distanceTo.mag()/12;
-			while(state>=4)
+			while(state>=4) {
+				if(state>4)
+					System.out.println("shit....");
 				state--;
+			}
 			c.currSprite = c.sprites[facing(c.getSpeed())][state];
 			c.info.getLoc().add(c.getSpeed());
 			c.setMoveTime(c.getCurr());

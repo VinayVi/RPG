@@ -119,7 +119,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		JFrame frame = new JFrame("RPG");
 		GUI gui = new GUI();
 		gui.setPreferredSize(new Dimension(xSize, ySize));
-		//frame.setUndecorated(true);
+		frame.setUndecorated(true);
 		frame.add(gui);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -306,7 +306,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		if(c.getSpeed().isZero())
 			return;
 		c.setCurr(System.nanoTime());
-		System.out.println(c.getCurr()-c.getMoveTime());
 		if(c.getCurr()-c.getWait()*1000000>c.getMoveTime()) {
 			Vector newLoc = new Vector(c.info.getLoc());
 			newLoc.add(c.getSpeed());

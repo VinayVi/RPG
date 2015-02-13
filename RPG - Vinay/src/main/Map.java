@@ -128,10 +128,17 @@ public class Map {
 		{
 			tiles[2][2] = new Portal(96, 96, true, new Vector(96, 96), 1);
 			tiles[99][149] = new Portal(99*48,149*48, true, new Vector(103*48, 0), 1);
+			tiles[98][149] = new Portal(98*48,149*48, true, new Vector(102*48, 0), 1);
+			tiles[97][149] = new Portal(97*48,149*48, true, new Vector(101*48, 0), 1);
+			tiles[96][149] = new Portal(96*48,149*48, true, new Vector(100*48, 0), 1);
 		}
 		if(num == 1) 
 		{
 			tiles[2][2] = new Portal(96, 96, true, new Vector(50*48, 50*48), 2);
+			tiles[103][0] = new Portal(103*48, 0, true, new Vector(99*48, 149*48), 2);
+			tiles[102][0] = new Portal(102*48, 0, true, new Vector(98*48, 149*48), 2);
+			tiles[101][0] = new Portal(101*48, 0, true, new Vector(97*48, 149*48), 2);
+			tiles[100][0] = new Portal(100*48, 0, true, new Vector(96*48, 149*48), 2);
 		}
 		tiles[2][2].setType(101);
 		length = bi.getWidth() * tileSize;

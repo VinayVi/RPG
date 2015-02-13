@@ -43,6 +43,12 @@ public class Tile {
 	 * 36 = Spooky Tree 1
 	 * 37 = Spooky Tree 2
 	 * 38 = Spooky Road
+	 * 39 = Graveyard Fence
+	 * 40 = Gravestone
+	 * 41 = Vinay Gravestone
+	 * 42 = Connor Gravestone
+	 * 43 = Eric Gravestone
+	 * 44 = Daniel Gravestone
 	 * 101 = Bear
 	 * 102 = Wolf
 	 */

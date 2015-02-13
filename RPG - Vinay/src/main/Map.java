@@ -33,6 +33,12 @@ public class Map {
 		final Color spookyTree1 = new Color(55, 53, 53);
 		final Color spookyTree2 = new Color(112, 51, 9);
 		final Color spookyRoad = new Color(91, 82, 81);
+		final Color GraveyardFence = new Color(0, 0, 80);
+		final Color Gravestone = new Color(79, 79, 79);
+		final Color GravestoneVinay = new Color(80, 79, 79);
+		final Color GravestoneConnor = new Color(79, 80, 79);
+		final Color GravestoneHermy = new Color(79, 79, 80);
+		final Color GravestoneDaniel = new Color(80, 80, 80);
 		BufferedImage bi = null;
 		try {
 			bi = ImageIO.read(new File("src//tiles//Map"+num+".gif"));
@@ -69,6 +75,18 @@ public class Map {
 					tiles[x][y] = new Tile(37, x * 48, y * 48, false);
 				} else if (c.equals(spookyRoad)){
 					tiles[x][y] = new Tile(38, x * 48, y * 48, true);
+				} else if (c.equals(GraveyardFence)){
+					tiles[x][y] = new Tile(39, x * 48, y * 48, false);
+				} else if (c.equals(Gravestone)){
+					tiles[x][y] = new Tile(40, x * 48, y * 48, false);
+				} else if (c.equals(GravestoneVinay)){
+					tiles[x][y] = new Tile(41, x * 48, y * 48, false);
+				} else if (c.equals(GravestoneConnor)){
+					tiles[x][y] = new Tile(42, x * 48, y * 48, false);
+				} else if (c.equals(GravestoneHermy)){
+					tiles[x][y] = new Tile(43, x * 48, y * 48, false);
+				} else if (c.equals(GravestoneDaniel)){
+					tiles[x][y] = new Tile(44, x * 48, y * 48, false);
 				} else {
 					tiles[x][y] = new Tile(3, x * 48, y * 48, false);
 				}
@@ -173,6 +191,12 @@ public class Map {
 		Image SpookyTree1 = null;
 		Image SpookyTree2 = null;
 		Image SpookyRoad = null;
+		Image GraveyardFence = null;
+		Image Gravestone = null;
+		Image GravestoneVinay = null;
+		Image GravestoneConnor = null;
+		Image GravestoneHermy = null;
+		Image GravestoneDaniel = null;
 		try {
 			grass = ImageIO.read(new File("src//tiles//GrassTile.png"));
 			Road = ImageIO.read(new File("src//tiles//RoadTile.png"));
@@ -219,6 +243,12 @@ public class Map {
 			SpookyTree1 = ImageIO.read(new File("src//tiles//SpookyTree1.png"));
 			SpookyTree2 = ImageIO.read(new File("src//tiles//SpookyTree2.png"));
 			SpookyRoad = ImageIO.read(new File("src//tiles//Spooky Road.png"));
+			GraveyardFence = ImageIO.read(new File("src//tiles//GraveyardFence.png"));
+			Gravestone = ImageIO.read(new File("src//tiles//Gravestone.png"));
+			GravestoneVinay = ImageIO.read(new File("src//tiles//Vinay Gravestone.png"));
+			GravestoneConnor = ImageIO.read(new File("src//tiles//Connor Gravestone.png"));
+			GravestoneHermy = ImageIO.read(new File("src//tiles//Eric Gravestone.png"));
+			GravestoneDaniel = ImageIO.read(new File("src//tiles//Daniel Gravestone.png"));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -312,6 +342,24 @@ public class Map {
 				case 38:
 					g.drawImage(SpookyRoad, v.getX(), v.getY(), new JFrame());
 					break;
+				case 39:
+					g.drawImage(GraveyardFence, v.getX(), v.getY(), new JFrame());
+					break;
+				case 40:
+					g.drawImage(Gravestone, v.getX(), v.getY(), new JFrame());
+					break;
+				case 41:
+					g.drawImage(GravestoneVinay, v.getX(), v.getY(), new JFrame());
+					break;
+				case 42:
+					g.drawImage(GravestoneConnor, v.getX(), v.getY(), new JFrame());
+					break;
+				case 43:
+					g.drawImage(GravestoneHermy, v.getX(), v.getY(), new JFrame());
+					break;
+				case 44:
+					g.drawImage(GravestoneDaniel, v.getX(), v.getY(), new JFrame());
+					break;	
 				case 101:
 					g.drawImage(Bear, v.getX(), v.getY(), new JFrame());
 					break;

@@ -116,9 +116,9 @@ public class Map {
 				} else if (c.equals(HouseTopRight)){
 					tiles[x][y] = new Tile(206, x * 48, y * 48, false);
 				} else if (c.equals(MarketTile)){
-					tiles[x][y] = new Tile(207, x * 48, y * 48, false);
+					tiles[x][y] = new Tile(207, x * 48, y * 48, true);
 				} else if (c.equals(MarketCarpet)){
-					tiles[x][y] = new Tile(208, x * 48, y * 48, false);
+					tiles[x][y] = new Tile(208, x * 48, y * 48, true);
 				} else if (c.equals(MarketPlant)){
 					tiles[x][y] = new Tile(209, x * 48, y * 48, false);
 				} else if (c.equals(MarketCounter1)){
@@ -220,7 +220,7 @@ public class Map {
 			tiles[149][81] = new Portal(149*48, 81*48, true, new Vector(0, 126*48), 3);
 			tiles[149][82] = new Portal(149*48, 82*48, true, new Vector(0, 127*48), 3);
 			tiles[149][83] = new Portal(149*48, 83*48, true, new Vector(0, 128*48), 3);
-			tiles[15][16] = new Portal(15*48, 16*48, true, new Vector(0, 0), 5);
+			tiles[15][16] = new Portal(15*48, 16*48, true, new Vector(2*48, 5*48), 5);
 		}
 		//tiles[2][2].setType(101);
 		if (num == 3)
@@ -229,6 +229,11 @@ public class Map {
 			tiles[0][126] = new Portal(0, 126*48, true, new Vector(149*48, 81*48), 1);
 			tiles[0][127] = new Portal(0, 127*48, true, new Vector(149*48, 82*48), 1);
 			tiles[0][128] = new Portal(0, 128*48, true, new Vector(149*48, 83*48), 1);
+		}
+		if (num == 5)
+		{
+			tiles[2][5] = new Portal(2*48, 5*58, true, new Vector(15*48, 16*48), 1);
+			tiles[3][5] = new Portal(3*48, 5*58, true, new Vector(15*48, 16*48), 1);
 		}
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;

@@ -51,6 +51,19 @@ public class Tile {
 	 * 44 = Daniel Gravestone
 	 * 101 = Bear
 	 * 102 = Wolf
+	 * 201 = HouseBotLeft
+	 * 202 = HouseBotMid
+	 * 203 = HouseBotRight
+	 * 204 = HouseTopLeft
+	 * 205 = HouseTopMid
+	 * 206 = HouseTopRight
+	 * 207 = MarketTile
+	 * 208 = MarketCarpet
+	 * 209 = MarketPlant
+	 * 210 = MarketCounter1
+	 * 211 = MarketCounter2
+	 * 212 = MarketCounter3
+	 * 213 = MarketCounter4
 	 */
 	
 	public boolean walkable() {

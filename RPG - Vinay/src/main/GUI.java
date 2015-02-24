@@ -46,6 +46,8 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		maps.add(new Map(1));
 		maps.add(new Map(2));
 		maps.add(new Map(3));
+		maps.add(new Map(4));
+		maps.add(new Map(5));//MARKET
 		bg = maps.get(0).map;
 		p = new Character("Kirito");
 		mapPane = new JPanel(); 	
@@ -254,7 +256,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			if(p.info.getCurrMap()==1)
 				p.info.setCurrMap(2);
 			else
-				p.info.setCurrMap(1);
+				p.info.setCurrMap(4);
 			p.info.setLoc(new Vector(0, 0));
 			bg = maps.get(p.info.getCurrMap()-1).map;
 		}

@@ -180,29 +180,6 @@ public class Map {
 			tiles[96][149].setType(20);
 		}
 		// Portal Locations
-		if (num == 1) {
-			tiles[2][2] = new Portal(96, 96, true,
-					new Vector(50 * 48, 50 * 48), 2);
-			tiles[103][0] = new Portal(103 * 48, 0, true, new Vector(99 * 48,
-					149 * 48), 2);
-			tiles[102][0] = new Portal(102 * 48, 0, true, new Vector(98 * 48,
-					149 * 48), 2);
-			tiles[101][0] = new Portal(101 * 48, 0, true, new Vector(97 * 48,
-					149 * 48), 2);
-			tiles[100][0] = new Portal(100 * 48, 0, true, new Vector(96 * 48,
-					149 * 48), 2);
-		}
-		else if (num == 2) {
-			tiles[2][2] = new Portal(96, 96, true, new Vector(96, 96), 1);
-			tiles[99][149] = new Portal(99 * 48, 149 * 48, true, new Vector(
-					103 * 48, 0), 1);
-			tiles[98][149] = new Portal(98 * 48, 149 * 48, true, new Vector(
-					102 * 48, 0), 1);
-			tiles[97][149] = new Portal(97 * 48, 149 * 48, true, new Vector(
-					101 * 48, 0), 1);
-			tiles[96][149] = new Portal(96 * 48, 149 * 48, true, new Vector(
-					100 * 48, 0), 1);
-		}
 		if(num == 1) 
 		{
 			//tiles[2][2] = new Portal(96, 96, true, new Vector(50*48, 50*48), 2);
@@ -220,7 +197,12 @@ public class Map {
 			tiles[149][81] = new Portal(149*48, 81*48, true, new Vector(0, 126*48), 3);
 			tiles[149][82] = new Portal(149*48, 82*48, true, new Vector(0, 127*48), 3);
 			tiles[149][83] = new Portal(149*48, 83*48, true, new Vector(0, 128*48), 3);
-			tiles[15][16] = new Portal(15*48, 16*48, true, new Vector(2*48, 5*48), 5);
+			tiles[149][80].setType(20);
+			tiles[149][81].setType(20);
+			tiles[149][82].setType(20);
+			tiles[149][83].setType(20);
+			tiles[15][15] = new Portal(15*48, 15*48, true, new Vector(2*48, 5*48), 5);
+			tiles[15][15].setType(202);
 		}
 		//tiles[2][2].setType(101);
 		if (num == 3)
@@ -229,11 +211,17 @@ public class Map {
 			tiles[0][126] = new Portal(0, 126*48, true, new Vector(149*48, 81*48), 1);
 			tiles[0][127] = new Portal(0, 127*48, true, new Vector(149*48, 82*48), 1);
 			tiles[0][128] = new Portal(0, 128*48, true, new Vector(149*48, 83*48), 1);
+			tiles[0][125].setType(38);
+			tiles[0][126].setType(38);
+			tiles[0][127].setType(38);
+			tiles[0][128].setType(38);
 		}
 		if (num == 5)
 		{
-			tiles[2][5] = new Portal(2*48, 5*58, true, new Vector(15*48, 16*48), 1);
-			tiles[3][5] = new Portal(3*48, 5*58, true, new Vector(15*48, 16*48), 1);
+			tiles[2][5] = new Portal(2*48, 5*48, true, new Vector(15*48, 15*48), 1);
+			tiles[2][5].setType(208);
+			tiles[3][5] = new Portal(3*48, 5*48, true, new Vector(15*48, 15*48), 1);
+			tiles[3][5].setType(208);
 		}
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;

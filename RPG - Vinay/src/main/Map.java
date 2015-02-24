@@ -178,6 +178,7 @@ public class Map {
 			tiles[98][149].setType(20);
 			tiles[97][149].setType(20);
 			tiles[96][149].setType(20);
+		}
 		// Portal Locations
 		if (num == 1) {
 			tiles[2][2] = new Portal(96, 96, true,

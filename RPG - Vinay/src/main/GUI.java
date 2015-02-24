@@ -277,7 +277,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			p.setWait(0.5);
 		} else if (e.getKeyCode() == KeyEvent.VK_N){
-<<<<<<< HEAD
 			System.out.println(true);
 			if(p.info.getCurrMap()==1)
 				p.info.setCurrMap(2);
@@ -285,10 +284,8 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				p.info.setCurrMap(4);
 			p.info.setLoc(new Vector(0, 0));
 			bg = maps.get(p.info.getCurrMap()-1).map;
-=======
 			Equipable weapon = new Equipable("Hermy's little Hermy", "Dagger");
 			p.Inventory.addElement(weapon);
->>>>>>> refs/remotes/origin/master
 		}
 	}
 

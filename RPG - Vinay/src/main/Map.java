@@ -186,7 +186,6 @@ public class Map {
 			tiles[96][149] = new Portal(96 * 48, 149 * 48, true, new Vector(
 					100 * 48, 0), 1);
 		}
-<<<<<<< HEAD
 		if(num == 1) 
 		{
 			tiles[2][2] = new Portal(96, 96, true, new Vector(50*48, 50*48), 2);
@@ -206,10 +205,6 @@ public class Map {
 			tiles[0][126] = new Portal(0, 126*48, true, new Vector(149*48, 81*48), 1);
 			tiles[0][127] = new Portal(0, 127*48, true, new Vector(149*48, 82*48), 1);
 			tiles[0][128] = new Portal(0, 128*48, true, new Vector(149*48, 83*48), 1);
-=======
-		else if (num == 3) {
-			
->>>>>>> refs/remotes/origin/master
 		}
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;
@@ -331,7 +326,6 @@ public class Map {
 			GraveyardFence = ImageIO.read(new File(
 					"src//tiles//GraveyardFence.png"));
 			Gravestone = ImageIO.read(new File("src//tiles//Gravestone.png"));
-<<<<<<< HEAD
 			GravestoneVinay = ImageIO.read(new File("src//tiles//Vinay Gravestone.png"));
 			GravestoneConnor = ImageIO.read(new File("src//tiles//Connor Gravestone.png"));
 			GravestoneHermy = ImageIO.read(new File("src//tiles//Eric Gravestone.png"));
@@ -349,7 +343,6 @@ public class Map {
 			MarketCounter2 = ImageIO.read(new File("src//tiles//CounterCorner.png"));
 			MarketCounter3 = ImageIO.read(new File("src//tiles//CounterSide.png"));
 			MarketCounter4 = ImageIO.read(new File("src//tiles//CounterCorner2.png"));
-=======
 			GravestoneVinay = ImageIO.read(new File(
 					"src//tiles//Vinay Gravestone.png"));
 			GravestoneConnor = ImageIO.read(new File(
@@ -358,8 +351,6 @@ public class Map {
 					"src//tiles//Eric Gravestone.png"));
 			GravestoneDaniel = ImageIO.read(new File(
 					"src//tiles//Daniel Gravestone.png"));
->>>>>>> refs/remotes/origin/master
-
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

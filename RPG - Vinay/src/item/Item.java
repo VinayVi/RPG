@@ -17,5 +17,9 @@ public abstract class Item {
 	public String getName() {
 		return Name;
 	}
+	@Override
+	public String toString() {
+		return Name;
+	}
 
 }

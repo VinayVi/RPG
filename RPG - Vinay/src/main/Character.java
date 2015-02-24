@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 
 @SuppressWarnings("serial")
 public class Character implements Serializable {
@@ -21,7 +23,7 @@ public class Character implements Serializable {
 	public Image currSprite;
 	public Image BL, BR, BS, FL, FR, FS, LL, LR, LS, RL, RR, RS;
 	volatile int dir;
-	public ArrayList<Equipable> Inventory = new ArrayList();
+	public DefaultListModel<Equipable> Inventory = new DefaultListModel<Equipable>();
 	
 	public final Image[][] sprites;
 	private volatile Vector speed;
@@ -30,10 +32,9 @@ public class Character implements Serializable {
 	private long curr;
 	private double wait;
 
-
 	public Character(String name) {
 		Equipable weapon=new Equipable("Daniel's Weeny","Dagger");
-		Inventory.add(weapon);
+		Inventory.addElement(weapon);
 		info = new Info();
 		info.mU = false;
 		info.mR = false;

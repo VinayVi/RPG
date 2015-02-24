@@ -58,7 +58,7 @@ public class Map {
 			bi = ImageIO.read(new File("src//tiles//Map" + num + ".gif"));
 			System.out.println(num);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println(num);
 			e.printStackTrace();
 		}
 		tiles = new Tile[bi.getWidth()][bi.getHeight()];
@@ -419,6 +419,12 @@ public class Map {
 					break;
 				case 10:
 					g.drawImage(RoadGBR, v.getX(), v.getY(), null);
+					break;
+				case 16:
+					g.drawImage(TreeTop, v.getX(), v.getY(), null);
+					break;
+				case 17:
+					g.drawImage(TreeBot, v.getX(), v.getY(), null);
 					break;
 				case 18:
 					g.drawImage(Water, v.getX(), v.getY(), null);

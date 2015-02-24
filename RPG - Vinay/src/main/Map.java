@@ -28,7 +28,8 @@ public class Map {
 		final Color bridge = new Color(64, 20, 0);
 		final Color sand = new Color(253, 198, 137);
 		final Color cactus = new Color(0, 88, 38);
-		final Color bear = new Color(96, 57, 19);
+		final Color treeBot = new Color(96, 57, 19);
+		final Color treeTop = new Color(0, 114, 54);
 		final Color spookyGrass = new Color(0, 89, 82);
 		final Color spookyTree1 = new Color(55, 53, 53);
 		final Color spookyTree2 = new Color(112, 51, 9);
@@ -57,7 +58,7 @@ public class Map {
 			bi = ImageIO.read(new File("src//tiles//Map" + num + ".gif"));
 			System.out.println(num);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println(num);
 			e.printStackTrace();
 		}
 		tiles = new Tile[bi.getWidth()][bi.getHeight()];
@@ -78,8 +79,10 @@ public class Map {
 					tiles[x][y] = new Tile(33, x * 48, y * 48, true);
 				} else if (c.equals(cactus)) {
 					tiles[x][y] = new Tile(34, x * 48, y * 48, false);
-				} else if (c.equals(bear)) {
-					tiles[x][y] = new Tile(101, x * 48, y * 48, false);
+				} else if (c.equals(treeBot)) {
+					tiles[x][y] = new Tile(16, x * 48, y * 48, false);
+				} else if (c.equals(treeTop)) {
+					tiles[x][y] = new Tile(17, x*48, y*48, false);
 				} else if (c.equals(spookyGrass)) {
 					tiles[x][y] = new Tile(35, x * 48, y * 48, true);
 				} else if (c.equals(spookyTree1)) {
@@ -162,6 +165,20 @@ public class Map {
 				}
 			}
 		}
+		//Portal Locations
+		if(num == 2) 
+		{
+			//tiles[2][2] = new Portal(96, 96, true, new Vector(96, 96), 1);
+			//To Grassland
+			tiles[99][149] = new Portal(99*48,149*48, true, new Vector(103*48, 0), 1);
+			tiles[98][149] = new Portal(98*48,149*48, true, new Vector(102*48, 0), 1);
+			tiles[97][149] = new Portal(97*48,149*48, true, new Vector(101*48, 0), 1);
+			tiles[96][149] = new Portal(96*48,149*48, true, new Vector(100*48, 0), 1);
+			tiles[99][149].setType(20);
+			tiles[98][149].setType(20);
+			tiles[97][149].setType(20);
+			tiles[96][149].setType(20);
+		}
 		// Portal Locations
 		if (num == 1) {
 			tiles[2][2] = new Portal(96, 96, true,
@@ -188,17 +205,24 @@ public class Map {
 		}
 		if(num == 1) 
 		{
-			tiles[2][2] = new Portal(96, 96, true, new Vector(50*48, 50*48), 2);
+			//tiles[2][2] = new Portal(96, 96, true, new Vector(50*48, 50*48), 2);
+			//To Desert
 			tiles[103][0] = new Portal(103*48, 0, true, new Vector(99*48, 149*48), 2);
 			tiles[102][0] = new Portal(102*48, 0, true, new Vector(98*48, 149*48), 2);
 			tiles[101][0] = new Portal(101*48, 0, true, new Vector(97*48, 149*48), 2);
 			tiles[100][0] = new Portal(100*48, 0, true, new Vector(96*48, 149*48), 2);
+			tiles[103][0].setType(20);
+			tiles[102][0].setType(20);
+			tiles[101][0].setType(20);
+			tiles[100][0].setType(20);
+			
 			tiles[149][80] = new Portal(149*48, 80*48, true, new Vector(0, 125*48), 3);
 			tiles[149][81] = new Portal(149*48, 81*48, true, new Vector(0, 126*48), 3);
 			tiles[149][82] = new Portal(149*48, 82*48, true, new Vector(0, 127*48), 3);
 			tiles[149][83] = new Portal(149*48, 83*48, true, new Vector(0, 128*48), 3);
 			tiles[15][16] = new Portal(15*48, 16*48, true, new Vector(2*48, 5*48), 5);
 		}
+		//tiles[2][2].setType(101);
 		if (num == 3)
 		{
 			tiles[0][125] = new Portal(0, 125*48, true, new Vector(149*48, 80*48), 1);
@@ -242,6 +266,8 @@ public class Map {
 		Image RoadGTR = null;
 		Image RoadGBL = null;
 		Image RoadGBR = null;
+		Image TreeTop = null;
+		Image TreeBot = null;
 		Image Water = null;
 		Image Bridge = null;
 		Image Bear = null;
@@ -300,6 +326,8 @@ public class Map {
 					"src//tiles//Grass-Road Tile BottomLeft.png"));
 			RoadGBR = ImageIO.read(new File(
 					"src//tiles//Grass-Road Tile BottomRight.png"));
+			TreeTop = ImageIO.read(new File("src//tiles//Tree2 Part 1 Tile.png"));
+			TreeBot = ImageIO.read(new File("src//tiles//Tree2 Part 2 Tile.png"));
 			Water = ImageIO.read(new File("src//tiles//Water.png"));
 			Bridge = ImageIO.read(new File("src//tiles//Bridge Tile.png"));
 			DirtRoad = ImageIO.read(new File("src//tiles//Dirt Road.png"));
@@ -396,6 +424,12 @@ public class Map {
 					break;
 				case 10:
 					g.drawImage(RoadGBR, v.getX(), v.getY(), null);
+					break;
+				case 16:
+					g.drawImage(TreeTop, v.getX(), v.getY(), null);
+					break;
+				case 17:
+					g.drawImage(TreeBot, v.getX(), v.getY(), null);
 					break;
 				case 18:
 					g.drawImage(Water, v.getX(), v.getY(), null);

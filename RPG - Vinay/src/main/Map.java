@@ -34,9 +34,28 @@ public class Map {
 		final Color spookyTree1 = new Color(55, 53, 53);
 		final Color spookyTree2 = new Color(112, 51, 9);
 		final Color spookyRoad = new Color(91, 82, 81);
+		final Color GraveyardFence = new Color(0, 0, 80);
+		final Color Gravestone = new Color(79, 79, 79);
+		final Color GravestoneVinay = new Color(80, 79, 79);
+		final Color GravestoneConnor = new Color(79, 80, 79);
+		final Color GravestoneHermy = new Color(79, 79, 80);
+		final Color GravestoneDaniel = new Color(80, 80, 80);
+		final Color HouseBotLeft = new Color(145, 61, 0);
+		final Color HouseBotMid = new Color(145, 62, 0);
+		final Color HouseBotRight = new Color(145, 63, 0);
+		final Color HouseTopLeft = new Color(145, 64, 0);
+		final Color HouseTopMid = new Color(145, 65, 0);
+		final Color HouseTopRight = new Color(145, 66, 0);
+		final Color MarketTile = new Color(161, 229, 255);
+		final Color MarketCarpet = new Color(136, 37, 37);
+		final Color MarketPlant = new Color(141, 198, 63);
+		final Color MarketCounter1 = new Color(27, 20, 100);
+		final Color MarketCounter2 = new Color(48, 37, 171);
+		final Color MarketCounter3 = new Color(72, 59, 205);
+		final Color MarketCounter4 = new Color(76, 66, 195);
 		BufferedImage bi = null;
 		try {
-			bi = ImageIO.read(new File("src//tiles//Map"+num+".gif"));
+			bi = ImageIO.read(new File("src//tiles//Map" + num + ".gif"));
 			System.out.println(num);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -66,12 +85,50 @@ public class Map {
 					tiles[x][y] = new Tile(17, x*48, y*48, false);
 				} else if (c.equals(spookyGrass)) {
 					tiles[x][y] = new Tile(35, x * 48, y * 48, true);
-				} else if (c.equals(spookyTree1)){
+				} else if (c.equals(spookyTree1)) {
 					tiles[x][y] = new Tile(36, x * 48, y * 48, false);
-				} else if (c.equals(spookyTree2)){
+				} else if (c.equals(spookyTree2)) {
 					tiles[x][y] = new Tile(37, x * 48, y * 48, false);
-				} else if (c.equals(spookyRoad)){
+				} else if (c.equals(spookyRoad)) {
 					tiles[x][y] = new Tile(38, x * 48, y * 48, true);
+				} else if (c.equals(GraveyardFence)) {
+					tiles[x][y] = new Tile(39, x * 48, y * 48, false);
+				} else if (c.equals(Gravestone)) {
+					tiles[x][y] = new Tile(40, x * 48, y * 48, false);
+				} else if (c.equals(GravestoneVinay)) {
+					tiles[x][y] = new Tile(41, x * 48, y * 48, false);
+				} else if (c.equals(GravestoneConnor)) {
+					tiles[x][y] = new Tile(42, x * 48, y * 48, false);
+				} else if (c.equals(GravestoneHermy)) {
+					tiles[x][y] = new Tile(43, x * 48, y * 48, false);
+				} else if (c.equals(GravestoneDaniel)) {
+					tiles[x][y] = new Tile(44, x * 48, y * 48, false);
+				} else if (c.equals(HouseBotLeft)){
+					tiles[x][y] = new Tile(201, x * 48, y * 48, false);
+				} else if (c.equals(HouseBotMid)){
+					tiles[x][y] = new Tile(202, x * 48, y * 48, false);
+				} else if (c.equals(HouseBotRight)){
+					tiles[x][y] = new Tile(203, x * 48, y * 48, false);
+				} else if (c.equals(HouseTopLeft)){
+					tiles[x][y] = new Tile(204, x * 48, y * 48, false);
+				} else if (c.equals(HouseTopMid)){
+					tiles[x][y] = new Tile(205, x * 48, y * 48, false);
+				} else if (c.equals(HouseTopRight)){
+					tiles[x][y] = new Tile(206, x * 48, y * 48, false);
+				} else if (c.equals(MarketTile)){
+					tiles[x][y] = new Tile(207, x * 48, y * 48, false);
+				} else if (c.equals(MarketCarpet)){
+					tiles[x][y] = new Tile(208, x * 48, y * 48, false);
+				} else if (c.equals(MarketPlant)){
+					tiles[x][y] = new Tile(209, x * 48, y * 48, false);
+				} else if (c.equals(MarketCounter1)){
+					tiles[x][y] = new Tile(210, x * 48, y * 48, false);
+				} else if (c.equals(MarketCounter2)){
+					tiles[x][y] = new Tile(211, x * 48, y * 48, false);
+				} else if (c.equals(MarketCounter3)){
+					tiles[x][y] = new Tile(212, x * 48, y * 48, false);
+				} else if (c.equals(MarketCounter4)){
+					tiles[x][y] = new Tile(213, x * 48, y * 48, false);
 				} else {
 					tiles[x][y] = new Tile(3, x * 48, y * 48, false);
 				}
@@ -121,6 +178,29 @@ public class Map {
 			tiles[98][149].setType(20);
 			tiles[97][149].setType(20);
 			tiles[96][149].setType(20);
+		// Portal Locations
+		if (num == 1) {
+			tiles[2][2] = new Portal(96, 96, true,
+					new Vector(50 * 48, 50 * 48), 2);
+			tiles[103][0] = new Portal(103 * 48, 0, true, new Vector(99 * 48,
+					149 * 48), 2);
+			tiles[102][0] = new Portal(102 * 48, 0, true, new Vector(98 * 48,
+					149 * 48), 2);
+			tiles[101][0] = new Portal(101 * 48, 0, true, new Vector(97 * 48,
+					149 * 48), 2);
+			tiles[100][0] = new Portal(100 * 48, 0, true, new Vector(96 * 48,
+					149 * 48), 2);
+		}
+		else if (num == 2) {
+			tiles[2][2] = new Portal(96, 96, true, new Vector(96, 96), 1);
+			tiles[99][149] = new Portal(99 * 48, 149 * 48, true, new Vector(
+					103 * 48, 0), 1);
+			tiles[98][149] = new Portal(98 * 48, 149 * 48, true, new Vector(
+					102 * 48, 0), 1);
+			tiles[97][149] = new Portal(97 * 48, 149 * 48, true, new Vector(
+					101 * 48, 0), 1);
+			tiles[96][149] = new Portal(96 * 48, 149 * 48, true, new Vector(
+					100 * 48, 0), 1);
 		}
 		if(num == 1) 
 		{
@@ -135,8 +215,20 @@ public class Map {
 			tiles[101][0].setType(20);
 			tiles[100][0].setType(20);
 			
+			tiles[149][80] = new Portal(149*48, 80*48, true, new Vector(0, 125*48), 3);
+			tiles[149][81] = new Portal(149*48, 81*48, true, new Vector(0, 126*48), 3);
+			tiles[149][82] = new Portal(149*48, 82*48, true, new Vector(0, 127*48), 3);
+			tiles[149][83] = new Portal(149*48, 83*48, true, new Vector(0, 128*48), 3);
+			tiles[15][16] = new Portal(15*48, 16*48, true, new Vector(0, 0), 5);
 		}
 		//tiles[2][2].setType(101);
+		if (num == 3)
+		{
+			tiles[0][125] = new Portal(0, 125*48, true, new Vector(149*48, 80*48), 1);
+			tiles[0][126] = new Portal(0, 126*48, true, new Vector(149*48, 81*48), 1);
+			tiles[0][127] = new Portal(0, 127*48, true, new Vector(149*48, 82*48), 1);
+			tiles[0][128] = new Portal(0, 128*48, true, new Vector(149*48, 83*48), 1);
+		}
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;
 		map = drawMap(num);
@@ -189,6 +281,26 @@ public class Map {
 		Image SpookyTree1 = null;
 		Image SpookyTree2 = null;
 		Image SpookyRoad = null;
+		Image GraveyardFence = null;
+		Image Gravestone = null;
+		Image GravestoneVinay = null;
+		Image GravestoneConnor = null;
+		Image GravestoneHermy = null;
+		Image GravestoneDaniel = null;
+		Image HouseBotLeft = null;
+		Image HouseBotMid = null;
+		Image HouseBotRight = null;
+		Image HouseTopLeft = null;
+		Image HouseTopMid = null;
+		Image HouseTopRight = null;
+		Image MarketTile = null;
+		Image MarketCarpet = null;
+		Image MarketPlant = null;
+		Image MarketCounter1 = null;
+		Image MarketCounter2 = null;
+		Image MarketCounter3 = null;
+		Image MarketCounter4 = null; 
+		
 		try {
 			grass = ImageIO.read(new File("src//tiles//GrassTile.png"));
 			Road = ImageIO.read(new File("src//tiles//RoadTile.png"));
@@ -233,11 +345,39 @@ public class Map {
 			Cactus = ImageIO.read(new File("src//tiles//Cactus.png"));
 			Bear = ImageIO.read(new File("src//tiles//Bear.png"));
 			Wolf = ImageIO.read(new File("src//tiles//Wolf.png"));
-			SpookyGrass = ImageIO.read(new File("src//tiles//Spooky Grass.png"));
+			SpookyGrass = ImageIO
+					.read(new File("src//tiles//Spooky Grass.png"));
 			SpookyTree1 = ImageIO.read(new File("src//tiles//SpookyTree1.png"));
 			SpookyTree2 = ImageIO.read(new File("src//tiles//SpookyTree2.png"));
 			SpookyRoad = ImageIO.read(new File("src//tiles//Spooky Road.png"));
-
+			GraveyardFence = ImageIO.read(new File(
+					"src//tiles//GraveyardFence.png"));
+			Gravestone = ImageIO.read(new File("src//tiles//Gravestone.png"));
+			GravestoneVinay = ImageIO.read(new File("src//tiles//Vinay Gravestone.png"));
+			GravestoneConnor = ImageIO.read(new File("src//tiles//Connor Gravestone.png"));
+			GravestoneHermy = ImageIO.read(new File("src//tiles//Eric Gravestone.png"));
+			GravestoneDaniel = ImageIO.read(new File("src//tiles//Daniel Gravestone.png"));
+			HouseBotLeft = ImageIO.read(new File("src//tiles//HouseBotLeft.png"));
+			HouseBotMid = ImageIO.read(new File("src//tiles//HouseBotMiddle.png"));
+			HouseBotRight = ImageIO.read(new File("src//tiles//HouseBotRight.png"));
+			HouseTopLeft = ImageIO.read(new File("src//tiles//HouseTopLeft.png"));
+			HouseTopMid = ImageIO.read(new File("src//tiles//HouseTopMiddle.png"));
+			HouseTopRight = ImageIO.read(new File("src//tiles//HouseTopRight.png"));
+			MarketTile = ImageIO.read(new File("src//tiles//MarketTile.png"));
+			MarketCarpet = ImageIO.read(new File("src//tiles//CarpetBGMT.png"));
+			MarketPlant = ImageIO.read(new File("src//tiles//PottedBushBGMT.png"));
+			MarketCounter1 = ImageIO.read(new File("src//tiles//CounterFront.png"));
+			MarketCounter2 = ImageIO.read(new File("src//tiles//CounterCorner.png"));
+			MarketCounter3 = ImageIO.read(new File("src//tiles//CounterSide.png"));
+			MarketCounter4 = ImageIO.read(new File("src//tiles//CounterCorner2.png"));
+			GravestoneVinay = ImageIO.read(new File(
+					"src//tiles//Vinay Gravestone.png"));
+			GravestoneConnor = ImageIO.read(new File(
+					"src//tiles//Connor Gravestone.png"));
+			GravestoneHermy = ImageIO.read(new File(
+					"src//tiles//Eric Gravestone.png"));
+			GravestoneDaniel = ImageIO.read(new File(
+					"src//tiles//Daniel Gravestone.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -250,91 +390,148 @@ public class Map {
 				case 0:
 					break;
 				case 1:
-					g.drawImage(grass, v.getX(), v.getY(), new JFrame());
+					g.drawImage(grass, v.getX(), v.getY(), null);
 					break;
 				case 2:
-					g.drawImage(Road, v.getX(), v.getY(), new JFrame());
+					g.drawImage(Road, v.getX(), v.getY(), null);
 					break;
 				case 3:
-					g.drawImage(RoadGR, v.getX(), v.getY(), new JFrame());
+					g.drawImage(RoadGR, v.getX(), v.getY(), null);
 					break;
 				case 4:
-					g.drawImage(RoadGT, v.getX(), v.getY(), new JFrame());
+					g.drawImage(RoadGT, v.getX(), v.getY(), null);
 					break;
 				case 5:
-					g.drawImage(RoadGL, v.getX(), v.getY(), new JFrame());
+					g.drawImage(RoadGL, v.getX(), v.getY(), null);
 					break;
 				case 6:
-					g.drawImage(RoadGB, v.getX(), v.getY(), new JFrame());
+					g.drawImage(RoadGB, v.getX(), v.getY(), null);
 					break;
 				case 7:
-					g.drawImage(RoadGTL, v.getX(), v.getY(), new JFrame());
+					g.drawImage(RoadGTL, v.getX(), v.getY(), null);
 					break;
 				case 8:
-					g.drawImage(RoadGTR, v.getX(), v.getY(), new JFrame());
+					g.drawImage(RoadGTR, v.getX(), v.getY(), null);
 					break;
 				case 9:
-					g.drawImage(RoadGBL, v.getX(), v.getY(), new JFrame());
+					g.drawImage(RoadGBL, v.getX(), v.getY(), null);
 					break;
 				case 10:
-					g.drawImage(RoadGBR, v.getX(), v.getY(), new JFrame());
+					g.drawImage(RoadGBR, v.getX(), v.getY(), null);
 					break;
 				case 18:
-					g.drawImage(Water, v.getX(), v.getY(), new JFrame());
+					g.drawImage(Water, v.getX(), v.getY(), null);
 					break;
 				case 19:
-					g.drawImage(Bridge, v.getX(), v.getY(), new JFrame());
+					g.drawImage(Bridge, v.getX(), v.getY(), null);
 					break;
 				case 20:
-					g.drawImage(DirtRoad, v.getX(), v.getY(), new JFrame());
+					g.drawImage(DirtRoad, v.getX(), v.getY(), null);
 					break;
 				case 21:
-					g.drawImage(DirtRoadGR, v.getX(), v.getY(), new JFrame());
+					g.drawImage(DirtRoadGR, v.getX(), v.getY(), null);
 					break;
 				case 22:
-					g.drawImage(DirtRoadGT, v.getX(), v.getY(), new JFrame());
+					g.drawImage(DirtRoadGT, v.getX(), v.getY(), null);
 					break;
 				case 23:
-					g.drawImage(DirtRoadGL, v.getX(), v.getY(), new JFrame());
+					g.drawImage(DirtRoadGL, v.getX(), v.getY(), null);
 					break;
 				case 24:
-					g.drawImage(DirtRoadGB, v.getX(), v.getY(), new JFrame());
+					g.drawImage(DirtRoadGB, v.getX(), v.getY(), null);
 					break;
 				case 25:
-					g.drawImage(DirtRoadGTL, v.getX(), v.getY(), new JFrame());
+					g.drawImage(DirtRoadGTL, v.getX(), v.getY(), null);
 					break;
 				case 26:
-					g.drawImage(DirtRoadGTR, v.getX(), v.getY(), new JFrame());
+					g.drawImage(DirtRoadGTR, v.getX(), v.getY(), null);
 					break;
 				case 27:
-					g.drawImage(DirtRoadGBL, v.getX(), v.getY(), new JFrame());
+					g.drawImage(DirtRoadGBL, v.getX(), v.getY(), null);
 					break;
 				case 28:
-					g.drawImage(DirtRoadGBR, v.getX(), v.getY(), new JFrame());
+					g.drawImage(DirtRoadGBR, v.getX(), v.getY(), null);
 					break;
 				case 33:
-					g.drawImage(Sand, v.getX(), v.getY(), new JFrame());
+					g.drawImage(Sand, v.getX(), v.getY(), null);
 					break;
 				case 34:
-					g.drawImage(Cactus, v.getX(), v.getY(), new JFrame());
+					g.drawImage(Cactus, v.getX(), v.getY(), null);
 					break;
 				case 35:
-					g.drawImage(SpookyGrass, v.getX(), v.getY(), new JFrame());
+					g.drawImage(SpookyGrass, v.getX(), v.getY(), null);
 					break;
 				case 36:
-					g.drawImage(SpookyTree1, v.getX(), v.getY(), new JFrame());
+					g.drawImage(SpookyTree1, v.getX(), v.getY(), null);
 					break;
 				case 37:
-					g.drawImage(SpookyTree2, v.getX(), v.getY(), new JFrame());
+					g.drawImage(SpookyTree2, v.getX(), v.getY(), null);
 					break;
 				case 38:
-					g.drawImage(SpookyRoad, v.getX(), v.getY(), new JFrame());
+					g.drawImage(SpookyRoad, v.getX(), v.getY(), null);
+					break;
+				case 39:
+					g.drawImage(GraveyardFence, v.getX(), v.getY(), null);
+					break;
+				case 40:
+					g.drawImage(Gravestone, v.getX(), v.getY(), null);
+					break;
+				case 41:
+					g.drawImage(GravestoneVinay, v.getX(), v.getY(), null);
+					break;
+				case 42:
+					g.drawImage(GravestoneConnor, v.getX(), v.getY(), null);
+					break;
+				case 43:
+					g.drawImage(GravestoneHermy, v.getX(), v.getY(), null);
+					break;
+				case 44:
+					g.drawImage(GravestoneDaniel, v.getX(), v.getY(), null);
 					break;
 				case 101:
-					g.drawImage(Bear, v.getX(), v.getY(), new JFrame());
+					g.drawImage(Bear, v.getX(), v.getY(), null);
 					break;
 				case 102:
-					g.drawImage(Wolf, v.getX(), v.getY(), new JFrame());
+					g.drawImage(Wolf, v.getX(), v.getY(), null);
+					break;
+				case 201:
+					g.drawImage(HouseBotLeft, v.getX(), v.getY(), new JFrame());
+					break;
+				case 202:
+					g.drawImage(HouseBotMid, v.getX(), v.getY(), new JFrame());
+					break;
+				case 203:
+					g.drawImage(HouseBotRight, v.getX(), v.getY(), new JFrame());
+					break;
+				case 204:
+					g.drawImage(HouseTopLeft, v.getX(), v.getY(), new JFrame());
+					break;
+				case 205:
+					g.drawImage(HouseTopMid, v.getX(), v.getY(), new JFrame());
+					break;
+				case 206:
+					g.drawImage(HouseTopRight, v.getX(), v.getY(), new JFrame());
+					break;
+				case 207:
+					g.drawImage(MarketTile, v.getX(), v.getY(), new JFrame());
+					break;
+				case 208:
+					g.drawImage(MarketCarpet, v.getX(), v.getY(), new JFrame());
+					break;
+				case 209:
+					g.drawImage(MarketPlant, v.getX(), v.getY(), new JFrame());
+					break;
+				case 210:
+					g.drawImage(MarketCounter1, v.getX(), v.getY(), new JFrame());
+					break;
+				case 211:
+					g.drawImage(MarketCounter2, v.getX(), v.getY(), new JFrame());
+					break;
+				case 212:
+					g.drawImage(MarketCounter3, v.getX(), v.getY(), new JFrame());
+					break;
+				case 213:
+					g.drawImage(MarketCounter4, v.getX(), v.getY(), new JFrame());
 					break;
 				}
 			}
@@ -344,7 +541,7 @@ public class Map {
 					.getImageWritersByFormatName("png");
 			ImageWriter writer = writers.next();
 
-			File f = new File("src//tiles//map"+num+".png");
+			File f = new File("src//tiles//map" + num + ".png");
 			ImageOutputStream ios = ImageIO.createImageOutputStream(f);
 			writer.setOutput(ios);
 			writer.write(pic);

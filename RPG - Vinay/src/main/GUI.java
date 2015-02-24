@@ -1,5 +1,7 @@
  package main;
 
+import items.Equipable.Equipable;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -19,8 +21,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import tiles.Portal;
 import tiles.Tile;
@@ -33,7 +37,9 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	private ArrayList<Map> maps;
 	private int leftX, rightX, topY, botY;
 	JFrame mapFrame, optFrame, invFrame;
-	JPanel mapPane, optPane, invPane;
+	JPanel mapPane, optPane;
+	JPanel invPane;
+	JList<Equipable> invData;
 	JButton load, save, exit, resume; //Options Buttons
 	private Thread mover;
 
@@ -46,6 +52,8 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		maps.add(new Map(1));
 		maps.add(new Map(2));
 		maps.add(new Map(3));
+		maps.add(new Map(4));
+		maps.add(new Map(5));//MARKET
 		bg = maps.get(0).map;
 		p = new Character("Kirito");
 		mapPane = new JPanel(); 	
@@ -79,9 +87,11 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		optPane.add(save);
 		optPane.add(exit);
 		optPane.add(resume);
+		optFrame.addKeyListener(new buttonListener());
 		invPane = new JPanel();
+		invPane.setLayout(new BorderLayout());
 		invFrame = new JFrame("Inventory");
-		invFrame.setContentPane(invPane);
+		invFrame.getContentPane().add(invPane);
 		invFrame.setSize(300, 500);
 		invFrame.setLocation(xSize - 300, ySize - 500);
 		invFrame.setVisible(false);
@@ -119,7 +129,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		JFrame frame = new JFrame("RPG");
 		GUI gui = new GUI();
 		gui.setPreferredSize(new Dimension(xSize, ySize));
-		//frame.setUndecorated(true);
+		frame.setUndecorated(true);
 		frame.add(gui);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -140,6 +150,8 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				optFrame.setVisible(!optFrame.isVisible());
 			} else if (e.getKeyCode() == KeyEvent.VK_I) {
 				invFrame.setVisible(!invFrame.isVisible());
+				invData = new JList<Equipable>(p.Inventory);
+				invPane.add(invData, BorderLayout.CENTER);
 			}
 		}
 		@Override
@@ -148,7 +160,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		public void keyTyped(KeyEvent arg0) {}
 	}
 	
-	public class buttonListener implements ActionListener {
+	public class buttonListener implements ActionListener, KeyListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("Save Game")) {
@@ -177,6 +189,19 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				optFrame.setVisible(!optFrame.isVisible());
 			}	
 		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
+				optFrame.setVisible(!optFrame.isVisible());
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0) {}
+
+		@Override
+		public void keyTyped(KeyEvent arg0) {}
 	}
 
 	public class mapListener implements KeyListener {
@@ -243,6 +268,8 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			p.info.mD = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_I) {
 			invFrame.setVisible(!invFrame.isVisible());
+			invData = new JList<Equipable>(p.Inventory);
+			invPane.add(new JScrollPane(invData), BorderLayout.CENTER);
 		} else if (e.getKeyCode() == KeyEvent.VK_M) {
 			mapFrame.setVisible(!mapFrame.isVisible());
 		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
@@ -254,9 +281,11 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			if(p.info.getCurrMap()==1)
 				p.info.setCurrMap(2);
 			else
-				p.info.setCurrMap(1);
+				p.info.setCurrMap(4);
 			p.info.setLoc(new Vector(0, 0));
 			bg = maps.get(p.info.getCurrMap()-1).map;
+			Equipable weapon = new Equipable("Hermy's little Hermy", "Dagger");
+			p.Inventory.addElement(weapon);
 		}
 	}
 
@@ -306,7 +335,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		if(c.getSpeed().isZero())
 			return;
 		c.setCurr(System.nanoTime());
-		System.out.println(c.getCurr()-c.getMoveTime());
 		if(c.getCurr()-c.getWait()*1000000>c.getMoveTime()) {
 			Vector newLoc = new Vector(c.info.getLoc());
 			newLoc.add(c.getSpeed());

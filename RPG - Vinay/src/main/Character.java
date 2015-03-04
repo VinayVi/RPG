@@ -49,7 +49,7 @@ public class Character implements Serializable {
 				for(int j=0; j<=3; j++) {
 					sprites[i][j] = spritesheet.getSubimage(0, (4*i+j)*48, 48, 48);
 				}
-			}
+			} 
 			currSprite = sprites[2][0];
 		} catch (IOException e) {}
 		true_wait = 4;

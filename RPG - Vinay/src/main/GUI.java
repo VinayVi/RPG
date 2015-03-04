@@ -31,30 +31,27 @@ import tiles.Tile;
 
 @SuppressWarnings("serial")
 public class GUI extends JPanel implements Runnable, KeyListener {
-	private Image image, bg;
+	private Image image;
 	private Graphics second;
 	private Character p;
-	private ArrayList<Map> maps;
+	private Map map;
 	private int leftX, rightX, topY, botY;
+	private ArrayList<Integer> drawnMaps;
 	JFrame mapFrame, optFrame, invFrame;
 	JPanel mapPane, optPane;
 	JPanel invPane;
 	JList<Equipable> invData;
 	JButton load, save, exit, resume; //Options Buttons
+	JButton equip;
 	private Thread mover;
 
 	public GUI() {
 		Toolkit tk = Toolkit.getDefaultToolkit();  
 		int xSize = ((int) tk.getScreenSize().getWidth());  
 		int ySize = ((int) tk.getScreenSize().getHeight());  
-		bg = null;
-		maps = new ArrayList<Map>();
-		maps.add(new Map(1));
-		maps.add(new Map(2));
-		maps.add(new Map(3));
-		maps.add(new Map(4));
-		maps.add(new Map(5));//MARKET
-		bg = maps.get(0).map;
+		drawnMaps = new ArrayList<Integer>();
+		map = new Map(1, true);
+		drawnMaps.add(1);
 		p = new Character("Kirito");
 		mapPane = new JPanel(); 	
 		mapFrame = new JFrame("Map");
@@ -115,7 +112,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		second = image.getGraphics();
 		second.setColor(Color.BLACK);
 	    second.fillRect(0, 0, getWidth(), getHeight());
-		second.drawImage(bg, 0, 0, getWidth(), getHeight(), leftX + 24,
+		second.drawImage(map.map, 0, 0, getWidth(), getHeight(), leftX + 24,
 				topY + 24, rightX + 24, botY + 24, this);
 		second.drawImage(p.currSprite, getWidth() / 2 - 24,
 				getHeight() / 2 - 24, this);		
@@ -129,7 +126,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		JFrame frame = new JFrame("RPG");
 		GUI gui = new GUI();
 		gui.setPreferredSize(new Dimension(xSize, ySize));
-		frame.setUndecorated(true);
+		//frame.setUndecorated(true);
 		frame.add(gui);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -144,20 +141,24 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	public class invListener implements KeyListener {
 		@Override
 		public void keyPressed(KeyEvent e) {
+			System.out.println(e);
 			if (e.getKeyCode() == KeyEvent.VK_M) {
 				mapFrame.setVisible(!mapFrame.isVisible());
 			} else if (e.getKeyCode() == KeyEvent.VK_O) {
 				optFrame.setVisible(!optFrame.isVisible());
 			} else if (e.getKeyCode() == KeyEvent.VK_I) {
 				invFrame.setVisible(!invFrame.isVisible());
-				invData = new JList<Equipable>(p.Inventory);
-				invPane.add(invData, BorderLayout.CENTER);
+			} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				Equipable eq = invData.getSelectedValue();
+				JOptionPane.showMessageDialog(new JFrame(), eq.getName());
 			}
 		}
 		@Override
-		public void keyReleased(KeyEvent arg0) {}
+		public void keyReleased(KeyEvent e) {}
 		@Override
-		public void keyTyped(KeyEvent arg0) {}
+		public void keyTyped(KeyEvent e) {
+			System.out.println(e);
+		}
 	}
 	
 	public class buttonListener implements ActionListener, KeyListener {
@@ -178,7 +179,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 						p.info = o;
 						JOptionPane.showMessageDialog(new JFrame(), "Successfully Loaded");
 						optFrame.setVisible(!optFrame.isVisible());
-						bg = maps.get(p.info.getCurrMap()-1).map;
 					}
 				} catch (ClassNotFoundException | IOException e1) {
 					e1.printStackTrace();
@@ -277,13 +277,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			p.setWait(0.5);
 		} else if (e.getKeyCode() == KeyEvent.VK_N){
-			System.out.println(true);
-			if(p.info.getCurrMap()==1)
-				p.info.setCurrMap(2);
-			else
-				p.info.setCurrMap(4);
-			p.info.setLoc(new Vector(0, 0));
-			bg = maps.get(p.info.getCurrMap()-1).map;
 			Equipable weapon = new Equipable("Hermy's little Hermy", "Dagger");
 			p.Inventory.addElement(weapon);
 		}
@@ -344,7 +337,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			if(c.info.mD) {
 				newLoc.add(0, 47);
 			}
-			Tile newTile = maps.get(c.info.getCurrMap()-1).getTile(newLoc);
+			Tile newTile = map.getTile(newLoc);
 			if(newTile == null || !newTile.walkable()) {
 				c.currSprite = c.sprites[facing(c.getSpeed())][0];
 				c.setSpeed(0, 0);
@@ -368,7 +361,13 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			if(c.info.getLoc().getX()%48==0&&c.info.getLoc().getY()%48==0&&newTile instanceof Portal) {
 				c.info.setLoc(((Portal) newTile).getNewLoc());
 				c.info.setCurrMap(((Portal) newTile).getNewMap());
-				bg = maps.get(p.info.getCurrMap()-1).map;
+				if(drawnMaps.contains(c.info.getCurrMap())) {
+					map = new Map(c.info.getCurrMap(), false);
+				}
+				else {
+					map = new Map(c.info.getCurrMap(), true);
+					drawnMaps.add(c.info.getCurrMap());
+				}
 			}
 		}
 	}

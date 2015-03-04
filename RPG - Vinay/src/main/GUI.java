@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -86,7 +89,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		optPane.add(resume);
 		optFrame.addKeyListener(new buttonListener());
 		invPane = new JPanel();
-		invPane.setLayout(new BorderLayout());
+		invPane.setLayout(new BoxLayout(invPane, BoxLayout.Y_AXIS));
 		invFrame = new JFrame("Inventory");
 		invFrame.getContentPane().add(invPane);
 		invFrame.setSize(300, 500);
@@ -95,6 +98,10 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		invFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		invFrame.addKeyListener(new invListener());
 		invFrame.setUndecorated(true);
+		/*equip = new JButton("Equip");
+		invFrame.add(equip);*/
+		invData = new JList<Equipable>(p.Inventory);
+		invPane.add(new JScrollPane(invData), BorderLayout.CENTER);
 		mover = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -268,8 +275,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			p.info.mD = true;
 		} else if (e.getKeyCode() == KeyEvent.VK_I) {
 			invFrame.setVisible(!invFrame.isVisible());
-			invData = new JList<Equipable>(p.Inventory);
-			invPane.add(new JScrollPane(invData), BorderLayout.CENTER);
 		} else if (e.getKeyCode() == KeyEvent.VK_M) {
 			mapFrame.setVisible(!mapFrame.isVisible());
 		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {

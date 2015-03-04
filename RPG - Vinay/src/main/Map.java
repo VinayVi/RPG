@@ -221,7 +221,6 @@ public class Map {
 			tiles[2][5].setType(208);
 			tiles[3][5] = new Portal(3 * 48, 5 * 48, true, new Vector(15 * 48,
 					1 * 48), 1);
-			tiles[3][5].setType(208);
 		}
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;

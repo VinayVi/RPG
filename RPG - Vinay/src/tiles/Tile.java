@@ -49,6 +49,9 @@ public class Tile {
 	 * 42 = Connor Gravestone
 	 * 43 = Eric Gravestone
 	 * 44 = Daniel Gravestone
+	 * 45 = Snow
+	 * 46 = SnowRoad
+	 * 47 = Ice
 	 * 101 = Bear
 	 * 102 = Wolf
 	 * 201 = HouseBotLeft

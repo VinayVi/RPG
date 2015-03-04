@@ -49,11 +49,12 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		int ySize = ((int) tk.getScreenSize().getHeight());  
 		bg = null;
 		maps = new ArrayList<Map>();
-		maps.add(new Map(1));
-		maps.add(new Map(2));
-		maps.add(new Map(3));
-		maps.add(new Map(4));
-		maps.add(new Map(5));//MARKET
+		//maps.add(new Map(1));
+		//maps.add(new Map(2));
+		//maps.add(new Map(3));
+		//maps.add(new Map(4));
+		//maps.add(new Map(5));
+		//maps.add(new Map(101));//MARKET
 		bg = maps.get(0).map;
 		p = new Character("Kirito");
 		mapPane = new JPanel(); 	

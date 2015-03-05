@@ -5,7 +5,11 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
@@ -22,6 +26,21 @@ public class Map {
 	BufferedImage map;
 
 	public Map(int num, boolean draw) {
+		if(!draw) {
+			try {
+				map = ImageIO.read(new File("src//tiles//map" + num + ".png"));
+				FileInputStream fin = new FileInputStream("src//tiles//map"+num+".tiles");
+				ObjectInputStream ois = new ObjectInputStream(fin);
+				tiles = (Tile[][]) ois.readObject();
+				ois.close();
+				length = map.getHeight();
+				width = map.getWidth();
+				
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			return;
+		}
 		final Color grass = new Color(0, 166, 81);
 		final Color road = new Color(226, 174, 127);
 		final Color water = new Color(0, 0, 255);
@@ -190,7 +209,7 @@ public class Map {
 			tiles[149][83] = new Portal(149 * 48, 83 * 48, true, new Vector(0,
 					128 * 48), 3);
 			tiles[15][15] = new Portal(15 * 48, 15 * 48, true, new Vector(
-					2 * 48, 5 * 48), 5);
+					2 * 48, 5 * 48), 101);
 			tiles[15][15].setType(202);
 		} else if (num == 2) {
 			// To Grassland
@@ -215,23 +234,26 @@ public class Map {
 					82 * 48), 1);
 			tiles[0][128] = new Portal(0, 128 * 48, true, new Vector(149 * 48,
 					83 * 48), 1);
-		} else if (num == 5) {
+		} else if (num == 101) {
 			tiles[2][5] = new Portal(2 * 48, 5 * 48, true, new Vector(15 * 48,
 					16 * 48), 1);
 			tiles[2][5].setType(208);
 			tiles[3][5] = new Portal(3 * 48, 5 * 48, true, new Vector(15 * 48,
-					1 * 48), 1);
+					16 * 48), 1);
+			tiles[3][5].setType(208);
 		}
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;
-		if(draw)
-			map = drawMap(num);
-		else
-			try {
-				map = ImageIO.read(new File("src//tiles//map" + num + ".png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		map = drawMap(num);
+		try {
+			FileOutputStream fout = new FileOutputStream("src//tiles//map"+num+".tiles");
+			ObjectOutputStream oos = new ObjectOutputStream(fout);
+			oos.writeObject(tiles);
+			oos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public Tile getTile(Vector v) {

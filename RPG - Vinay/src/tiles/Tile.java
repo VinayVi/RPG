@@ -1,7 +1,10 @@
 package tiles;
+import java.io.Serializable;
+
 import main.*;
 
-public class Tile {
+public class Tile implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private Vector loc;
 	private int type;
 	private boolean walkable;

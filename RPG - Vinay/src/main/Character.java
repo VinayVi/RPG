@@ -1,16 +1,17 @@
 package main;
 
-
 import item.Item;
+import item.ItemType;
 import items.Equipable.Equipable;
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
@@ -19,12 +20,13 @@ import javax.swing.ListModel;
 public class Character implements Serializable {
 	public Info info;
 	protected int tileSize;
-	protected double tps; // seconds per tile, aka how long it takes to move 1 tile
+	protected double tps; // seconds per tile, aka how long it takes to move 1
+							// tile
 	public Image currSprite;
 	public Image BL, BR, BS, FL, FR, FS, LL, LR, LS, RL, RR, RS;
 	volatile int dir;
 	public DefaultListModel<Equipable> Inventory = new DefaultListModel<Equipable>();
-	
+
 	public final Image[][] sprites;
 	private volatile Vector speed;
 	final double true_wait;
@@ -33,7 +35,7 @@ public class Character implements Serializable {
 	private double wait;
 
 	public Character(String name) {
-		Equipable weapon=new Equipable("Daniel's Weeny","Dagger");
+		Equipable weapon = new Equipable("Daniel's Weeny", ItemType.TWO, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 		Inventory.addElement(weapon);
 		info = new Info();
 		info.mU = false;
@@ -44,23 +46,24 @@ public class Character implements Serializable {
 		this.info.name = name;
 		sprites = new Image[4][4];
 		try {
-			BufferedImage spritesheet = ImageIO.read(new File("src//sprites//"+name+".png"));
-			for(int i=0; i<=3; i++) {
-				for(int j=0; j<=3; j++) {
-					sprites[i][j] = spritesheet.getSubimage(0, (4*i+j)*48, 48, 48);
+			BufferedImage spritesheet = ImageIO.read(new File("src//sprites//" + name + ".png"));
+			for (int i = 0; i <= 3; i++) {
+				for (int j = 0; j <= 3; j++) {
+					sprites[i][j] = spritesheet.getSubimage(0, (4 * i + j) * 48, 48, 48);
 				}
-			} 
+			}
 			currSprite = sprites[2][0];
-		} catch (IOException e) {}
+		} catch (IOException e) {
+		}
 		true_wait = 4;
 		setWait(true_wait);
 		setMoveTime(0);
 		info.setLoc(new Vector(0, 0));
 		speed = new Vector();
 	}
-	
+
 	public boolean moving() {
-		return info.mD||info.mL||info.mU||info.mR;
+		return info.mD || info.mL || info.mU || info.mR;
 	}
 
 	public int getX() {
@@ -84,19 +87,20 @@ public class Character implements Serializable {
 			info.getInventoryW().add(i);
 		}
 	}
-	
+
 	public Vector getSpeed() {
 		return speed;
 	}
-	
+
 	public void setSpeed(Vector v) {
 		speed = v;
 	}
-	
+
 	public void setSpeed(int x, int y) {
 		speed.setX(x);
 		speed.setY(y);
 	}
+
 	// Stat Accessors
 	public double getDmg() {
 		return info.str * info.getStrMultiplier() + info.damage;

@@ -40,7 +40,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	JPanel mapPane, optPane;
 	JPanel invPane;
 	JList<Equipable> invData;
-	JButton load, save, exit, resume; //Options Buttons
+	JButton load, save, exit, resume, question; //Options Buttons
 	private Thread mover;
 
 	public GUI() {
@@ -83,10 +83,13 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		exit.addActionListener(new buttonListener());
 		resume = new JButton("Resume Game");
 		resume.addActionListener(new buttonListener());
+		question = new JButton("???");
+		question.addActionListener(new buttonListener());
 		optPane.add(load);
 		optPane.add(save);
 		optPane.add(exit);
 		optPane.add(resume);
+		optPane.add(question);
 		optFrame.addKeyListener(new buttonListener());
 		invPane = new JPanel();
 		invPane.setLayout(new BorderLayout());
@@ -187,7 +190,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				System.exit(1);
 			} else if(e.getActionCommand().equals("Resume Game")) {
 				optFrame.setVisible(!optFrame.isVisible());
-			}	
+			} 
 		}
 
 		@Override

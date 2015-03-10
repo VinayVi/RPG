@@ -53,6 +53,9 @@ public class Map {
 		final Color MarketCounter2 = new Color(48, 37, 171);
 		final Color MarketCounter3 = new Color(72, 59, 205);
 		final Color MarketCounter4 = new Color(76, 66, 195);
+		final Color Snow = new Color(255, 255, 255);
+		final Color SnowRoad = new Color(194, 194, 194);
+		final Color Ice = new Color(109, 207, 246);
 		BufferedImage bi = null;
 		try {
 			bi = ImageIO.read(new File("src//tiles//Map" + num + ".gif"));
@@ -129,6 +132,12 @@ public class Map {
 					tiles[x][y] = new Tile(212, x * 48, y * 48, false);
 				} else if (c.equals(MarketCounter4)) {
 					tiles[x][y] = new Tile(213, x * 48, y * 48, false);
+				} else if (c.equals(Snow)) {
+					tiles[x][y] = new Tile(45, x * 48, y * 48, true);
+				} else if (c.equals(SnowRoad)) {
+					tiles[x][y] = new Tile(46, x * 48, y * 48, true);
+				} else if (c.equals(Ice)) {
+					tiles[x][y] = new Tile(47, x * 48, y * 48, true);
 				} else {
 					tiles[x][y] = new Tile(3, x * 48, y * 48, false);
 				}
@@ -180,7 +189,7 @@ public class Map {
 			tiles[102][0].setType(20);
 			tiles[101][0].setType(20);
 			tiles[100][0].setType(20);
-
+			tiles[3][3]= new Portal(3 * 48, 3 * 48, true, new Vector(4 * 48,	149 * 48), 5);
 			tiles[149][80] = new Portal(149 * 48, 80 * 48, true, new Vector(0,
 					125 * 48), 3);
 			tiles[149][81] = new Portal(149 * 48, 81 * 48, true, new Vector(0,
@@ -224,7 +233,7 @@ public class Map {
 		}
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;
-		if(draw)
+		if (draw)
 			map = drawMap(num);
 		else
 			try {
@@ -300,6 +309,9 @@ public class Map {
 		Image MarketCounter2 = null;
 		Image MarketCounter3 = null;
 		Image MarketCounter4 = null;
+		Image Snow = null;
+		Image SnowRoad = null;
+		Image Ice = null;
 
 		try {
 			grass = ImageIO.read(new File("src//tiles//GrassTile.png"));
@@ -395,6 +407,9 @@ public class Map {
 					"src//tiles//Eric Gravestone.png"));
 			GravestoneDaniel = ImageIO.read(new File(
 					"src//tiles//Daniel Gravestone.png"));
+			Snow = ImageIO.read(new File("src//tiles//SnowTile.png"));
+			SnowRoad = ImageIO.read(new File("src//tiles//SnowRoad3.png"));
+			Ice = ImageIO.read(new File("src//tiles//IceTile.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -511,6 +526,15 @@ public class Map {
 				case 44:
 					g.drawImage(GravestoneDaniel, v.getX(), v.getY(), null);
 					break;
+				case 45:
+					g.drawImage(Snow, v.getX(), v.getY(), null);
+					break;
+				case 46:
+					g.drawImage(SnowRoad, v.getX(), v.getY(), null);
+					break;
+				case 47:
+					g.drawImage(Ice, v.getX(), v.getY(), null);
+					break;
 				case 101:
 					g.drawImage(Bear, v.getX(), v.getY(), null);
 					break;
@@ -579,5 +603,4 @@ public class Map {
 		return pic;
 
 	}
-
 }

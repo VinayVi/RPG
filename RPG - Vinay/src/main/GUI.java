@@ -44,11 +44,15 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	JFrame mapFrame, optFrame, invFrame, statsFrame;
 	JPanel mapPane, optPane, invPane, statsPane;
 	JList<Equipable> invData;
+<<<<<<< HEAD
+	JButton load, save, exit, resume, question; //Options Buttons
+=======
 	JButton load, save, exit, resume; // Options Buttons
 	JButton equip;
 	JLabel str, agi, dex, fort, luck, damage, dodge, cdr, crit;
 	final String strText, agiText, dexText, fortText, luckText, damageText, dodgeText, cdrText, critText;
 	private volatile boolean running;
+>>>>>>> refs/remotes/origin/master
 	private Thread mover;
 
 	public GUI() {
@@ -89,10 +93,13 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		exit.addActionListener(new buttonListener());
 		resume = new JButton("Resume Game");
 		resume.addActionListener(new buttonListener());
+		question = new JButton("???");
+		question.addActionListener(new buttonListener());
 		optPane.add(load);
 		optPane.add(save);
 		optPane.add(exit);
 		optPane.add(resume);
+		optPane.add(question);
 		optFrame.addKeyListener(new buttonListener());
 		optFrame.setAlwaysOnTop(true);
 
@@ -273,6 +280,17 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				}
 			} else if (e.getActionCommand().equals("Exit Game")) {
 				System.exit(1);
+<<<<<<< HEAD
+			} else if(e.getActionCommand().equals("Resume Game")) {
+				optFrame.setVisible(!optFrame.isVisible());
+			} 
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
+				optFrame.setVisible(!optFrame.isVisible());
+=======
 			} else if (e.getActionCommand().equals("Resume Game")) {
 				optFrame.setVisible(false);
 			} else if (e.getActionCommand().equals("Equip")) {
@@ -281,6 +299,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 					eq.equipped = true;
 				}
 				updateStats();
+>>>>>>> refs/remotes/origin/master
 			}
 		}
 

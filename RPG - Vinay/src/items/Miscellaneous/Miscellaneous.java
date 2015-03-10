@@ -1,10 +1,10 @@
 package items.Miscellaneous;
 import item.Item;
-import items.*;
+import item.ItemType;
 
 public class Miscellaneous extends Item{
 
-	public Miscellaneous(String name, String Type) {
+	public Miscellaneous(String name, ItemType Type) {
 		super(name, Type);
 		// TODO Auto-generated constructor stub
 	}

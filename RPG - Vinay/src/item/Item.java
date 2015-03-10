@@ -2,21 +2,22 @@ package item;
 
 public abstract class Item {
 
-	protected String type; 
+	protected ItemType type;
 	protected String Name;
-	
-	public Item(String name, String Type)
-	{
-		Name=name;
-		type=Type;
+
+	public Item(String name, ItemType type2) {
+		Name = name;
+		type = type2;
 	}
-	
-	public String getType() {
+
+	public ItemType getType() {
 		return type;
 	}
+
 	public String getName() {
 		return Name;
 	}
+
 	@Override
 	public String toString() {
 		return Name;

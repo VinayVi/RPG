@@ -15,10 +15,10 @@ public class Info implements Serializable {
 	protected double damage = 0;
 	protected double resil = 0;
 	/** Directional Moving Booleans */
-	protected static boolean mU;
-	protected static boolean mR;
-	protected static boolean mD;
-	protected static boolean mL;
+	protected boolean mU;
+	protected boolean mR;
+	protected boolean mD;
+	protected boolean mL;
 	protected int state;
 	protected String name;
 	private double strMultiplier;

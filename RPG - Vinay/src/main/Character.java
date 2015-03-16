@@ -4,17 +4,14 @@ import item.Item;
 import item.ItemType;
 import item.Equipable.Equipable;
 
-import java.util.ArrayList;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
 
 @SuppressWarnings("serial")
 public class Character implements Serializable {

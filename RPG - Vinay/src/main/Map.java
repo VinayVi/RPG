@@ -249,25 +249,6 @@ public class Map {
 		}
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;
-		if (draw)
-			map = drawMap(num);
-		else
-			try {
-				map = ImageIO.read(new File("src//tiles//map" + num + ".png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		map = drawMap(num);
-		try {
-			FileOutputStream fout = new FileOutputStream("src//tiles//map"
-					+ num + ".tiles");
-			ObjectOutputStream oos = new ObjectOutputStream(fout);
-			oos.writeObject(tiles);
-			oos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		long deltaT = System.currentTimeMillis();
 		if(draw)
 			map = drawMap(num);

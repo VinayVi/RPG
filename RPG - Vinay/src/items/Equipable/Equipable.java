@@ -20,6 +20,16 @@ public class Equipable extends Item {
 		equipped = false;
 		stam = Stam;
 	}
+	
+	public Equipable(String name, ItemType Type, int Str, int Fort, int Damage, int Resil, int Stam) {
+		super(name, Type);
+		str = Str;
+		fort = Fort;
+		damage = Damage;
+		resil = Resil;
+		equipped = false;
+		stam = Stam;
+	}
 
 	public boolean isEquipped() {
 		return equipped;

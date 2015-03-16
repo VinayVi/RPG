@@ -24,24 +24,7 @@ public class Map {
 	Tile tiles[][];
 	int length, width;
 	BufferedImage map;
-
-	public Map(int num, boolean draw) {
-		if (!draw) {
-			try {
-				map = ImageIO.read(new File("src//tiles//map" + num + ".png"));
-				FileInputStream fin = new FileInputStream("src//tiles//map"
-						+ num + ".tiles");
-				ObjectInputStream ois = new ObjectInputStream(fin);
-				tiles = (Tile[][]) ois.readObject();
-				ois.close();
-				length = map.getHeight();
-				width = map.getWidth();
-
-			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-			return;
-		}
+	public Map(int num, boolean draw) throws IOException {
 		final Color grass = new Color(0, 166, 81);
 		final Color road = new Color(226, 174, 127);
 		final Color water = new Color(0, 0, 255);
@@ -285,6 +268,13 @@ public class Map {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		long deltaT = System.currentTimeMillis();
+		if(draw)
+			map = drawMap(num);
+		else 
+			map = ImageIO.read(new File("src//tiles//map" + num + ".png"));
+		System.out.println(deltaT-System.currentTimeMillis());
+		System.out.println(System.currentTimeMillis());
 	}
 
 	public Tile getTile(Vector v) {
@@ -653,7 +643,6 @@ public class Map {
 			java.util.Iterator<ImageWriter> writers = ImageIO
 					.getImageWritersByFormatName("png");
 			ImageWriter writer = writers.next();
-
 			File f = new File("src//tiles//map" + num + ".png");
 			ImageOutputStream ios = ImageIO.createImageOutputStream(f);
 			writer.setOutput(ios);

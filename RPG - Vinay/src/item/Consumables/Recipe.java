@@ -1,4 +1,4 @@
-package items.Consumables;
+package item.Consumables;
 
 import item.ItemType;
 

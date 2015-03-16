@@ -2,7 +2,7 @@ package main;
 
 import item.Item;
 import item.ItemType;
-import items.Equipable.Equipable;
+import item.Equipable.Equipable;
 
 import java.util.ArrayList;
 import java.awt.Image;

@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -34,7 +36,7 @@ import tiles.Tile;
 
 @SuppressWarnings("serial")
 public class GUI extends JPanel implements Runnable, KeyListener {
-	private Image image;
+	private Image image, loadingImage;
 	private Graphics second;
 	private Character p;
 	private Map map;
@@ -43,15 +45,17 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	JFrame mapFrame, optFrame, invFrame, statsFrame;
 	JPanel mapPane, optPane, invPane, statsPane;
 	JList<Equipable> invData;
-	JButton load, save, exit, resume, question; //Options Buttons
+	JButton load, save, exit, resume; //Options Buttons
 	JButton equip;
 	JLabel str, fort, damage, resil;
 	final String strText, fortText, damageText, resilText;
 	private volatile boolean running;
+	private boolean loading;
 	private Thread mover;
 
 	public GUI() throws IOException {
 		running = true;
+		loading = false;
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		int xSize = ((int) tk.getScreenSize().getWidth());
 		int ySize = ((int) tk.getScreenSize().getHeight());
@@ -89,13 +93,10 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		exit.addActionListener(new buttonListener());
 		resume = new JButton("Resume Game");
 		resume.addActionListener(new buttonListener());
-		question = new JButton("???");
-		question.addActionListener(new buttonListener());
 		optPane.add(load);
 		optPane.add(save);
 		optPane.add(exit);
 		optPane.add(resume);
-		optPane.add(question);
 		optFrame.addKeyListener(new buttonListener());
 		optFrame.setAlwaysOnTop(true);
 
@@ -120,7 +121,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		statsPane = new JPanel();
 		statsPane.setLayout(new BoxLayout(statsPane, BoxLayout.Y_AXIS));
 		statsFrame = new JFrame();
-		statsFrame.setSize(250, 160);
+		statsFrame.setSize(250, 75);
 		statsFrame.setLocation(0, ySize - statsFrame.getHeight());
 		statsFrame.setVisible(false);
 		statsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -128,10 +129,10 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		statsFrame.setAlwaysOnTop(true);
 		statsFrame.setFocusable(false);
 		statsFrame.setFocusableWindowState(false);
-		strText = new String("Strength:     	       ");
-		fortText = new String("Fortitude:           ");
-		damageText = new String("Damage:              ");
-		resilText = new String("Resilience:         ");
+		strText = new String("  Strength:     	       ");
+		fortText = new String("  Fortitude:           ");
+		damageText = new String("  Damage:              ");
+		resilText = new String("  Resilience:          ");
 		Font font = new Font("Courier New", Font.BOLD, 14);
 		str = new JLabel(strText);
 		str.setFont(font);
@@ -141,6 +142,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		damage.setFont(font);
 		resil = new JLabel(resilText);
 		resil.setFont(font);
+		
 		statsPane.add(str);
 		statsPane.add(fort);
 		statsPane.add(damage);
@@ -164,6 +166,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		});
 		mover.start();
 		p.info.setCurrMap(1);
+		loadingImage = ImageIO.read(new File("src//sprites/Loading.png"));
 		System.out.println(System.currentTimeMillis());
 		System.out.println(deltaT-System.currentTimeMillis());
 	}
@@ -179,6 +182,11 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		if (!running) {
 			g.setColor(new Color(0, 0, 0, 150));
 			g.fillRect(0, 0, getWidth(), getHeight());
+		}
+		if (loading) {
+			g.setColor(new Color(0, 0, 0));
+			g.fillRect(0, 0, getWidth(), getHeight());
+			g.drawImage(loadingImage, (getWidth()-loadingImage.getWidth(this))/2, (getHeight()-loadingImage.getHeight(this))/2, this);
 		}
 	}
 
@@ -379,7 +387,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_N) {
 			Equipable weapon = new Equipable("Hermy's Weeny", ItemType.TWO, 1, 2, 3, 4, 5);
 			p.Inventory.addElement(weapon);
-		} else if (e.getKeyCode() == KeyEvent.VK_X) {
+		} else if (e.getKeyCode() == KeyEvent.VK_C) {
 			statsFrame.setVisible(!statsFrame.isVisible());
 		}
 	}
@@ -466,10 +474,14 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				c.info.setLoc(((Portal) newTile).getNewLoc());
 				c.info.setCurrMap(((Portal) newTile).getNewMap());
 				if (drawnMaps.contains(c.info.getCurrMap())) {
+					loading = true;
 					map = new Map(c.info.getCurrMap(), false);
+					loading = false;
 				} else {
+					loading = true;
 					map = new Map(c.info.getCurrMap(), true);
 					drawnMaps.add(c.info.getCurrMap());
+					loading = false;
 				}
 			}
 		}

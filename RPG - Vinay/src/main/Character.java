@@ -35,7 +35,7 @@ public class Character implements Serializable {
 	private double wait;
 
 	public Character(String name) {
-		Equipable weapon = new Equipable("Daniel's Weeny", ItemType.TWO, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+		Equipable weapon = new Equipable("Daniel's Weeny", ItemType.TWO, 1, 2, 3, 4, 5);
 		Inventory.addElement(weapon);
 		info = new Info();
 		info.mU = false;
@@ -111,7 +111,7 @@ public class Character implements Serializable {
 		return info.maxHealth;
 	}
 
-	public double getDodge() {
+/*	public double getDodge() {
 		info.dodge = info.dex * info.getDexMultiplier();
 		return info.dodge;
 	}
@@ -124,7 +124,7 @@ public class Character implements Serializable {
 	public double getCDR() {
 		info.cdr = info.agi * info.getAgiMultiplier();
 		return info.cdr;
-	}
+	}*/
 
 	public long getCurr() {
 		return curr;

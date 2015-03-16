@@ -11,23 +11,18 @@ public class Info implements Serializable {
 	protected double currentHealth;
 	protected double maxHealth;
 	protected double str = 0;
-	protected double agi = 0;
-	protected double dex = 0;
 	protected double fort = 0;
-	protected double luck = 0;
 	protected double damage = 0;
-	protected double dodge = 0;
-	protected double cdr = 0;
-	protected double crit = 0;
+	protected double resil = 0;
 	/** Directional Moving Booleans */
-	protected boolean mU, mR, mD, mL;
+	protected static boolean mU;
+	protected static boolean mR;
+	protected static boolean mD;
+	protected static boolean mL;
 	protected int state;
 	protected String name;
 	private double strMultiplier;
-	private double agiMultiplier;
 	private double fortMultiplier;
-	private double dexMultiplier;
-	private double luckMultiplier;
 	private ArrayList<Item> inventoryW;// Weapons
 	private ArrayList<Item> inventoryA;// Armor
 	private int weaponsEquipped;
@@ -42,36 +37,12 @@ public class Info implements Serializable {
 		this.strMultiplier = strMultiplier;
 	}
 
-	public double getAgiMultiplier() {
-		return agiMultiplier;
-	}
-
-	public void setAgiMultiplier(double agiMultiplier) {
-		this.agiMultiplier = agiMultiplier;
-	}
-
 	public double getFortMultiplier() {
 		return fortMultiplier;
 	}
 
 	public void setFortMultiplier(double fortMultiplier) {
 		this.fortMultiplier = fortMultiplier;
-	}
-
-	public double getDexMultiplier() {
-		return dexMultiplier;
-	}
-
-	public void setDexMultiplier(double dexMultiplier) {
-		this.dexMultiplier = dexMultiplier;
-	}
-
-	public double getLuckMultiplier() {
-		return luckMultiplier;
-	}
-
-	public void setLuckMultiplier(double luckMultiplier) {
-		this.luckMultiplier = luckMultiplier;
 	}
 
 	public ArrayList<Item> getInventoryW() {

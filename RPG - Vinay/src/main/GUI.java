@@ -44,15 +44,11 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	JFrame mapFrame, optFrame, invFrame, statsFrame;
 	JPanel mapPane, optPane, invPane, statsPane;
 	JList<Equipable> invData;
-<<<<<<< HEAD
 	JButton load, save, exit, resume, question; //Options Buttons
-=======
-	JButton load, save, exit, resume; // Options Buttons
 	JButton equip;
-	JLabel str, agi, dex, fort, luck, damage, dodge, cdr, crit;
-	final String strText, agiText, dexText, fortText, luckText, damageText, dodgeText, cdrText, critText;
+	JLabel str, fort, damage, resil;
+	final String strText, fortText, damageText, resilText;
 	private volatile boolean running;
->>>>>>> refs/remotes/origin/master
 	private Thread mover;
 
 	public GUI() {
@@ -133,42 +129,22 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		statsFrame.setFocusable(false);
 		statsFrame.setFocusableWindowState(false);
 		strText = new String("Strength:     	       ");
-		agiText = new String("Agility:             ");
-		dexText = new String("Dexterity:           ");
 		fortText = new String("Fortitude:           ");
-		luckText = new String("Luck:                ");
 		damageText = new String("Damage:              ");
-		dodgeText = new String("Dodge:               ");
-		cdrText = new String("Cooldown Reduction:  ");
-		critText = new String("Critical Chance:     ");
+		resilText = new String("Resilience:         ");
 		Font font = new Font("Courier New", Font.BOLD, 14);
 		str = new JLabel(strText);
 		str.setFont(font);
-		agi = new JLabel(agiText);
-		agi.setFont(font);
-		dex = new JLabel(dexText);
-		dex.setFont(font);
 		fort = new JLabel(fortText);
 		fort.setFont(font);
-		luck = new JLabel(luckText);
-		luck.setFont(font);
 		damage = new JLabel(damageText);
 		damage.setFont(font);
-		dodge = new JLabel(dodgeText);
-		dodge.setFont(font);
-		cdr = new JLabel(cdrText);
-		cdr.setFont(font);
-		crit = new JLabel(critText);
-		crit.setFont(font);
+		resil = new JLabel(resilText);
+		resil.setFont(font);
 		statsPane.add(str);
-		statsPane.add(agi);
-		statsPane.add(dex);
 		statsPane.add(fort);
-		statsPane.add(luck);
 		statsPane.add(damage);
-		statsPane.add(dodge);
-		statsPane.add(cdr);
-		statsPane.add(crit);
+		statsPane.add(resil);
 		statsFrame.setContentPane(statsPane);
 		updateStats();
 		mover = new Thread(new Runnable() {
@@ -280,29 +256,17 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				}
 			} else if (e.getActionCommand().equals("Exit Game")) {
 				System.exit(1);
-<<<<<<< HEAD
 			} else if(e.getActionCommand().equals("Resume Game")) {
 				optFrame.setVisible(!optFrame.isVisible());
-			} 
-		}
-
-		@Override
-		public void keyPressed(KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
-				optFrame.setVisible(!optFrame.isVisible());
-=======
-			} else if (e.getActionCommand().equals("Resume Game")) {
-				optFrame.setVisible(false);
 			} else if (e.getActionCommand().equals("Equip")) {
 				ArrayList<Equipable> selected = (ArrayList<Equipable>) invData.getSelectedValuesList();
 				for (Equipable eq : selected) {
 					eq.equipped = true;
 				}
 				updateStats();
->>>>>>> refs/remotes/origin/master
+				
 			}
 		}
-
 		@Override
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
@@ -406,7 +370,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			p.setWait(0.5);
 		} else if (e.getKeyCode() == KeyEvent.VK_N) {
-			Equipable weapon = new Equipable("Hermy's Weeny", ItemType.TWO, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+			Equipable weapon = new Equipable("Hermy's Weeny", ItemType.TWO, 1, 2, 3, 4, 5);
 			p.Inventory.addElement(weapon);
 		} else if (e.getKeyCode() == KeyEvent.VK_X) {
 			statsFrame.setVisible(!statsFrame.isVisible());
@@ -506,38 +470,23 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 
 	public void updateStats() {
 		p.info.str = 0;
-		p.info.agi = 0;
-		p.info.dex = 0;
 		p.info.fort = 0;
-		p.info.luck = 0;
 		p.info.damage = 0;
-		p.info.dodge = 0;
-		p.info.cdr = 0;
-		p.info.crit = 0;
+		p.info.resil = 0;
 		for (int i = 0; i < p.Inventory.size(); i++) {
 			Equipable e = p.Inventory.get(i);
 			if (e.equipped) {
 				p.info.str += e.getStr();
-				p.info.agi += e.getAgi();
-				p.info.dex += e.getDex();
 				p.info.fort += e.getFort();
-				p.info.luck += e.getLuck();
 				p.info.damage += e.getDamage();
-				p.info.dodge += e.getDodge();
-				p.info.cdr += e.getCdr();
-				p.info.crit += e.getCrit();
+				p.info.resil += e.getResil();
 			}
 		}
 
 		str.setText(strText + p.info.str);
-		agi.setText(agiText + p.info.agi);
-		dex.setText(dexText + p.info.dex);
 		fort.setText(fortText + p.info.fort);
-		luck.setText(luckText + p.info.luck);
 		damage.setText(damageText + p.info.damage);
-		dodge.setText(dodgeText + p.info.dodge);
-		cdr.setText(cdrText + p.info.cdr);
-		crit.setText(critText + p.info.crit);
+		resil.setText(resilText + p.info.resil);
 		statsPane.repaint();
 	}
 }

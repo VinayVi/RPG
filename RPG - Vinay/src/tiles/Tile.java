@@ -55,6 +55,7 @@ public class Tile implements Serializable{
 	 * 45 = Snow
 	 * 46 = SnowRoad
 	 * 47 = Ice
+	 * 48 = Boat
 	 * 101 = Bear
 	 * 102 = Wolf
 	 * 201 = HouseBotLeft
@@ -75,6 +76,7 @@ public class Tile implements Serializable{
 	public boolean walkable() {
 		return walkable;
 	}
+	
 	
 	public Tile(int type, Vector v, boolean b) {
 		loc = new Vector();

@@ -1,8 +1,7 @@
 package main;
 
 import item.ItemType;
-import items.Equipable.Equipable;
-
+import item.Equipable.Equipable;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -44,18 +43,14 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	JFrame mapFrame, optFrame, invFrame, statsFrame;
 	JPanel mapPane, optPane, invPane, statsPane;
 	JList<Equipable> invData;
-<<<<<<< HEAD
 	JButton load, save, exit, resume, question; //Options Buttons
-=======
-	JButton load, save, exit, resume; // Options Buttons
 	JButton equip;
 	JLabel str, agi, dex, fort, luck, damage, dodge, cdr, crit;
 	final String strText, agiText, dexText, fortText, luckText, damageText, dodgeText, cdrText, critText;
 	private volatile boolean running;
->>>>>>> refs/remotes/origin/master
 	private Thread mover;
 
-	public GUI() {
+	public GUI() throws IOException {
 		running = true;
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		int xSize = ((int) tk.getScreenSize().getWidth());
@@ -64,7 +59,8 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		map = new Map(1, true);
 		drawnMaps.add(1);
 		p = new Character("Kirito");
-
+		long deltaT = System.currentTimeMillis();
+		System.out.println(deltaT);
 		mapPane = new JPanel();
 		mapFrame = new JFrame();
 		JLabel mapImage = new JLabel(new ImageIcon("src//tiles//minimap.png"));
@@ -176,13 +172,20 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			public void run() {
 				while (true) {
 					if (running) {
-						update(p);
+						try {
+							update(p);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 			}
 		});
 		mover.start();
 		p.info.setCurrMap(1);
+		System.out.println(System.currentTimeMillis());
+		System.out.println(deltaT-System.currentTimeMillis());
 	}
 
 	public void paint(Graphics g) {
@@ -199,7 +202,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		int xSize = ((int) tk.getScreenSize().getWidth());
 		int ySize = ((int) tk.getScreenSize().getHeight());
@@ -255,6 +258,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				frame.setFocusable(true);
 				frame.toFront();
 			}
+			
 		}
 
 		@Override
@@ -280,26 +284,14 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				}
 			} else if (e.getActionCommand().equals("Exit Game")) {
 				System.exit(1);
-<<<<<<< HEAD
 			} else if(e.getActionCommand().equals("Resume Game")) {
 				optFrame.setVisible(!optFrame.isVisible());
-			} 
-		}
-
-		@Override
-		public void keyPressed(KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
-				optFrame.setVisible(!optFrame.isVisible());
-=======
-			} else if (e.getActionCommand().equals("Resume Game")) {
-				optFrame.setVisible(false);
 			} else if (e.getActionCommand().equals("Equip")) {
 				ArrayList<Equipable> selected = (ArrayList<Equipable>) invData.getSelectedValuesList();
 				for (Equipable eq : selected) {
 					eq.equipped = true;
 				}
 				updateStats();
->>>>>>> refs/remotes/origin/master
 			}
 		}
 
@@ -457,7 +449,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			return 3;
 	}
 
-	public void update(Character c) {
+	public void update(Character c) throws IOException {
 		if (c.getSpeed().isZero())
 			return;
 		c.setCurr(System.nanoTime());

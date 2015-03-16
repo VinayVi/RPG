@@ -1,4 +1,4 @@
-package items.Miscellaneous;
+package item.Miscellaneous;
 import item.Item;
 import item.ItemType;
 

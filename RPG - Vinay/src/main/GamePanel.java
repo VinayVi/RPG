@@ -35,7 +35,7 @@ import tiles.Portal;
 import tiles.Tile;
 
 @SuppressWarnings("serial")
-public class GUI extends JPanel implements Runnable, KeyListener {
+public class GamePanel extends JPanel implements Runnable, KeyListener {
 	private Image image, loadingImage;
 	private Graphics second;
 	private Character p;
@@ -53,7 +53,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	private boolean loading;
 	private Thread mover;
 
-	public GUI() throws IOException {
+	public GamePanel() throws IOException {
 		running = true;
 		loading = false;
 		Toolkit tk = Toolkit.getDefaultToolkit();
@@ -195,7 +195,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		int xSize = ((int) tk.getScreenSize().getWidth());
 		int ySize = ((int) tk.getScreenSize().getHeight());
 		JFrame frame = new JFrame("RPG");
-		GUI gui = new GUI();
+		GamePanel gui = new GamePanel();
 		gui.setPreferredSize(new Dimension(xSize, ySize));
 		// frame.setUndecorated(true);
 		frame.add(gui);
@@ -206,14 +206,12 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		frame.pack();
 		frame.setResizable(true);
 		frame.setLocationRelativeTo(null);
-		gui.statsFrame.setVisible(true);
 		new Thread(gui).start();
 	}
 
 	public class invListener implements KeyListener {
 		@Override
 		public void keyPressed(KeyEvent e) {
-			System.out.println(true);
 			if (e.getKeyCode() == KeyEvent.VK_M) {
 				mapFrame.setVisible(!mapFrame.isVisible());
 			} else if (e.getKeyCode() == KeyEvent.VK_O) {
@@ -241,7 +239,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 				optFrame.setVisible(false);
 				running = true;
-				JFrame frame = (JFrame) GUI.this.getTopLevelAncestor();
+				JFrame frame = (JFrame) GamePanel.this.getTopLevelAncestor();
 				frame.setFocusableWindowState(true);
 				frame.setFocusable(true);
 				frame.toFront();

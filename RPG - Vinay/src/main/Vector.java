@@ -81,4 +81,10 @@ public class Vector implements Serializable{
 	public String toString() {
 		return x + ", " + y;
 	}
+	
+	public boolean equals(Vector v) {
+		if(x == v.x && y == v.y)
+			return true;
+		return false;
+	}
 }

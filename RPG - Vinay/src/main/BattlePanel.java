@@ -2,7 +2,6 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
@@ -11,6 +10,7 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 	boolean battling;
 	
 	public BattlePanel() {
+		battling = true;
 		
 	}
 

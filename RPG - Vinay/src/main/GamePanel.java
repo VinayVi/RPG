@@ -48,6 +48,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	JButton load, save, exit, resume; //Options Buttons
 	JButton equip;
 	JLabel str, fort, damage, resil;
+	ArrayList<Character> NPCs;
 	final String strText, fortText, damageText, resilText;
 	private volatile boolean running;
 	private boolean loading;
@@ -63,8 +64,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		map = new Map(1, true);
 		drawnMaps.add(1);
 		p = new Character("Kirito");
-		long deltaT = System.currentTimeMillis();
-		System.out.println(deltaT);
 		mapPane = new JPanel();
 		mapFrame = new JFrame();
 		JLabel mapImage = new JLabel(new ImageIcon("src//tiles//minimap.png"));
@@ -149,6 +148,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		statsPane.add(resil);
 		statsFrame.setContentPane(statsPane);
 		updateStats();
+		
+		NPCs = new ArrayList<Character>();
+		//Create NPCs here
+		Character temp = new Character("oldMan");
+		temp.info.setCurrMap(1);
+		temp.info.setLoc(new Vector(0,0));
+		NPCs.add(temp);
+		
 		mover = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -156,6 +163,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 					if (running) {
 						try {
 							update(p);
+							for(Character c : inScreen()) {
+								update(c);
+							}
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -167,8 +177,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		mover.start();
 		p.info.setCurrMap(1);
 		loadingImage = ImageIO.read(new File("src//sprites/Loading.png"));
-		System.out.println(System.currentTimeMillis());
-		System.out.println(deltaT-System.currentTimeMillis());
 	}
 
 	public void paint(Graphics g) {
@@ -178,6 +186,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		second.fillRect(0, 0, getWidth(), getHeight());
 		second.drawImage(map.map, 0, 0, getWidth(), getHeight(), leftX + 24, topY + 24, rightX + 24, botY + 24, this);
 		second.drawImage(p.currSprite, getWidth() / 2 - 24, getHeight() / 2 - 24, this);
+		
+		//draw NPCs
+		for(Character c : inScreen()) {
+			second.drawImage(c.currSprite, c.getX() - leftX, c.getY() - topY, this);
+		}
+		
 		g.drawImage(image, 0, 0, this);
 		if (!running) {
 			g.setColor(new Color(0, 0, 0, 150));
@@ -207,6 +221,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		frame.setResizable(true);
 		frame.setLocationRelativeTo(null);
 		new Thread(gui).start();
+	}
+	
+	public ArrayList<Character> inScreen() {
+		ArrayList<Character> inScreen = new ArrayList<Character>();
+		for(Character c : NPCs){
+			if(c.info.getCurrMap() == p.info.getCurrMap())  {
+				if(Math.abs(p.info.getLoc().getX()-c.info.getLoc().getX())<=this.getWidth()) {
+					if(Math.abs(p.info.getLoc().getY()-c.info.getLoc().getY())<=this.getHeight()) {
+						inScreen.add(c);
+					}
+				}
+			}
+		}
+		return inScreen;
 	}
 
 	public class invListener implements KeyListener {
@@ -422,6 +450,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			}
 		}
 	}
+	
+	public boolean hasNPC(Vector loc) {
+		for(Character c : inScreen())
+			if(c.info.getLoc().equals(loc)) {
+				System.out.println(c.info.name);
+				return true;
+			}
+		return false;
+	}
 
 	public int facing(Vector speed) {
 		if (speed.getY() == -1)
@@ -448,7 +485,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				newLoc.add(0, 47);
 			}
 			Tile newTile = map.getTile(newLoc);
-			if (newTile == null || !newTile.walkable()) {
+			if (newTile == null || !newTile.walkable() || hasNPC(newTile.getLoc())) {
 				c.currSprite = c.sprites[facing(c.getSpeed())][0];
 				c.setSpeed(0, 0);
 				return;
@@ -482,7 +519,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 					loading = false;
 				}
 			}
+			
 		}
+		
+		//map.getTile(c.info.getLoc()).setWalkable(false);
+		
 	}
 
 	public void updateStats() {

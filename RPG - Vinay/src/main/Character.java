@@ -42,16 +42,27 @@ public class Character implements Serializable {
 		info.state = 1;
 		this.info.name = name;
 		sprites = new Image[4][4];
+		BufferedImage spritesheet = null;
 		try {
-			BufferedImage spritesheet = ImageIO.read(new File("src//sprites//" + name + ".png"));
+			spritesheet = ImageIO.read(new File("src//sprites//" + name + ".png"));
+		} catch (IOException e) {
+		}
+		System.out.println(spritesheet.getHeight());
+		if(spritesheet.getHeight()==768) {
 			for (int i = 0; i <= 3; i++) {
 				for (int j = 0; j <= 3; j++) {
 					sprites[i][j] = spritesheet.getSubimage(0, (4 * i + j) * 48, 48, 48);
 				}
 			}
-			currSprite = sprites[2][0];
-		} catch (IOException e) {
 		}
+		else {
+			for (int i = 0; i <= 3; i++) {
+				for (int j = 0; j <= 3; j++) {
+					sprites[i][j] = spritesheet;
+				}
+			}
+		}
+		currSprite = sprites[2][0];
 		true_wait = 4;
 		setWait(true_wait);
 		setMoveTime(0);
@@ -107,21 +118,6 @@ public class Character implements Serializable {
 		info.maxHealth = (info.fort * info.getFortMultiplier());
 		return info.maxHealth;
 	}
-
-/*	public double getDodge() {
-		info.dodge = info.dex * info.getDexMultiplier();
-		return info.dodge;
-	}
-
-	public double getCrit() {
-		info.crit = info.luck * info.getLuckMultiplier();
-		return info.crit;
-	}
-
-	public double getCDR() {
-		info.cdr = info.agi * info.getAgiMultiplier();
-		return info.cdr;
-	}*/
 
 	public long getCurr() {
 		return curr;

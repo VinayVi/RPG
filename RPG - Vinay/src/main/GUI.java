@@ -198,7 +198,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		frame.pack();
 		frame.setResizable(true);
 		frame.setLocationRelativeTo(null);
-		gui.statsFrame.setVisible(true);
+		gui.statsFrame.setVisible(false);
 		new Thread(gui).start();
 	}
 
@@ -240,6 +240,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			}
 			
 		}
+		
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -314,6 +315,30 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		public void keyTyped(KeyEvent arg0) {
 		}
 	}
+	
+	public class statsListener implements KeyListener {
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode() == KeyEvent.VK_C) {
+				statsFrame.setVisible(!statsFrame.isVisible());
+			}else if (e.getKeyCode() == KeyEvent.VK_O) {
+				optFrame.setVisible(!optFrame.isVisible());
+			} else if (e.getKeyCode() == KeyEvent.VK_I) {
+				invFrame.setVisible(!invFrame.isVisible());
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyTyped(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
 
 	/**
 	 * Loads a save file
@@ -379,7 +404,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_N) {
 			Equipable weapon = new Equipable("Hermy's Weeny", ItemType.TWO, 1, 2, 3, 4, 5);
 			p.Inventory.addElement(weapon);
-		} else if (e.getKeyCode() == KeyEvent.VK_X) {
+		} else if (e.getKeyCode() == KeyEvent.VK_C) {
 			statsFrame.setVisible(!statsFrame.isVisible());
 		}
 	}

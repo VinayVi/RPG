@@ -1,6 +1,7 @@
 package main;
 
 import item.Item;
+import item.Equipable.Equipable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class Info implements Serializable {
 	protected double fort = 0;
 	protected double damage = 0;
 	protected double resil = 0;
+	protected double stam = 0;
 	/** Directional Moving Booleans */
 	protected boolean mU;
 	protected boolean mR;
@@ -23,9 +25,12 @@ public class Info implements Serializable {
 	protected String name;
 	private double strMultiplier;
 	private double fortMultiplier;
+	private double resMultiplier;
+	private double stamMultiplier;
 	private ArrayList<Item> inventoryW;// Weapons
 	private ArrayList<Item> inventoryA;// Armor
-	private int weaponsEquipped;
+	private Equipable RweaponEquipped;
+	private Equipable LweaponEquipped;
 	private volatile Vector loc;
 	private volatile int currMap = 1;
 
@@ -45,6 +50,22 @@ public class Info implements Serializable {
 		this.fortMultiplier = fortMultiplier;
 	}
 
+	public double getResMultiplier() {
+		return resMultiplier;
+	}
+
+	public void setResMultiplier(double resMultiplier) {
+		this.resMultiplier = resMultiplier;
+	}
+
+	public double getStamMultiplier() {
+		return stamMultiplier;
+	}
+
+	public void setStamMultiplier(double stamMultiplier) {
+		this.stamMultiplier = stamMultiplier;
+	}
+
 	public ArrayList<Item> getInventoryW() {
 		return inventoryW;
 	}
@@ -61,12 +82,12 @@ public class Info implements Serializable {
 		this.inventoryA = inventoryA;
 	}
 
-	public int getWeaponsEquipped() {
-		return weaponsEquipped;
+	public Equipable getLweaponEquipped() {
+		return LweaponEquipped;
 	}
 
-	public void setWeaponsEquipped(int weaponsEquipped) {
-		this.weaponsEquipped = weaponsEquipped;
+	public void setLweaponEquipped(Equipable weaponsEquipped) {
+		this.LweaponEquipped = weaponsEquipped;
 	}
 
 	public Vector getLoc() {
@@ -83,5 +104,13 @@ public class Info implements Serializable {
 
 	public void setCurrMap(int currMap) {
 		this.currMap = currMap;
+	}
+
+	public Equipable getRweaponEquipped() {
+		return RweaponEquipped;
+	}
+
+	public void setRweaponEquipped(Equipable rweaponEquipped) {
+		RweaponEquipped = rweaponEquipped;
 	}
 }

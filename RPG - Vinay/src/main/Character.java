@@ -44,16 +44,13 @@ public class Character implements Serializable {
 		sprites = new Image[4][4];
 		BufferedImage spritesheet = null;
 		try {
-<<<<<<< HEAD
-			BufferedImage spritesheet = ImageIO.read(new File("src//sprites//"
+			spritesheet = ImageIO.read(new File("src//sprites//"
 					+ name + ".png"));
-=======
 			spritesheet = ImageIO.read(new File("src//sprites//" + name + ".png"));
 		} catch (IOException e) {
 		}
 		System.out.println(spritesheet.getHeight());
 		if(spritesheet.getHeight()==768) {
->>>>>>> refs/remotes/origin/master
 			for (int i = 0; i <= 3; i++) {
 				for (int j = 0; j <= 3; j++) {
 					sprites[i][j] = spritesheet.getSubimage(0,
@@ -188,7 +185,6 @@ public class Character implements Serializable {
 		info.maxHealth = (info.fort * info.getFortMultiplier());
 		return info.maxHealth;
 	}
-<<<<<<< HEAD
 
 	public double getRes() {
 		return info.resil * info.getResMultiplier();
@@ -197,8 +193,6 @@ public class Character implements Serializable {
 	public double getStam() {
 		return info.stam * info.getStamMultiplier();
 	}
-=======
->>>>>>> refs/remotes/origin/master
 
 	public long getCurr() {
 		return curr;

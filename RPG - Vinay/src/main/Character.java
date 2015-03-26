@@ -20,7 +20,6 @@ public class Character implements Serializable {
 	protected double tps; // seconds per tile, aka how long it takes to move 1
 							// tile
 	public Image currSprite;
-	public Image BL, BR, BS, FL, FR, FS, LL, LR, LS, RL, RR, RS;
 	volatile int dir;
 	public DefaultListModel<Equipable> Inventory = new DefaultListModel<Equipable>();
 

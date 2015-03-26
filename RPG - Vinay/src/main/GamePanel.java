@@ -152,8 +152,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		NPCs = new ArrayList<Character>();
 		//Create NPCs here
 		Character temp = new Character("oldMan");
-		temp.info.setCurrMap(1);
-		temp.info.setLoc(new Vector(0,0));
+		temp.info.setCurrMap(101);
+		temp.info.setLoc(new Vector(96,0));
 		NPCs.add(temp);
 		
 		mover = new Thread(new Runnable() {
@@ -189,7 +189,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		
 		//draw NPCs
 		for(Character c : inScreen()) {
-			second.drawImage(c.currSprite, c.getX() - leftX, c.getY() - topY, this);
+			second.drawImage(c.currSprite, c.getX() - leftX -24, c.getY() - topY -24, this);
 		}
 		
 		g.drawImage(image, 0, 0, this);
@@ -520,10 +520,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				}
 			}
 			
-		}
-		
-		//map.getTile(c.info.getLoc()).setWalkable(false);
-		
+		}		
 	}
 
 	public void updateStats() {

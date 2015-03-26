@@ -31,7 +31,8 @@ public class Character implements Serializable {
 	private double wait;
 
 	public Character(String name) {
-		Equipable weapon = new Equipable("Daniel's Weeny", ItemType.TWO, 1, 2, 3, 4, 5);
+		Equipable weapon = new Equipable("Daniel's Weeny", ItemType.TWO, 1, 2,
+				3, 4, 5);
 		Inventory.addElement(weapon);
 		info = new Info();
 		info.mU = false;
@@ -43,6 +44,8 @@ public class Character implements Serializable {
 		sprites = new Image[4][4];
 		BufferedImage spritesheet = null;
 		try {
+			spritesheet = ImageIO.read(new File("src//sprites//"
+					+ name + ".png"));
 			spritesheet = ImageIO.read(new File("src//sprites//" + name + ".png"));
 		} catch (IOException e) {
 		}
@@ -50,7 +53,8 @@ public class Character implements Serializable {
 		if(spritesheet.getHeight()==768) {
 			for (int i = 0; i <= 3; i++) {
 				for (int j = 0; j <= 3; j++) {
-					sprites[i][j] = spritesheet.getSubimage(0, (4 * i + j) * 48, 48, 48);
+					sprites[i][j] = spritesheet.getSubimage(0,
+							(4 * i + j) * 48, 48, 48);
 				}
 			}
 		}
@@ -108,6 +112,70 @@ public class Character implements Serializable {
 		speed.setY(y);
 	}
 
+	// Item Equipment
+	public Boolean canEquipR(Equipable item) {
+		boolean out = false;
+		switch (item.getType()) {
+		case ONE:
+			if (info.getRweaponEquipped() == null
+					&& (info.getLweaponEquipped() == null || info
+							.getLweaponEquipped().getType()
+							.equals(ItemType.SHIELD))) {
+				out = true;
+			}
+			break;
+		case TWO:
+			if (info.getRweaponEquipped() == null
+					&& info.getLweaponEquipped() == null) {
+				out = true;
+			}
+			break;
+		case DAGGER:
+			if (info.getRweaponEquipped() == null
+					&& (info.getLweaponEquipped() == null || info
+							.getLweaponEquipped().getType()
+							.equals(ItemType.DAGGER))) {
+				out = true;
+			}
+			break;
+		case RAPIER:
+			if (info.getRweaponEquipped() == null
+					&& info.getLweaponEquipped() == null) {
+				out = true;
+			}
+			break;
+		case SHIELD:
+			if ((info.getRweaponEquipped() == null || info.getRweaponEquipped()
+					.getType().equals(ItemType.ONE))
+					&& info.getLweaponEquipped() == null) {
+				out = true;
+			}
+			break;
+		}
+		return out;
+
+	}
+
+	public Boolean canEquipL(Equipable item) {
+		boolean out = false;
+		switch (item.getType()) {
+		case DAGGER:
+			if (info.getRweaponEquipped().getType().equals(ItemType.DAGGER)
+					&& info.getLweaponEquipped() == null) {
+				out = true;
+			}
+			break;
+		case SHIELD:
+			if (info.getRweaponEquipped().getType().equals(ItemType.SHIELD)
+					&& info.getLweaponEquipped() == null) {
+				out = true;
+			}
+			break;
+		}
+		return out;
+
+	}
+
 	// Stat Accessors
 	public double getDmg() {
 		return info.str * info.getStrMultiplier() + info.damage;
@@ -116,6 +184,14 @@ public class Character implements Serializable {
 	public double getHealth() {
 		info.maxHealth = (info.fort * info.getFortMultiplier());
 		return info.maxHealth;
+	}
+
+	public double getRes() {
+		return info.resil * info.getResMultiplier();
+	}
+
+	public double getStam() {
+		return info.stam * info.getStamMultiplier();
 	}
 
 	public long getCurr() {

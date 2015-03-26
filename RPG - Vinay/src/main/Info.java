@@ -11,7 +11,9 @@ public class Info implements Serializable {
 	protected long lastHealed;
 	protected double currentHealth;
 	protected double maxHealth;
-	protected double str = 0;
+	protected double currentEnergy;
+	protected double maxEnergy;
+	protected double str = 0; 
 	protected double fort = 0;
 	protected double damage = 0;
 	protected double resil = 0;

@@ -77,6 +77,10 @@ public class Tile implements Serializable{
 		return walkable;
 	}
 	
+	public void setWalkable(boolean b) {
+		walkable = b;
+	}
+	
 	
 	public Tile(int type, Vector v, boolean b) {
 		loc = new Vector();

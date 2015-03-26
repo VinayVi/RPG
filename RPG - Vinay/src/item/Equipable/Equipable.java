@@ -19,8 +19,8 @@ public class Equipable extends Item {
 		fort = Fort;
 		damage = Damage;
 		resil = Resil;
-		equipped = false;
 		stam = Stam;
+		equipped = false;
 	}
 
 	public Equipable(String name, ItemType Type, int Str, int Fort, int Damage,

@@ -5,12 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
@@ -249,13 +244,10 @@ public class Map {
 		}
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;
-		long deltaT = System.currentTimeMillis();
 		if(draw)
 			map = drawMap(num);
 		else 
 			map = ImageIO.read(new File("src//tiles//map" + num + ".png"));
-		System.out.println(deltaT-System.currentTimeMillis());
-		System.out.println(System.currentTimeMillis());
 	}
 
 	public Tile getTile(Vector v) {

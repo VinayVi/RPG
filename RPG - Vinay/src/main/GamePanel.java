@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,8 +35,8 @@ import tiles.Portal;
 import tiles.Tile;
 
 @SuppressWarnings("serial")
-public class GUI extends JPanel implements Runnable, KeyListener {
-	private Image image;
+public class GamePanel extends JPanel implements Runnable, KeyListener {
+	private Image image, loadingImage;
 	private Graphics second;
 	private Character p;
 	private Map map;
@@ -43,15 +45,18 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	JFrame mapFrame, optFrame, invFrame, statsFrame;
 	JPanel mapPane, optPane, invPane, statsPane;
 	JList<Equipable> invData;
-	JButton load, save, exit, resume, question; //Options Buttons
+	JButton load, save, exit, resume; //Options Buttons
 	JButton equip;
 	JLabel str, fort, damage, resil;
+	ArrayList<Character> NPCs;
 	final String strText, fortText, damageText, resilText;
 	private volatile boolean running;
+	private boolean loading;
 	private Thread mover;
 
-	public GUI() throws IOException {
+	public GamePanel() throws IOException {
 		running = true;
+		loading = false;
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		int xSize = ((int) tk.getScreenSize().getWidth());
 		int ySize = ((int) tk.getScreenSize().getHeight());
@@ -59,8 +64,6 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		map = new Map(1, true);
 		drawnMaps.add(1);
 		p = new Character("Kirito");
-		long deltaT = System.currentTimeMillis();
-		System.out.println(deltaT);
 		mapPane = new JPanel();
 		mapFrame = new JFrame();
 		JLabel mapImage = new JLabel(new ImageIcon("src//tiles//minimap.png"));
@@ -89,13 +92,10 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		exit.addActionListener(new buttonListener());
 		resume = new JButton("Resume Game");
 		resume.addActionListener(new buttonListener());
-		question = new JButton("???");
-		question.addActionListener(new buttonListener());
 		optPane.add(load);
 		optPane.add(save);
 		optPane.add(exit);
 		optPane.add(resume);
-		optPane.add(question);
 		optFrame.addKeyListener(new buttonListener());
 		optFrame.setAlwaysOnTop(true);
 
@@ -120,7 +120,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		statsPane = new JPanel();
 		statsPane.setLayout(new BoxLayout(statsPane, BoxLayout.Y_AXIS));
 		statsFrame = new JFrame();
-		statsFrame.setSize(250, 160);
+		statsFrame.setSize(250, 75);
 		statsFrame.setLocation(0, ySize - statsFrame.getHeight());
 		statsFrame.setVisible(false);
 		statsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -128,10 +128,10 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		statsFrame.setAlwaysOnTop(true);
 		statsFrame.setFocusable(false);
 		statsFrame.setFocusableWindowState(false);
-		strText = new String("Strength:     	       ");
-		fortText = new String("Fortitude:           ");
-		damageText = new String("Damage:              ");
-		resilText = new String("Resilience:         ");
+		strText = new String("  Strength:     	       ");
+		fortText = new String("  Fortitude:           ");
+		damageText = new String("  Damage:              ");
+		resilText = new String("  Resilience:          ");
 		Font font = new Font("Courier New", Font.BOLD, 14);
 		str = new JLabel(strText);
 		str.setFont(font);
@@ -141,12 +141,21 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		damage.setFont(font);
 		resil = new JLabel(resilText);
 		resil.setFont(font);
+		
 		statsPane.add(str);
 		statsPane.add(fort);
 		statsPane.add(damage);
 		statsPane.add(resil);
 		statsFrame.setContentPane(statsPane);
 		updateStats();
+		
+		NPCs = new ArrayList<Character>();
+		//Create NPCs here
+		Character temp = new Character("oldMan");
+		temp.info.setCurrMap(101);
+		temp.info.setLoc(new Vector(96,0));
+		NPCs.add(temp);
+		
 		mover = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -154,6 +163,9 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 					if (running) {
 						try {
 							update(p);
+							for(Character c : inScreen()) {
+								update(c);
+							}
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -164,8 +176,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		});
 		mover.start();
 		p.info.setCurrMap(1);
-		System.out.println(System.currentTimeMillis());
-		System.out.println(deltaT-System.currentTimeMillis());
+		loadingImage = ImageIO.read(new File("src//sprites/Loading.png"));
 	}
 
 	public void paint(Graphics g) {
@@ -175,10 +186,21 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		second.fillRect(0, 0, getWidth(), getHeight());
 		second.drawImage(map.map, 0, 0, getWidth(), getHeight(), leftX + 24, topY + 24, rightX + 24, botY + 24, this);
 		second.drawImage(p.currSprite, getWidth() / 2 - 24, getHeight() / 2 - 24, this);
+		
+		//draw NPCs
+		for(Character c : inScreen()) {
+			second.drawImage(c.currSprite, c.getX() - leftX -24, c.getY() - topY -24, this);
+		}
+		
 		g.drawImage(image, 0, 0, this);
 		if (!running) {
 			g.setColor(new Color(0, 0, 0, 150));
 			g.fillRect(0, 0, getWidth(), getHeight());
+		}
+		if (loading) {
+			g.setColor(new Color(0, 0, 0));
+			g.fillRect(0, 0, getWidth(), getHeight());
+			g.drawImage(loadingImage, (getWidth()-loadingImage.getWidth(this))/2, (getHeight()-loadingImage.getHeight(this))/2, this);
 		}
 	}
 
@@ -187,7 +209,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		int xSize = ((int) tk.getScreenSize().getWidth());
 		int ySize = ((int) tk.getScreenSize().getHeight());
 		JFrame frame = new JFrame("RPG");
-		GUI gui = new GUI();
+		GamePanel gui = new GamePanel();
 		gui.setPreferredSize(new Dimension(xSize, ySize));
 		// frame.setUndecorated(true);
 		frame.add(gui);
@@ -198,14 +220,26 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		frame.pack();
 		frame.setResizable(true);
 		frame.setLocationRelativeTo(null);
-		gui.statsFrame.setVisible(true);
 		new Thread(gui).start();
+	}
+	
+	public ArrayList<Character> inScreen() {
+		ArrayList<Character> inScreen = new ArrayList<Character>();
+		for(Character c : NPCs){
+			if(c.info.getCurrMap() == p.info.getCurrMap())  {
+				if(Math.abs(p.info.getLoc().getX()-c.info.getLoc().getX())<=this.getWidth()) {
+					if(Math.abs(p.info.getLoc().getY()-c.info.getLoc().getY())<=this.getHeight()) {
+						inScreen.add(c);
+					}
+				}
+			}
+		}
+		return inScreen;
 	}
 
 	public class invListener implements KeyListener {
 		@Override
 		public void keyPressed(KeyEvent e) {
-			System.out.println(true);
 			if (e.getKeyCode() == KeyEvent.VK_M) {
 				mapFrame.setVisible(!mapFrame.isVisible());
 			} else if (e.getKeyCode() == KeyEvent.VK_O) {
@@ -233,7 +267,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 				optFrame.setVisible(false);
 				running = true;
-				JFrame frame = (JFrame) GUI.this.getTopLevelAncestor();
+				JFrame frame = (JFrame) GamePanel.this.getTopLevelAncestor();
 				frame.setFocusableWindowState(true);
 				frame.setFocusable(true);
 				frame.toFront();
@@ -416,6 +450,15 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			}
 		}
 	}
+	
+	public boolean hasNPC(Vector loc) {
+		for(Character c : inScreen())
+			if(c.info.getLoc().equals(loc)) {
+				System.out.println(c.info.name);
+				return true;
+			}
+		return false;
+	}
 
 	public int facing(Vector speed) {
 		if (speed.getY() == -1)
@@ -442,7 +485,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				newLoc.add(0, 47);
 			}
 			Tile newTile = map.getTile(newLoc);
-			if (newTile == null || !newTile.walkable()) {
+			if (newTile == null || !newTile.walkable() || hasNPC(newTile.getLoc())) {
 				c.currSprite = c.sprites[facing(c.getSpeed())][0];
 				c.setSpeed(0, 0);
 				return;
@@ -466,13 +509,18 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				c.info.setLoc(((Portal) newTile).getNewLoc());
 				c.info.setCurrMap(((Portal) newTile).getNewMap());
 				if (drawnMaps.contains(c.info.getCurrMap())) {
+					loading = true;
 					map = new Map(c.info.getCurrMap(), false);
+					loading = false;
 				} else {
+					loading = true;
 					map = new Map(c.info.getCurrMap(), true);
 					drawnMaps.add(c.info.getCurrMap());
+					loading = false;
 				}
 			}
-		}
+			
+		}		
 	}
 
 	public void updateStats() {

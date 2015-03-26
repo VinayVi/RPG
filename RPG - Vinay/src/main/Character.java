@@ -20,7 +20,6 @@ public class Character implements Serializable {
 	protected double tps; // seconds per tile, aka how long it takes to move 1
 							// tile
 	public Image currSprite;
-	public Image BL, BR, BS, FL, FR, FS, LL, LR, LS, RL, RR, RS;
 	volatile int dir;
 	public DefaultListModel<Equipable> Inventory = new DefaultListModel<Equipable>();
 
@@ -43,18 +42,33 @@ public class Character implements Serializable {
 		info.state = 1;
 		this.info.name = name;
 		sprites = new Image[4][4];
+		BufferedImage spritesheet = null;
 		try {
+<<<<<<< HEAD
 			BufferedImage spritesheet = ImageIO.read(new File("src//sprites//"
 					+ name + ".png"));
+=======
+			spritesheet = ImageIO.read(new File("src//sprites//" + name + ".png"));
+		} catch (IOException e) {
+		}
+		System.out.println(spritesheet.getHeight());
+		if(spritesheet.getHeight()==768) {
+>>>>>>> refs/remotes/origin/master
 			for (int i = 0; i <= 3; i++) {
 				for (int j = 0; j <= 3; j++) {
 					sprites[i][j] = spritesheet.getSubimage(0,
 							(4 * i + j) * 48, 48, 48);
 				}
 			}
-			currSprite = sprites[2][0];
-		} catch (IOException e) {
 		}
+		else {
+			for (int i = 0; i <= 3; i++) {
+				for (int j = 0; j <= 3; j++) {
+					sprites[i][j] = spritesheet;
+				}
+			}
+		}
+		currSprite = sprites[2][0];
 		true_wait = 4;
 		setWait(true_wait);
 		setMoveTime(0);
@@ -174,6 +188,7 @@ public class Character implements Serializable {
 		info.maxHealth = (info.fort * info.getFortMultiplier());
 		return info.maxHealth;
 	}
+<<<<<<< HEAD
 
 	public double getRes() {
 		return info.resil * info.getResMultiplier();
@@ -182,6 +197,8 @@ public class Character implements Serializable {
 	public double getStam() {
 		return info.stam * info.getStamMultiplier();
 	}
+=======
+>>>>>>> refs/remotes/origin/master
 
 	public long getCurr() {
 		return curr;

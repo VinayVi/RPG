@@ -18,8 +18,7 @@ public class Battle{
 		playerTurn = true;
 	}
 	
-	/**
-	 * 
+	/** 
 	 * @param a
 	 * @return -1 if not enough energy
 	 * @return 0 if attack is successful

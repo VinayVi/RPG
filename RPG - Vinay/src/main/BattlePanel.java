@@ -7,11 +7,12 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class BattlePanel extends JPanel implements Runnable, KeyListener {
 	
+	protected Battle battle;
 	boolean battling;
 	
-	public BattlePanel() {
+	public BattlePanel(Battle b) {
+		battle = b;
 		battling = true;
-		
 	}
 
 	@Override
@@ -34,8 +35,10 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		
+		while(battling) {
+			repaint();
+			battling = battle.p.info.currentHealth>0 && battle.enemy.info.currentHealth>0;
+		}
 	}
 
 }

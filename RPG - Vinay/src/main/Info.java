@@ -25,8 +25,8 @@ public class Info implements Serializable {
 	protected String name;
 	private double strMultiplier;
 	private double fortMultiplier;
-	private ArrayList<Item> inventoryW;// Weapons
-	private ArrayList<Item> inventoryA;// Armor
+	private ArrayList<Item> inventoryW; // Weapons
+	private ArrayList<Item> inventoryA; // Armor
 	private int weaponsEquipped;
 	private volatile Vector loc;
 	private volatile int currMap = 1;

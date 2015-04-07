@@ -19,6 +19,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -34,6 +35,8 @@ import tiles.Tile;
 
 @SuppressWarnings("serial")
 public class GUI extends JPanel implements Runnable, KeyListener {
+	ImageIcon icon = new ImageIcon("Z://git//RPG//RPG - Vinay//src//tiles//Border.png");
+	Font myFont = new Font("SansSerif", Font.ITALIC, 18);
 	private Image image;
 	private Graphics second;
 	private Character p;
@@ -43,18 +46,26 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 	JFrame mapFrame, optFrame, invFrame, statsFrame;
 	JPanel mapPane, optPane, invPane, statsPane;
 	JList<Equipable> invData;
-	JButton load, save, exit, resume, question; //Options Buttons
+	JButton load, save, exit, resume, question; // Options Buttons
 	JButton equip;
 	JLabel str, fort, damage, resil;
 	final String strText, fortText, damageText, resilText;
 	private volatile boolean running;
 	private Thread mover;
-
+	Toolkit tk;
+	int xSize;
+	int ySize;
+	JPanel dialoguepane;
+	JFrame dialogue;
+	JPanel shoppane;
+	JFrame shop;
+	
 	public GUI() throws IOException {
+		
 		running = true;
 		Toolkit tk = Toolkit.getDefaultToolkit();
-		int xSize = ((int) tk.getScreenSize().getWidth());
-		int ySize = ((int) tk.getScreenSize().getHeight());
+		xSize = ((int) tk.getScreenSize().getWidth());
+		ySize = ((int) tk.getScreenSize().getHeight());
 		drawnMaps = new ArrayList<Integer>();
 		map = new Map(1, true);
 		drawnMaps.add(1);
@@ -104,7 +115,8 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		invFrame = new JFrame();
 		invFrame.getContentPane().add(invPane);
 		invFrame.setSize(250, 300);
-		invFrame.setLocation(xSize - invFrame.getWidth(), ySize - invFrame.getHeight());
+		invFrame.setLocation(xSize - invFrame.getWidth(),
+				ySize - invFrame.getHeight());
 		invFrame.setVisible(false);
 		invFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		invFrame.addKeyListener(new invListener());
@@ -165,7 +177,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		mover.start();
 		p.info.setCurrMap(1);
 		System.out.println(System.currentTimeMillis());
-		System.out.println(deltaT-System.currentTimeMillis());
+		System.out.println(deltaT - System.currentTimeMillis());
 	}
 
 	public void paint(Graphics g) {
@@ -173,8 +185,10 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 		second = image.getGraphics();
 		second.setColor(Color.BLACK);
 		second.fillRect(0, 0, getWidth(), getHeight());
-		second.drawImage(map.map, 0, 0, getWidth(), getHeight(), leftX + 24, topY + 24, rightX + 24, botY + 24, this);
-		second.drawImage(p.currSprite, getWidth() / 2 - 24, getHeight() / 2 - 24, this);
+		second.drawImage(map.map, 0, 0, getWidth(), getHeight(), leftX + 24,
+				topY + 24, rightX + 24, botY + 24, this);
+		second.drawImage(p.currSprite, getWidth() / 2 - 24,
+				getHeight() / 2 - 24, this);
 		g.drawImage(image, 0, 0, this);
 		if (!running) {
 			g.setColor(new Color(0, 0, 0, 150));
@@ -238,7 +252,7 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				frame.setFocusable(true);
 				frame.toFront();
 			}
-			
+
 		}
 
 		@Override
@@ -246,7 +260,8 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			if (e.getActionCommand().equals("Save Game")) {
 				try {
 					save(p.info);
-					JOptionPane.showMessageDialog(new JFrame(), "Successfully Saved");
+					JOptionPane.showMessageDialog(new JFrame(),
+							"Successfully Saved");
 					optFrame.setVisible(!optFrame.isVisible());
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -256,7 +271,8 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 					Info o = load();
 					if (o != null) {
 						p.info = o;
-						JOptionPane.showMessageDialog(new JFrame(), "Successfully Loaded");
+						JOptionPane.showMessageDialog(new JFrame(),
+								"Successfully Loaded");
 						optFrame.setVisible(!optFrame.isVisible());
 					}
 				} catch (ClassNotFoundException | IOException e1) {
@@ -264,25 +280,49 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				}
 			} else if (e.getActionCommand().equals("Exit Game")) {
 				System.exit(1);
-			} else if(e.getActionCommand().equals("Resume Game")) {
+			} else if (e.getActionCommand().equals("Resume Game")) {
 				optFrame.setVisible(!optFrame.isVisible());
 			} else if (e.getActionCommand().equals("Equip")) {
-				ArrayList<Equipable> selected = (ArrayList<Equipable>) invData.getSelectedValuesList();
+				ArrayList<Equipable> selected = (ArrayList<Equipable>) invData
+						.getSelectedValuesList();
 				for (Equipable eq : selected) {
 					eq.equipped = true;
 				}
 				updateStats();
+			} else if (e.getActionCommand().equals("No")){
+				dialogue.dispose();
+			}else if (e.getActionCommand().equals("Yes")){
+				dialogue.dispose();
+				shoppane = new JPanel();
+				shop = new JFrame();
+				shop.setContentPane(shoppane);
+				JLabel text = new JLabel("Here are my wares!");
+				text.setFont(myFont);
+				text.setAlignmentY(CENTER_ALIGNMENT);
+				shoppane.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, icon));
+				shoppane.add(text);
+				JLabel wares = new JLabel(new ImageIcon("Z://git//RPG//RPG - Vinay//src//tiles//Asuna.png"));
+				shoppane.add(wares);
+				shop.pack();
+			    shop.setSize(400, 600);
+			    shop.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			    shop.setVisible(true);
 			}
 		}
+
 		@Override
 		public void keyReleased(KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT
+					|| e.getKeyCode() == KeyEvent.VK_D) {
 				p.info.mR = false;
-			} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+			} else if (e.getKeyCode() == KeyEvent.VK_LEFT
+					|| e.getKeyCode() == KeyEvent.VK_A) {
 				p.info.mL = false;
-			} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+			} else if (e.getKeyCode() == KeyEvent.VK_UP
+					|| e.getKeyCode() == KeyEvent.VK_W) {
 				p.info.mU = false;
-			} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+			} else if (e.getKeyCode() == KeyEvent.VK_DOWN
+					|| e.getKeyCode() == KeyEvent.VK_S) {
 				p.info.mD = false;
 			} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				p.setWait(p.true_wait);
@@ -381,18 +421,61 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			p.Inventory.addElement(weapon);
 		} else if (e.getKeyCode() == KeyEvent.VK_X) {
 			statsFrame.setVisible(!statsFrame.isVisible());
+		}  else if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+			if(facing(p)==0)
+			{
+				
+				dialoguepane = new JPanel();
+				dialogue = new JFrame();
+				dialogue.setContentPane(dialoguepane);
+				JLabel text = new JLabel("Greetings weary traveler, may I interest you in my wares?");
+				text.setFont(myFont);
+				text.setAlignmentY(CENTER_ALIGNMENT);
+				dialoguepane.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, icon));
+				dialoguepane.add(text);
+				JButton yes = new JButton("Yes");
+				yes.setFont(myFont);
+				yes.addActionListener(new buttonListener());
+				dialoguepane.add(yes);
+				JButton no = new JButton("No");
+				no.setFont(myFont);
+				no.addActionListener(new buttonListener());
+				dialoguepane.add(no);
+				dialogue.pack();
+			    dialogue.setSize(xSize, 100);
+			    dialogue.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			    dialogue.setVisible(true);
+			}
 		}
+	}
+
+	public int facing(Character p) {
+		if (p.currSprite.equals(p.sprites[0][0])) {
+			return 0;
+		} else if (p.currSprite.equals(p.sprites[1][0])) {
+			return 1;
+		} else if (p.currSprite.equals(p.sprites[2][0])) {
+			return 2;
+		} else if (p.currSprite.equals(p.sprites[3][0])) {
+			return 3;
+		}
+		return -1;
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT
+				|| e.getKeyCode() == KeyEvent.VK_D) {
 			p.info.mR = false;
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT
+				|| e.getKeyCode() == KeyEvent.VK_A) {
 			p.info.mL = false;
-		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+		} else if (e.getKeyCode() == KeyEvent.VK_UP
+				|| e.getKeyCode() == KeyEvent.VK_W) {
 			p.info.mU = false;
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN
+				|| e.getKeyCode() == KeyEvent.VK_S) {
 			p.info.mD = false;
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			p.setWait(p.true_wait);
@@ -459,10 +542,13 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 			c.currSprite = c.sprites[facing(c.getSpeed())][state];
 			c.info.getLoc().add(c.getSpeed());
 			c.setMoveTime(c.getCurr());
-			if (c.info.getLoc().getX() % 48 == 0 && c.info.getLoc().getY() % 48 == 0 && !c.moving()) {
+			if (c.info.getLoc().getX() % 48 == 0
+					&& c.info.getLoc().getY() % 48 == 0 && !c.moving()) {
 				c.setSpeed(0, 0);
 			}
-			if (c.info.getLoc().getX() % 48 == 0 && c.info.getLoc().getY() % 48 == 0 && newTile instanceof Portal) {
+			if (c.info.getLoc().getX() % 48 == 0
+					&& c.info.getLoc().getY() % 48 == 0
+					&& newTile instanceof Portal) {
 				c.info.setLoc(((Portal) newTile).getNewLoc());
 				c.info.setCurrMap(((Portal) newTile).getNewMap());
 				if (drawnMaps.contains(c.info.getCurrMap())) {

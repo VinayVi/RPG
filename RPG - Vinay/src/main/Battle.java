@@ -20,9 +20,9 @@ public class Battle{
 	
 	/** 
 	 * @param a
-	 * @return -1 if not enough energy
-	 * @return 0 if attack is successful
-	 * @return 1 if enemy dies from attack
+	 * @return -1 if not enough energy; 
+	 * 			0 if attack is successful; 
+	 * 			1 if enemy dies from attack
 	 */
 	public int attack (Attack a) {
 		Character c1 = null, c2 = null;
@@ -43,7 +43,4 @@ public class Battle{
 		}
 		return 0;
 	}
-	
-	
-	
 }

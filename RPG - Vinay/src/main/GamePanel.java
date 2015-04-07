@@ -2,6 +2,7 @@ package main;
 
 import item.ItemType;
 import item.Equipable.Equipable;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -21,6 +22,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -36,6 +38,8 @@ import tiles.Tile;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel implements Runnable, KeyListener {
+	ImageIcon icon = new ImageIcon("Z://git//RPG//RPG - Vinay//src//tiles//Border.png");
+	Font myFont = new Font("SansSerif", Font.ITALIC, 18);
 	private Image image, loadingImage;
 	private Graphics second;
 	private Character p;
@@ -53,13 +57,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	private volatile boolean running;
 	private boolean loading;
 	private Thread mover;
+	Toolkit tk = Toolkit.getDefaultToolkit();
+	int xSize = ((int) tk.getScreenSize().getWidth());
+	int ySize = ((int) tk.getScreenSize().getHeight());
+	JPanel dialoguepane;
+	JFrame dialogue;
+	JPanel shoppane;
+	JFrame shop;
 
 	public GamePanel() throws IOException {
 		running = true;
 		loading = false;
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		int xSize = ((int) tk.getScreenSize().getWidth());
-		int ySize = ((int) tk.getScreenSize().getHeight());
+		
 		drawnMaps = new ArrayList<Integer>();
 		map = new Map(1, true);
 		drawnMaps.add(1);
@@ -306,6 +315,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 					eq.equipped = true;
 				}
 				updateStats();
+			} else if (e.getActionCommand().equals("No")){
+				dialogue.dispose();
+			}else if (e.getActionCommand().equals("Yes")){
+				dialogue.dispose();
+				shoppane = new JPanel();
+				shop = new JFrame();
+				shop.setContentPane(shoppane);
+				JLabel text = new JLabel("Here are my wares!");
+				text.setFont(myFont);
+				text.setAlignmentY(CENTER_ALIGNMENT);
+				shoppane.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, icon));
+				shoppane.add(text);
+				JLabel wares = new JLabel(new ImageIcon("Z://git//RPG//RPG - Vinay//src//tiles//Asuna.png"));
+				shoppane.add(wares);
+				shop.pack();
+			    shop.setSize(400, 600);
+			    shop.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			    shop.setVisible(true);
 			}
 		}
 		@Override
@@ -415,7 +442,46 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			p.Inventory.addElement(weapon);
 		} else if (e.getKeyCode() == KeyEvent.VK_C) {
 			statsFrame.setVisible(!statsFrame.isVisible());
+		}  else if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+			if(facing(p)==0)
+			{
+				
+				dialoguepane = new JPanel();
+				dialogue = new JFrame();
+				dialogue.setContentPane(dialoguepane);
+				JLabel text = new JLabel("Greetings weary traveler, may I interest you in my wares?");
+				text.setFont(myFont);
+				text.setAlignmentY(CENTER_ALIGNMENT);
+				dialoguepane.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, icon));
+				dialoguepane.add(text);
+				JButton yes = new JButton("Yes");
+				yes.setFont(myFont);
+				yes.addActionListener(new buttonListener());
+				dialoguepane.add(yes);
+				JButton no = new JButton("No");
+				no.setFont(myFont);
+				no.addActionListener(new buttonListener());
+				dialoguepane.add(no);
+				dialogue.pack();
+			    dialogue.setSize(xSize, 100);
+			    dialogue.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			    dialogue.setVisible(true);
+			}
 		}
+	}
+
+	public int facing(Character p) {
+		if (p.currSprite.equals(p.sprites[0][0])) {
+			return 0;
+		} else if (p.currSprite.equals(p.sprites[1][0])) {
+			return 1;
+		} else if (p.currSprite.equals(p.sprites[2][0])) {
+			return 2;
+		} else if (p.currSprite.equals(p.sprites[3][0])) {
+			return 3;
+		}
+		return -1;
+
 	}
 
 	@Override

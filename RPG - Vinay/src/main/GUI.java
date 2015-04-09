@@ -303,10 +303,15 @@ public class GUI extends JPanel implements Runnable, KeyListener {
 				shoppane.add(text);
 				JLabel wares = new JLabel(new ImageIcon("Z://git//RPG//RPG - Vinay//src//tiles//Asuna.png"));
 				shoppane.add(wares);
+				JButton close = new JButton("Exit");
+				close.addActionListener(new buttonListener());
+				shoppane.add(close);
 				shop.pack();
 			    shop.setSize(400, 600);
 			    shop.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			    shop.setVisible(true);
+			}else if (e.getActionCommand().equals("Exit")){
+				shop.dispose();
 			}
 		}
 

@@ -495,8 +495,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			distanceTo.sub(newTile.getLoc());
 			int state = (int) distanceTo.mag() / 12;
 			while (state >= 4) {
-				if (state > 4)
-					System.out.println("shit....");
+				if (state > 4) {
+					System.out.println(distanceTo);
+					//System.out.println("shit....");
+				}
 				state--;
 			}
 			c.currSprite = c.sprites[facing(c.getSpeed())][state];

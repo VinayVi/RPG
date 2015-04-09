@@ -2,6 +2,7 @@ package main;
 
 import item.ItemType;
 import item.Equipable.Equipable;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -45,7 +47,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	JFrame mapFrame, optFrame, invFrame, statsFrame;
 	JPanel mapPane, optPane, invPane, statsPane;
 	JList<Equipable> invData;
-	JButton load, save, exit, resume; //Options Buttons
+	JButton load, save, exit, resume; // Options Buttons
 	JButton equip;
 	JLabel str, fort, damage, resil;
 	ArrayList<Character> NPCs;
@@ -53,13 +55,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	private volatile boolean running;
 	private boolean loading;
 	private Thread mover;
+	Toolkit tk = Toolkit.getDefaultToolkit();
+	int xSize = ((int) tk.getScreenSize().getWidth());
+	int ySize = ((int) tk.getScreenSize().getHeight());
 
 	public GamePanel() throws IOException {
 		running = true;
 		loading = false;
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		int xSize = ((int) tk.getScreenSize().getWidth());
-		int ySize = ((int) tk.getScreenSize().getHeight());
+
 		drawnMaps = new ArrayList<Integer>();
 		map = new Map(1, true);
 		drawnMaps.add(1);
@@ -104,7 +107,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		invFrame = new JFrame();
 		invFrame.getContentPane().add(invPane);
 		invFrame.setSize(250, 300);
-		invFrame.setLocation(xSize - invFrame.getWidth(), ySize - invFrame.getHeight());
+		invFrame.setLocation(xSize - invFrame.getWidth(),
+				ySize - invFrame.getHeight());
 		invFrame.setVisible(false);
 		invFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		invFrame.addKeyListener(new invListener());
@@ -141,21 +145,21 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		damage.setFont(font);
 		resil = new JLabel(resilText);
 		resil.setFont(font);
-		
+
 		statsPane.add(str);
 		statsPane.add(fort);
 		statsPane.add(damage);
 		statsPane.add(resil);
 		statsFrame.setContentPane(statsPane);
 		updateStats();
-		
+
 		NPCs = new ArrayList<Character>();
-		//Create NPCs here
+		// Create NPCs here
 		Character temp = new Character("oldMan");
 		temp.info.setCurrMap(101);
-		temp.info.setLoc(new Vector(96,0));
+		temp.info.setLoc(new Vector(96, 0));
 		NPCs.add(temp);
-		
+
 		mover = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -163,7 +167,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 					if (running) {
 						try {
 							update(p);
-							for(Character c : inScreen()) {
+							for (Character c : inScreen()) {
 								update(c);
 							}
 						} catch (IOException e) {
@@ -184,14 +188,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		second = image.getGraphics();
 		second.setColor(Color.BLACK);
 		second.fillRect(0, 0, getWidth(), getHeight());
-		second.drawImage(map.map, 0, 0, getWidth(), getHeight(), leftX + 24, topY + 24, rightX + 24, botY + 24, this);
-		second.drawImage(p.currSprite, getWidth() / 2 - 24, getHeight() / 2 - 24, this);
-		
-		//draw NPCs
-		for(Character c : inScreen()) {
-			second.drawImage(c.currSprite, c.getX() - leftX -24, c.getY() - topY -24, this);
+		second.drawImage(map.map, 0, 0, getWidth(), getHeight(), leftX + 24,
+				topY + 24, rightX + 24, botY + 24, this);
+		second.drawImage(p.currSprite, getWidth() / 2 - 24,
+				getHeight() / 2 - 24, this);
+
+		// draw NPCs
+		for (Character c : inScreen()) {
+			second.drawImage(c.currSprite, c.getX() - leftX - 24, c.getY()
+					- topY - 24, this);
 		}
-		
+
 		g.drawImage(image, 0, 0, this);
 		if (!running) {
 			g.setColor(new Color(0, 0, 0, 150));
@@ -200,17 +207,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		if (loading) {
 			g.setColor(new Color(0, 0, 0));
 			g.fillRect(0, 0, getWidth(), getHeight());
-			g.drawImage(loadingImage, (getWidth()-loadingImage.getWidth(this))/2, (getHeight()-loadingImage.getHeight(this))/2, this);
+			g.drawImage(loadingImage,
+					(getWidth() - loadingImage.getWidth(this)) / 2,
+					(getHeight() - loadingImage.getHeight(this)) / 2, this);
 		}
 	}
 
 	public static void main(String[] args) throws IOException {
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		int xSize = ((int) tk.getScreenSize().getWidth());
-		int ySize = ((int) tk.getScreenSize().getHeight());
 		JFrame frame = new JFrame("RPG");
 		GamePanel gui = new GamePanel();
-		gui.setPreferredSize(new Dimension(xSize, ySize));
+		gui.setPreferredSize(new Dimension(gui.xSize, gui.ySize));
 		// frame.setUndecorated(true);
 		frame.add(gui);
 		frame.setVisible(true);
@@ -222,13 +228,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		frame.setLocationRelativeTo(null);
 		new Thread(gui).start();
 	}
-	
+
 	public ArrayList<Character> inScreen() {
 		ArrayList<Character> inScreen = new ArrayList<Character>();
-		for(Character c : NPCs){
-			if(c.info.getCurrMap() == p.info.getCurrMap())  {
-				if(Math.abs(p.info.getLoc().getX()-c.info.getLoc().getX())<=this.getWidth()) {
-					if(Math.abs(p.info.getLoc().getY()-c.info.getLoc().getY())<=this.getHeight()) {
+		for (Character c : NPCs) {
+			if (c.info.getCurrMap() == p.info.getCurrMap()) {
+				if (Math.abs(p.info.getLoc().getX() - c.info.getLoc().getX()) <= this
+						.getWidth()) {
+					if (Math.abs(p.info.getLoc().getY()
+							- c.info.getLoc().getY()) <= this.getHeight()) {
 						inScreen.add(c);
 					}
 				}
@@ -272,7 +280,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				frame.setFocusable(true);
 				frame.toFront();
 			}
-			
+
 		}
 
 		@Override
@@ -280,7 +288,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			if (e.getActionCommand().equals("Save Game")) {
 				try {
 					save(p.info);
-					JOptionPane.showMessageDialog(new JFrame(), "Successfully Saved");
+					JOptionPane.showMessageDialog(new JFrame(),
+							"Successfully Saved");
 					optFrame.setVisible(!optFrame.isVisible());
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -290,7 +299,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 					Info o = load();
 					if (o != null) {
 						p.info = o;
-						JOptionPane.showMessageDialog(new JFrame(), "Successfully Loaded");
+						JOptionPane.showMessageDialog(new JFrame(),
+								"Successfully Loaded");
 						optFrame.setVisible(!optFrame.isVisible());
 					}
 				} catch (ClassNotFoundException | IOException e1) {
@@ -298,25 +308,31 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				}
 			} else if (e.getActionCommand().equals("Exit Game")) {
 				System.exit(1);
-			} else if(e.getActionCommand().equals("Resume Game")) {
+			} else if (e.getActionCommand().equals("Resume Game")) {
 				optFrame.setVisible(!optFrame.isVisible());
 			} else if (e.getActionCommand().equals("Equip")) {
-				ArrayList<Equipable> selected = (ArrayList<Equipable>) invData.getSelectedValuesList();
+				ArrayList<Equipable> selected = (ArrayList<Equipable>) invData
+						.getSelectedValuesList();
 				for (Equipable eq : selected) {
 					eq.equipped = true;
 				}
 				updateStats();
 			}
 		}
+
 		@Override
 		public void keyReleased(KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT
+					|| e.getKeyCode() == KeyEvent.VK_D) {
 				p.info.mR = false;
-			} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+			} else if (e.getKeyCode() == KeyEvent.VK_LEFT
+					|| e.getKeyCode() == KeyEvent.VK_A) {
 				p.info.mL = false;
-			} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+			} else if (e.getKeyCode() == KeyEvent.VK_UP
+					|| e.getKeyCode() == KeyEvent.VK_W) {
 				p.info.mU = false;
-			} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+			} else if (e.getKeyCode() == KeyEvent.VK_DOWN
+					|| e.getKeyCode() == KeyEvent.VK_S) {
 				p.info.mD = false;
 			} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 				p.setWait(p.true_wait);
@@ -377,22 +393,26 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT
+				|| e.getKeyCode() == KeyEvent.VK_D) {
 			if (!p.getSpeed().isZero())
 				return;
 			p.setSpeed(1, 0);
 			p.info.mR = true;
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT
+				|| e.getKeyCode() == KeyEvent.VK_A) {
 			if (!p.getSpeed().isZero())
 				return;
 			p.setSpeed(-1, 0);
 			p.info.mL = true;
-		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+		} else if (e.getKeyCode() == KeyEvent.VK_UP
+				|| e.getKeyCode() == KeyEvent.VK_W) {
 			if (!p.getSpeed().isZero())
 				return;
 			p.setSpeed(0, -1);
 			p.info.mU = true;
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN
+				|| e.getKeyCode() == KeyEvent.VK_S) {
 			if (!p.getSpeed().isZero())
 				return;
 			p.setSpeed(0, 1);
@@ -411,7 +431,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			p.setWait(0.5);
 		} else if (e.getKeyCode() == KeyEvent.VK_N) {
-			Equipable weapon = new Equipable("Hermy's Weeny", ItemType.TWO, 1, 2, 3, 4, 5);
+			Equipable weapon = new Equipable("Hermy's Weeny", ItemType.TWO, 1,
+					2, 3, 4, 5);
 			p.Inventory.addElement(weapon);
 		} else if (e.getKeyCode() == KeyEvent.VK_C) {
 			statsFrame.setVisible(!statsFrame.isVisible());
@@ -420,13 +441,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT
+				|| e.getKeyCode() == KeyEvent.VK_D) {
 			p.info.mR = false;
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT
+				|| e.getKeyCode() == KeyEvent.VK_A) {
 			p.info.mL = false;
-		} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+		} else if (e.getKeyCode() == KeyEvent.VK_UP
+				|| e.getKeyCode() == KeyEvent.VK_W) {
 			p.info.mU = false;
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN
+				|| e.getKeyCode() == KeyEvent.VK_S) {
 			p.info.mD = false;
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			p.setWait(p.true_wait);
@@ -450,10 +475,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			}
 		}
 	}
-	
+
 	public boolean hasNPC(Vector loc) {
-		for(Character c : inScreen())
-			if(c.info.getLoc().equals(loc)) {
+		for (Character c : inScreen())
+			if (c.info.getLoc().equals(loc)) {
 				System.out.println(c.info.name);
 				return true;
 			}
@@ -469,6 +494,35 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			return 2;
 		else
 			return 3;
+	}
+
+	public void randomBattle() {
+		Random rand = new Random();
+		double chance = (double) (rand.nextInt(1000) + 1) / 10;
+		if (chance <= 5) {
+			p.setSpeed(0, 0);
+			Character bear = createBear();
+			Battle b = new Battle(p, bear);
+			BattlePanel bp = new BattlePanel(b);
+			JFrame frame = new JFrame("Battle");
+			bp.setPreferredSize(new Dimension(xSize, ySize));
+			// frame.setUndecorated(true);
+			frame.add(bp);
+			frame.setVisible(true);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setFocusable(true);
+			frame.addKeyListener(bp);
+			frame.pack();
+			frame.setResizable(true);
+			frame.setLocationRelativeTo(null);
+			new Thread(bp).start();
+		}
+	}
+
+	public Character createBear() {
+		Character c = new Character("bear1");
+		// ADD BEAR STATS HERE LATER
+		return c;
 	}
 
 	public void update(Character c) throws IOException {
@@ -519,7 +573,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 					loading = false;
 				}
 			}
-			
+			if(p.getX() % 48==0 && p.getY() % 48==0 && map.getTile(p.info.getLoc()).getType() == 1) {
+				randomBattle();
+			}
 		}		
 	}
 

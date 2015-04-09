@@ -52,7 +52,6 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 		second = image.getGraphics();
 		second.setColor(Color.LIGHT_GRAY);
 		second.fillRect(0, 0, getWidth(), getHeight());
-		//second.drawImage(battle.p.sprites[2][0].getScaledInstance(192, 192, Image.SCALE_DEFAULT), getWidth()/4, getHeight()/4, this );
 		second.drawImage(kiritoBack, getWidth()/4 - 100, getHeight()/4 - 100, this );
 		second.drawImage(battle.enemy.sprites[2][0].getScaledInstance(192, 192, Image.SCALE_DEFAULT), getWidth()*3/4 - 100, getHeight()/4 - 100, this);
 		g.drawImage(image, 0, 0, this);

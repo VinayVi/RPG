@@ -16,7 +16,6 @@ import javax.swing.DefaultListModel;
 @SuppressWarnings("serial")
 public class Character implements Serializable {
 	public Info info;
-	protected int tileSize;
 	protected double tps; // seconds per tile, aka how long it takes to move 1
 							// tile
 	public Image currSprite;
@@ -49,7 +48,6 @@ public class Character implements Serializable {
 			spritesheet = ImageIO.read(new File("src//sprites//" + name + ".png"));
 		} catch (IOException e) {
 		}
-		System.out.println(spritesheet.getHeight());
 		if(spritesheet.getHeight()==768) {
 			for (int i = 0; i <= 3; i++) {
 				for (int j = 0; j <= 3; j++) {

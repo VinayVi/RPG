@@ -569,6 +569,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			BattlePanel bp = new BattlePanel(b);
 			JFrame frame = new JFrame("Battle");
 			bp.setPreferredSize(new Dimension(xSize, ySize));
+			bp.createActionPanel();
 			// frame.setUndecorated(true);
 			frame.add(bp);
 			frame.setVisible(true);

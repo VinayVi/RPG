@@ -41,7 +41,7 @@ import tiles.Tile;
 public class GamePanel extends JPanel implements Runnable, KeyListener {
 	ImageIcon icon = new ImageIcon("Z://git//RPG//RPG - Vinay//src//tiles//Border.png");
 	Font myFont = new Font("SansSerif", Font.ITALIC, 18);
-	private Image image, loadingImage;
+	private Image image, loadingImage, kiritoBack;
 	private Graphics second;
 	private Character p;
 	private Map map;

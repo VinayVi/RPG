@@ -41,7 +41,7 @@ import tiles.Tile;
 public class GamePanel extends JPanel implements Runnable, KeyListener {
 	ImageIcon icon = new ImageIcon("Z://git//RPG//RPG - Vinay//src//tiles//Border.png");
 	Font myFont = new Font("SansSerif", Font.ITALIC, 18);
-	private Image image, loadingImage, kiritoBack;
+	private Image image, loadingImage;
 	private Graphics second;
 	private Character p;
 	private Map map;
@@ -569,9 +569,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			BattlePanel bp = new BattlePanel(b);
 			JFrame frame = new JFrame("Battle");
 			bp.setPreferredSize(new Dimension(xSize, ySize));
-			bp.createActionPanel();
-			// frame.setUndecorated(true);
-			frame.add(bp);
+			frame.setUndecorated(true);
+			frame.setContentPane(bp);
 			frame.setVisible(true);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setFocusable(true);
@@ -579,7 +578,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			frame.pack();
 			frame.setResizable(true);
 			frame.setLocationRelativeTo(null);
+			bp.createActionPanel();
+			bp.actionPanel.setVisible(true);
 			new Thread(bp).start();
+			running = false;
 		}
 	}
 

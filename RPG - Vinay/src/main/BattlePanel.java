@@ -97,7 +97,7 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 		
 		public void addButtons() {
 			button = new JButton("Attack");
-			button.setBounds(200, 700, 100, 100);
+			button.setBounds(100, 700, 100, 100);
 			add(button);
 			button.setVisible(true);
 		}
@@ -105,6 +105,7 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 	    @Override
 		public void paint(Graphics g) {
 	    	System.out.println(this.getLocation());
+	    	System.out.println(this.getSize());
 			System.out.println(button.getLocation());
 	    	super.paint(g);
 			image2 = createImage(this.getWidth(), this.getHeight());

@@ -638,9 +638,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 					loading = false;
 				}
 			}
-			if(p.getX() % 48==0 && p.getY() % 48==0 && map.getTile(p.info.getLoc()).getType() == 1) {
-				randomBattle();
-			}
 		}		
 	}
 

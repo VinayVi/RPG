@@ -569,8 +569,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			BattlePanel bp = new BattlePanel(b);
 			JFrame frame = new JFrame("Battle");
 			bp.setPreferredSize(new Dimension(xSize, ySize));
-			// frame.setUndecorated(true);
-			frame.add(bp);
+			frame.setUndecorated(true);
+			frame.setContentPane(bp);
 			frame.setVisible(true);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setFocusable(true);
@@ -578,7 +578,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			frame.pack();
 			frame.setResizable(true);
 			frame.setLocationRelativeTo(null);
+			bp.createActionPanel();
+			bp.actionPanel.setVisible(true);
 			new Thread(bp).start();
+			running = false;
 		}
 	}
 

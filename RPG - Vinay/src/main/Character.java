@@ -30,7 +30,7 @@ public class Character implements Serializable {
 	private double wait;
 
 	public Character(String name) {
-		Equipable weapon = new Equipable("Daniel's Weeny", ItemType.TWO, 1, 2,
+		Equipable weapon = new Equipable("Daniel's Dagger", ItemType.TWO, 1, 2,
 				3, 4, 5);
 		Inventory.addElement(weapon);
 		info = new Info();

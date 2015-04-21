@@ -39,7 +39,8 @@ import tiles.Tile;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel implements Runnable, KeyListener {
-	ImageIcon icon = new ImageIcon("Z://git//RPG//RPG - Vinay//src//tiles//Border.png");
+	ImageIcon icon = new ImageIcon(
+			"Z://git//RPG//RPG - Vinay//src//tiles//Border.png");
 	Font myFont = new Font("SansSerif", Font.ITALIC, 18);
 	private Image image, loadingImage;
 	private Graphics second;
@@ -261,8 +262,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			} else if (e.getKeyCode() == KeyEvent.VK_I) {
 				invFrame.setVisible(false);
 			} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-				Equipable eq = invData.getSelectedValue();
-				JOptionPane.showMessageDialog(new JFrame(), eq.getName());
+				System.out.println(true);
 			}
 		}
 
@@ -323,9 +323,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 					eq.equipped = true;
 				}
 				updateStats();
-			} else if (e.getActionCommand().equals("No")){
+			} else if (e.getActionCommand().equals("No")) {
 				dialogue.dispose();
-			}else if (e.getActionCommand().equals("Yes")){
+			} else if (e.getActionCommand().equals("Yes")) {
 				dialogue.dispose();
 				shoppane = new JPanel();
 				shop = new JFrame();
@@ -333,14 +333,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				JLabel text = new JLabel("Here are my wares!");
 				text.setFont(myFont);
 				text.setAlignmentY(CENTER_ALIGNMENT);
-				shoppane.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, icon));
+				shoppane.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4,
+						icon));
 				shoppane.add(text);
-				JLabel wares = new JLabel(new ImageIcon("Z://git//RPG//RPG - Vinay//src//tiles//Asuna.png"));
+				JLabel wares = new JLabel(new ImageIcon(
+						"Z://git//RPG//RPG - Vinay//src//tiles//Asuna.png"));
 				shoppane.add(wares);
 				shop.pack();
-			    shop.setSize(400, 600);
-			    shop.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			    shop.setVisible(true);
+				shop.setSize(400, 600);
+				shop.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				shop.setVisible(true);
 			}
 		}
 
@@ -379,13 +381,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				invFrame.setVisible(!invFrame.isVisible());
 			}
 		}
-
 		@Override
-		public void keyReleased(KeyEvent arg0) {
+		public void keyTyped(KeyEvent arg0) {
 		}
 
 		@Override
-		public void keyTyped(KeyEvent arg0) {
+		public void keyReleased(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -455,22 +458,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			p.setWait(0.5);
 		} else if (e.getKeyCode() == KeyEvent.VK_N) {
-			Equipable weapon = new Equipable("Hermy's Weeny", ItemType.TWO, 1,
+			Equipable weapon = new Equipable("Hermy's Dagger", ItemType.TWO, 1,
 					2, 3, 4, 5);
 			p.Inventory.addElement(weapon);
 		} else if (e.getKeyCode() == KeyEvent.VK_C) {
 			statsFrame.setVisible(!statsFrame.isVisible());
-		}  else if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-			if(facing(p)==0)
-			{
-				
+		} else if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+			if (facing(p) == 0) {
+
 				dialoguepane = new JPanel();
 				dialogue = new JFrame();
 				dialogue.setContentPane(dialoguepane);
-				JLabel text = new JLabel("Greetings weary traveler, may I interest you in my wares?");
+				JLabel text = new JLabel(
+						"Greetings weary traveler, may I interest you in my wares?");
 				text.setFont(myFont);
 				text.setAlignmentY(CENTER_ALIGNMENT);
-				dialoguepane.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, icon));
+				dialoguepane.setBorder(BorderFactory.createMatteBorder(4, 4, 4,
+						4, icon));
 				dialoguepane.add(text);
 				JButton yes = new JButton("Yes");
 				yes.setFont(myFont);
@@ -481,9 +485,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				no.addActionListener(new buttonListener());
 				dialoguepane.add(no);
 				dialogue.pack();
-			    dialogue.setSize(xSize, 100);
-			    dialogue.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			    dialogue.setVisible(true);
+				dialogue.setSize(xSize, 100);
+				dialogue.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				dialogue.setVisible(true);
 			}
 		}
 	}
@@ -605,7 +609,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				newLoc.add(0, 47);
 			}
 			Tile newTile = map.getTile(newLoc);
-			if (newTile == null || !newTile.walkable() || hasNPC(newTile.getLoc())) {
+			if (newTile == null || !newTile.walkable()
+					|| hasNPC(newTile.getLoc())) {
 				c.currSprite = c.sprites[facing(c.getSpeed())][0];
 				c.setSpeed(0, 0);
 				return;
@@ -617,17 +622,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			while (state >= 4) {
 				if (state > 4) {
 					System.out.println(distanceTo);
-					//System.out.println("shit....");
 				}
 				state--;
 			}
 			c.currSprite = c.sprites[facing(c.getSpeed())][state];
 			c.info.getLoc().add(c.getSpeed());
 			c.setMoveTime(c.getCurr());
-			if (c.info.getLoc().getX() % 48 == 0 && c.info.getLoc().getY() % 48 == 0 && !c.moving()) {
+			if (c.info.getLoc().getX() % 48 == 0
+					&& c.info.getLoc().getY() % 48 == 0 && !c.moving()) {
 				c.setSpeed(0, 0);
 			}
-			if (c.info.getLoc().getX() % 48 == 0 && c.info.getLoc().getY() % 48 == 0 && newTile instanceof Portal) {
+			if (c.info.getLoc().getX() % 48 == 0
+					&& c.info.getLoc().getY() % 48 == 0
+					&& newTile instanceof Portal) {
 				c.info.setLoc(((Portal) newTile).getNewLoc());
 				c.info.setCurrMap(((Portal) newTile).getNewMap());
 				if (drawnMaps.contains(c.info.getCurrMap())) {
@@ -641,10 +648,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 					loading = false;
 				}
 			}
-			if(p.getX() % 48==0 && p.getY() % 48==0 && map.getTile(p.info.getLoc()).getType() == 1) {
+			if (p.getX() % 48 == 0 && p.getY() % 48 == 0
+					&& map.getTile(p.info.getLoc()).getType() == 1) {
 				randomBattle();
 			}
-		}		
+		}
 	}
 
 	public void updateStats() {

@@ -43,7 +43,7 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 		actionPanel.setLocation(0, ySize - 297);
 		this.getParent().add(actionPanel);
 		actionPanel.addButtons();
-		System.out.println(actionPanel.getLocation());
+		System.out.println(ySize - 580);
 		repaint();
 	}
 
@@ -73,6 +73,9 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 		second.fillRect(0, 0, image.getWidth(this), image.getHeight(this));
 		second.drawImage(kiritoBack, getWidth()/4 - 300, getHeight()/4 - 125, this );
 		second.drawImage(battle.enemy.sprites[2][0].getScaledInstance(192, 192, Image.SCALE_DEFAULT), getWidth()*3/4 +50, getHeight()/4 - 150, this);
+		second.setColor(Color.GREEN);
+		second.fillRect(getWidth()/4 - 300, getHeight()/4 - 125 + kiritoBack.getHeight(this), kiritoBack.getWidth(this), 23);
+		//System.out.println(getHeight()/4 - 125 + kiritoBack.getHeight(this));
 		g.drawImage(image, 0, 0, this);
 	} 
 

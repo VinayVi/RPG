@@ -33,6 +33,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import tiles.Portal;
 import tiles.Tile;
@@ -221,19 +222,32 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	}
 
 	public static void main(String[] args) throws IOException {
-		JFrame frame = new JFrame("RPG");
-		GamePanel gui = new GamePanel();
-		gui.setPreferredSize(new Dimension(gui.xSize, gui.ySize));
-		// frame.setUndecorated(true);
-		frame.add(gui);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setFocusable(true);
-		frame.addKeyListener(gui);
-		frame.pack();
-		frame.setResizable(true);
-		frame.setLocationRelativeTo(null);
-		new Thread(gui).start();
+		
+		SwingUtilities.invokeLater(new Runnable() {
+	        @Override
+	        public void run() {
+	        	JFrame frame = new JFrame("RPG");
+	    		GamePanel gui = null;
+				try {
+					gui = new GamePanel();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    		gui.setPreferredSize(new Dimension(gui.xSize, gui.ySize));
+	    		// frame.setUndecorated(true);
+	    		frame.add(gui);
+	    		frame.setVisible(true);
+	    		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    		frame.setFocusable(true);
+	    		frame.addKeyListener(gui);
+	    		frame.pack();
+	    		frame.setResizable(true);
+	    		frame.setLocationRelativeTo(null);
+	    		new Thread(gui).start();       
+	        }
+	    });
+		
 	}
 
 	public ArrayList<Character> inScreen() {

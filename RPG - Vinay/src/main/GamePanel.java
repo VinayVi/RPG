@@ -33,7 +33,11 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+<<<<<<< HEAD
 import javax.swing.ListModel;
+=======
+import javax.swing.SwingUtilities;
+>>>>>>> refs/remotes/origin/master
 
 import tiles.Portal;
 import tiles.Tile;
@@ -225,19 +229,32 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	}
 
 	public static void main(String[] args) throws IOException {
-		JFrame frame = new JFrame("RPG");
-		GamePanel gui = new GamePanel();
-		gui.setPreferredSize(new Dimension(gui.xSize, gui.ySize));
-		// frame.setUndecorated(true);
-		frame.add(gui);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setFocusable(true);
-		frame.addKeyListener(gui);
-		frame.pack();
-		frame.setResizable(true);
-		frame.setLocationRelativeTo(null);
-		new Thread(gui).start();
+		
+		SwingUtilities.invokeLater(new Runnable() {
+	        @Override
+	        public void run() {
+	        	JFrame frame = new JFrame("RPG");
+	    		GamePanel gui = null;
+				try {
+					gui = new GamePanel();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    		gui.setPreferredSize(new Dimension(gui.xSize, gui.ySize));
+	    		// frame.setUndecorated(true);
+	    		frame.add(gui);
+	    		frame.setVisible(true);
+	    		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    		frame.setFocusable(true);
+	    		frame.addKeyListener(gui);
+	    		frame.pack();
+	    		frame.setResizable(true);
+	    		frame.setLocationRelativeTo(null);
+	    		new Thread(gui).start();       
+	        }
+	    });
+		
 	}
 
 	public ArrayList<Character> inScreen() {
@@ -266,8 +283,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			} else if (e.getKeyCode() == KeyEvent.VK_I) {
 				invFrame.setVisible(false);
 			} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-				Equipable eq = invData.getSelectedValue();
-				JOptionPane.showMessageDialog(new JFrame(), eq.getName());
+				System.out.println(true);
 			}
 		}
 
@@ -346,6 +362,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 							+ p.info.LweaponEquipped);
 				}
 				updateStats();
+<<<<<<< HEAD
 			} else if (e.getActionCommand().equals("Unequip")) {
 				ArrayList<Equipable> selected = (ArrayList<Equipable>) invData
 						.getSelectedValuesList();
@@ -358,6 +375,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				}
 				System.out.println(p.info.RweaponEquipped + "  "
 						+ p.info.LweaponEquipped);
+=======
+>>>>>>> refs/remotes/origin/master
 			} else if (e.getActionCommand().equals("No")) {
 				dialogue.dispose();
 			} else if (e.getActionCommand().equals("Yes")) {
@@ -416,13 +435,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				invFrame.setVisible(!invFrame.isVisible());
 			}
 		}
-
 		@Override
-		public void keyReleased(KeyEvent arg0) {
+		public void keyTyped(KeyEvent arg0) {
 		}
 
 		@Override
-		public void keyTyped(KeyEvent arg0) {
+		public void keyReleased(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
@@ -492,6 +512,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			p.setWait(0.5);
 		} else if (e.getKeyCode() == KeyEvent.VK_N) {
+<<<<<<< HEAD
 			Equipable weapon = new Equipable("Dagger1", ItemType.DAGGER, 1, 2,
 					3, 4, 5);
 			Equipable weapon2 = new Equipable("Dagger2", ItemType.DAGGER, 2, 4,
@@ -505,6 +526,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			Equipable weapon6 = new Equipable("Rapier", ItemType.RAPIER, 2, 4,
 					6, 8, 10);
 
+=======
+			Equipable weapon = new Equipable("Hermy's Dagger", ItemType.TWO, 1,
+					2, 3, 4, 5);
+>>>>>>> refs/remotes/origin/master
 			p.Inventory.addElement(weapon);
 			p.Inventory.addElement(weapon2);
 			p.Inventory.addElement(weapon3);
@@ -672,7 +697,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			while (state >= 4) {
 				if (state > 4) {
 					System.out.println(distanceTo);
+<<<<<<< HEAD
 					// System.out.println("shit....");
+=======
+>>>>>>> refs/remotes/origin/master
 				}
 				state--;
 			}
@@ -699,6 +727,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 					loading = false;
 				}
 			}
+<<<<<<< HEAD
+=======
+			if (p.getX() % 48 == 0 && p.getY() % 48 == 0
+					&& map.getTile(p.info.getLoc()).getType() == 1) {
+				randomBattle();
+			}
+>>>>>>> refs/remotes/origin/master
 		}
 	}
 

@@ -33,13 +33,15 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListModel;
 
 import tiles.Portal;
 import tiles.Tile;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel implements Runnable, KeyListener {
-	ImageIcon icon = new ImageIcon("Z://git//RPG//RPG - Vinay//src//tiles//Border.png");
+	ImageIcon icon = new ImageIcon(
+			"Z://git//RPG//RPG - Vinay//src//tiles//Border.png");
 	Font myFont = new Font("SansSerif", Font.ITALIC, 18);
 	private Image image, loadingImage;
 	private Graphics second;
@@ -51,7 +53,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	JPanel mapPane, optPane, invPane, statsPane;
 	JList<Equipable> invData;
 	JButton load, save, exit, resume; // Options Buttons
-	JButton equip;
+	JButton equip, unequip;
 	JLabel str, fort, damage, resil;
 	ArrayList<Character> NPCs;
 	final String strText, fortText, damageText, resilText;
@@ -123,7 +125,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		invFrame.setFocusable(true);
 		equip = new JButton("Equip");
 		equip.addActionListener(new buttonListener());
+		unequip = new JButton("Unequip");
+		unequip.addActionListener(new buttonListener());
 		invPane.add(equip);
+		invPane.add(unequip);
 		invData = new JList<Equipable>(p.Inventory);
 		invPane.add(new JScrollPane(invData));
 
@@ -320,12 +325,42 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				ArrayList<Equipable> selected = (ArrayList<Equipable>) invData
 						.getSelectedValuesList();
 				for (Equipable eq : selected) {
-					eq.equipped = true;
+					if (eq.isEquipped()) {
+
+					} else {
+						if (p.canEquipL(eq)) {
+							p.info.LweaponEquipped = eq;
+						} else if (p.canEquipR(eq)) {
+							p.info.RweaponEquipped = eq;
+						} else {
+							p.info.LweaponEquipped = null;
+							p.info.RweaponEquipped = null;
+							if (p.canEquipL(eq)) {
+								p.info.LweaponEquipped = eq;
+							} else if (p.canEquipR(eq)) {
+								p.info.RweaponEquipped = eq;
+							}
+						}
+					}
+					System.out.println(p.info.RweaponEquipped + "  "
+							+ p.info.LweaponEquipped);
 				}
 				updateStats();
-			} else if (e.getActionCommand().equals("No")){
+			} else if (e.getActionCommand().equals("Unequip")) {
+				ArrayList<Equipable> selected = (ArrayList<Equipable>) invData
+						.getSelectedValuesList();
+				for (Equipable eq : selected) {
+					if (p.info.LweaponEquipped == eq) {
+						p.info.LweaponEquipped = null;
+					} else if (p.info.RweaponEquipped == eq) {
+						p.info.RweaponEquipped = null;
+					}
+				}
+				System.out.println(p.info.RweaponEquipped + "  "
+						+ p.info.LweaponEquipped);
+			} else if (e.getActionCommand().equals("No")) {
 				dialogue.dispose();
-			}else if (e.getActionCommand().equals("Yes")){
+			} else if (e.getActionCommand().equals("Yes")) {
 				dialogue.dispose();
 				shoppane = new JPanel();
 				shop = new JFrame();
@@ -333,14 +368,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				JLabel text = new JLabel("Here are my wares!");
 				text.setFont(myFont);
 				text.setAlignmentY(CENTER_ALIGNMENT);
-				shoppane.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, icon));
+				shoppane.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4,
+						icon));
 				shoppane.add(text);
-				JLabel wares = new JLabel(new ImageIcon("Z://git//RPG//RPG - Vinay//src//tiles//Asuna.png"));
+				JLabel wares = new JLabel(new ImageIcon(
+						"Z://git//RPG//RPG - Vinay//src//tiles//Asuna.png"));
 				shoppane.add(wares);
 				shop.pack();
-			    shop.setSize(400, 600);
-			    shop.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			    shop.setVisible(true);
+				shop.setSize(400, 600);
+				shop.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				shop.setVisible(true);
 			}
 		}
 
@@ -455,22 +492,39 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			p.setWait(0.5);
 		} else if (e.getKeyCode() == KeyEvent.VK_N) {
-			Equipable weapon = new Equipable("Hermy's Weeny", ItemType.TWO, 1,
-					2, 3, 4, 5);
+			Equipable weapon = new Equipable("Dagger1", ItemType.DAGGER, 1, 2,
+					3, 4, 5);
+			Equipable weapon2 = new Equipable("Dagger2", ItemType.DAGGER, 2, 4,
+					6, 8, 10);
+			Equipable weapon3 = new Equipable("Sword", ItemType.ONE, 2, 4, 6,
+					8, 10);
+			Equipable weapon4 = new Equipable("Claymore", ItemType.TWO, 2, 4,
+					6, 8, 10);
+			Equipable weapon5 = new Equipable("Shield", ItemType.SHIELD, 2, 4,
+					6, 8, 10);
+			Equipable weapon6 = new Equipable("Rapier", ItemType.RAPIER, 2, 4,
+					6, 8, 10);
+
 			p.Inventory.addElement(weapon);
+			p.Inventory.addElement(weapon2);
+			p.Inventory.addElement(weapon3);
+			p.Inventory.addElement(weapon4);
+			p.Inventory.addElement(weapon5);
+			p.Inventory.addElement(weapon6);
 		} else if (e.getKeyCode() == KeyEvent.VK_C) {
 			statsFrame.setVisible(!statsFrame.isVisible());
-		}  else if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-			if(facing(p)==0)
-			{
-				
+		} else if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+			if (facing(p) == 0) {
+
 				dialoguepane = new JPanel();
 				dialogue = new JFrame();
 				dialogue.setContentPane(dialoguepane);
-				JLabel text = new JLabel("Greetings weary traveler, may I interest you in my wares?");
+				JLabel text = new JLabel(
+						"Greetings weary traveler, may I interest you in my wares?");
 				text.setFont(myFont);
 				text.setAlignmentY(CENTER_ALIGNMENT);
-				dialoguepane.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, icon));
+				dialoguepane.setBorder(BorderFactory.createMatteBorder(4, 4, 4,
+						4, icon));
 				dialoguepane.add(text);
 				JButton yes = new JButton("Yes");
 				yes.setFont(myFont);
@@ -481,9 +535,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				no.addActionListener(new buttonListener());
 				dialoguepane.add(no);
 				dialogue.pack();
-			    dialogue.setSize(xSize, 100);
-			    dialogue.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			    dialogue.setVisible(true);
+				dialogue.setSize(xSize, 100);
+				dialogue.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				dialogue.setVisible(true);
 			}
 		}
 	}
@@ -605,7 +659,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				newLoc.add(0, 47);
 			}
 			Tile newTile = map.getTile(newLoc);
-			if (newTile == null || !newTile.walkable() || hasNPC(newTile.getLoc())) {
+			if (newTile == null || !newTile.walkable()
+					|| hasNPC(newTile.getLoc())) {
 				c.currSprite = c.sprites[facing(c.getSpeed())][0];
 				c.setSpeed(0, 0);
 				return;
@@ -617,17 +672,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			while (state >= 4) {
 				if (state > 4) {
 					System.out.println(distanceTo);
-					//System.out.println("shit....");
+					// System.out.println("shit....");
 				}
 				state--;
 			}
 			c.currSprite = c.sprites[facing(c.getSpeed())][state];
 			c.info.getLoc().add(c.getSpeed());
 			c.setMoveTime(c.getCurr());
-			if (c.info.getLoc().getX() % 48 == 0 && c.info.getLoc().getY() % 48 == 0 && !c.moving()) {
+			if (c.info.getLoc().getX() % 48 == 0
+					&& c.info.getLoc().getY() % 48 == 0 && !c.moving()) {
 				c.setSpeed(0, 0);
 			}
-			if (c.info.getLoc().getX() % 48 == 0 && c.info.getLoc().getY() % 48 == 0 && newTile instanceof Portal) {
+			if (c.info.getLoc().getX() % 48 == 0
+					&& c.info.getLoc().getY() % 48 == 0
+					&& newTile instanceof Portal) {
 				c.info.setLoc(((Portal) newTile).getNewLoc());
 				c.info.setCurrMap(((Portal) newTile).getNewMap());
 				if (drawnMaps.contains(c.info.getCurrMap())) {
@@ -641,7 +699,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 					loading = false;
 				}
 			}
-		}		
+		}
 	}
 
 	public void updateStats() {

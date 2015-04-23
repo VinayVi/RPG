@@ -1,6 +1,7 @@
 package main;
 
 import item.Item;
+import item.Equipable.Ability;
 import item.Equipable.Equipable;
 
 import java.io.Serializable;
@@ -13,11 +14,12 @@ public class Info implements Serializable {
 	protected double maxHealth;
 	protected double currentEnergy;
 	protected double maxEnergy;
-	protected double str = 0; 
+	protected double str = 0;
 	protected double fort = 0;
 	protected double damage = 0;
 	protected double resil = 0;
 	protected double stam = 0;
+	protected ArrayList<Ability> moves = new ArrayList();
 	/** Directional Moving Booleans */
 	protected boolean mU;
 	protected boolean mR;
@@ -29,11 +31,10 @@ public class Info implements Serializable {
 	private double fortMultiplier;
 	private ArrayList<Item> inventoryW; // Weapons
 	private ArrayList<Item> inventoryA; // Armor
-	private int weaponsEquipped;
 	private double resMultiplier;
 	private double stamMultiplier;
-	private Equipable RweaponEquipped;
-	private Equipable LweaponEquipped;
+	protected Equipable RweaponEquipped;
+	protected Equipable LweaponEquipped;
 	private volatile Vector loc;
 	private volatile int currMap = 1;
 
@@ -116,4 +117,5 @@ public class Info implements Serializable {
 	public void setRweaponEquipped(Equipable rweaponEquipped) {
 		RweaponEquipped = rweaponEquipped;
 	}
+
 }

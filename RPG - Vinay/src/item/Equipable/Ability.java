@@ -1,11 +1,11 @@
 package item.Equipable;
 
-public class Special {
+public class Ability {
 	protected String name;
 	protected double damage;
 	protected int energy;
 
-	public Special(String n, double d, int e) {
+	public Ability(String n, double d, int e) {
 		name = n;
 		damage = d;
 		energy = e;

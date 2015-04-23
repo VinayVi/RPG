@@ -36,8 +36,7 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 		battle = b;
 		try {
 			kiritoBack = ImageIO.read(new File("src//sprites//KiritoBack.png"));
-		} catch (IOException e) {
-		}
+		} catch (IOException e) {}
 		battling = true;
 	}
 
@@ -46,10 +45,11 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 		actionPanel = new ActionPanel();
 		actionPanel.setSize(xSize, 297);
 		actionPanel.setLocation(0, ySize - 297);
-		topFrame.getContentPane().setLayout(null);
-		topFrame.getContentPane().add(actionPanel);
+		//actionPanel.setBackground(Color.DARK_GRAY);
 		actionPanel.addButtons();
-		actionPanel.setBackground(Color.BLACK);
+		this.getParent().setLayout(null);
+		this.getParent().add(actionPanel);
+		actionPanel.setVisible(true); 
 		topFrame.getContentPane().revalidate();
 		topFrame.revalidate();
 		actionPanel.repaint();
@@ -76,22 +76,31 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 	}
 
 	@Override
-	public void paint(Graphics g) {
-		image = createImage(this.getWidth(), this.getHeight() - actionPanel.getHeight() - 1);
+	public void paintComponent(Graphics g) {
+		//super.paintComponent(g);
+		actionPanel.buttonAttack.requestFocus();
+		image = createImage(this.getWidth(),
+				this.getHeight() - actionPanel.getHeight() - 1);
 		second = image.getGraphics();
 		second.setColor(Color.LIGHT_GRAY);
-		second.fillRect(0, 0, image.getWidth(this), image.getHeight(this));
-		second.drawImage(kiritoBack, 0, this.getHeight() - actionPanel.getHeight() - kiritoBack.getHeight(this) - 15, this );
-		second.drawImage(battle.enemy.sprites[2][0].getScaledInstance(192, 192, Image.SCALE_DEFAULT), getWidth()*3/4 +50, getHeight()/4 - 150, this);
+		second.fillRect(0, 0, image .getWidth(this), image.getHeight(this));
+		second.drawImage(kiritoBack, 0, this.getHeight() - actionPanel.getHeight()
+						- kiritoBack.getHeight(this) - 15, this);
+		second.drawImage(battle.enemy.sprites[2][0].getScaledInstance(192, 192,
+				Image.SCALE_DEFAULT), getWidth() * 3 / 4 + 50,
+				getHeight() / 4 - 150, this);
 		second.setColor(Color.BLACK);
 		second.setFont(new Font("default", Font.BOLD, 16));
-		second.drawString("HEALTH", 0, this.getHeight() - actionPanel.getHeight());
+		second.drawString("HEALTH", 0,
+				this.getHeight() - actionPanel.getHeight());
+		second.drawString("HEALTH", getWidth()*3/4+50, getHeight() / 4 - 150 + 192 + 15);
 		FontMetrics fm = second.getFontMetrics();
 		int width = fm.stringWidth("HEALTH") + 5;
 		second.setColor(Color.GREEN);
-		second.fillRect(width, this.getHeight() - actionPanel.getHeight() - 15, kiritoBack.getWidth(this) - width, 15);
+		second.fillRect(width, this.getHeight() - actionPanel.getHeight() - 15,
+				kiritoBack.getWidth(this) - width, 15);
 		g.drawImage(image, 0, 0, this);
-	}	// GRAB THE TABLET AND TAKE IT HOME WITH YOU
+	}
 
 	@Override
 	public void run() {
@@ -101,7 +110,12 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 				// battling = battle.p.info.currentHealth>0 &&
 				// battle.enemy.info.currentHealth>0;
 				repaint();
+				//actionPanel.repaint();
 				prevTime = currTime;
+				if(!battle.playerTurn)
+					actionPanel.buttonAttack.setEnabled(false);
+				else
+					actionPanel.buttonAttack.setEnabled(true);
 			}
 
 		}
@@ -114,12 +128,13 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 			buttonAttack = new JButton("Attack");
 			buttonAttack.addActionListener(this);
 			add(buttonAttack);
+			validate();
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Attack")) {
-				System.out.println("TRU");
+				int attack = battle.attack(new Attack(10, 10));
 			}
 		}
 

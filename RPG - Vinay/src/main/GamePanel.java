@@ -53,7 +53,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	JPanel mapPane, optPane, invPane, statsPane;
 	JList<Equipable> invData;
 	JButton load, save, exit, resume; // Options Buttons
-	JButton equip;
+	JButton equip, unequip;
 	JLabel str, fort, damage, resil;
 	ArrayList<Character> NPCs;
 	final String strText, fortText, damageText, resilText;
@@ -125,7 +125,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		invFrame.setFocusable(true);
 		equip = new JButton("Equip");
 		equip.addActionListener(new buttonListener());
+		unequip = new JButton("Unequip");
+		unequip.addActionListener(new buttonListener());
 		invPane.add(equip);
+		invPane.add(unequip);
 		invData = new JList<Equipable>(p.Inventory);
 		invPane.add(new JScrollPane(invData));
 
@@ -334,9 +337,39 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				ArrayList<Equipable> selected = (ArrayList<Equipable>) invData
 						.getSelectedValuesList();
 				for (Equipable eq : selected) {
-					eq.equipped = true;
+					if (eq.isEquipped()) {
+
+					} else {
+						if (p.canEquipL(eq)) {
+							p.info.LweaponEquipped = eq;
+						} else if (p.canEquipR(eq)) {
+							p.info.RweaponEquipped = eq;
+						} else {
+							p.info.LweaponEquipped = null;
+							p.info.RweaponEquipped = null;
+							if (p.canEquipL(eq)) {
+								p.info.LweaponEquipped = eq;
+							} else if (p.canEquipR(eq)) {
+								p.info.RweaponEquipped = eq;
+							}
+						}
+					}
+					System.out.println(p.info.RweaponEquipped + "  "
+							+ p.info.LweaponEquipped);
 				}
 				updateStats();
+			} else if (e.getActionCommand().equals("Unequip")) {
+				ArrayList<Equipable> selected = (ArrayList<Equipable>) invData
+						.getSelectedValuesList();
+				for (Equipable eq : selected) {
+					if (p.info.LweaponEquipped == eq) {
+						p.info.LweaponEquipped = null;
+					} else if (p.info.RweaponEquipped == eq) {
+						p.info.RweaponEquipped = null;
+					}
+				}
+				System.out.println(p.info.RweaponEquipped + "  "
+						+ p.info.LweaponEquipped);
 			} else if (e.getActionCommand().equals("No")) {
 				dialogue.dispose();
 			} else if (e.getActionCommand().equals("Yes")) {
@@ -472,9 +505,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			p.setWait(0.5);
 		} else if (e.getKeyCode() == KeyEvent.VK_N) {
-			Equipable weapon = new Equipable("Hermy's Dagger", ItemType.TWO, 1,
-					2, 3, 4, 5);
+			Equipable weapon = new Equipable("Dagger1", ItemType.DAGGER, 1, 2,
+					3, 4, 5);
+			Equipable weapon2 = new Equipable("Dagger2", ItemType.DAGGER, 2, 4,
+					6, 8, 10);
+			Equipable weapon3 = new Equipable("Sword", ItemType.ONE, 2, 4, 6,
+					8, 10);
+			Equipable weapon4 = new Equipable("Claymore", ItemType.TWO, 2, 4,
+					6, 8, 10);
+			Equipable weapon5 = new Equipable("Shield", ItemType.SHIELD, 2, 4,
+					6, 8, 10);
+			Equipable weapon6 = new Equipable("Rapier", ItemType.RAPIER, 2, 4,
+					6, 8, 10);
 			p.Inventory.addElement(weapon);
+			p.Inventory.addElement(weapon2);
+			p.Inventory.addElement(weapon3);
+			p.Inventory.addElement(weapon4);
+			p.Inventory.addElement(weapon5);
+			p.Inventory.addElement(weapon6);
 		} else if (e.getKeyCode() == KeyEvent.VK_C) {
 			statsFrame.setVisible(!statsFrame.isVisible());
 		} else if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
@@ -636,6 +684,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			while (state >= 4) {
 				if (state > 4) {
 					System.out.println(distanceTo);
+					// System.out.println("shit....");
 				}
 				state--;
 			}

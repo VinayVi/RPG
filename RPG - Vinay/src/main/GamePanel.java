@@ -57,7 +57,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	JLabel str, fort, damage, resil;
 	ArrayList<Character> NPCs;
 	final String strText, fortText, damageText, resilText;
-	private volatile boolean running;
+	protected volatile boolean running;
 	private boolean loading;
 	private Thread mover;
 	Toolkit tk = Toolkit.getDefaultToolkit();
@@ -75,6 +75,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		map = new Map(1, true);
 		drawnMaps.add(1);
 		p = new Character("Kirito");
+		p.info.maxHealth  = 200;
+		p.info.currentHealth = 200;
 		mapPane = new JPanel();
 		mapFrame = new JFrame();
 		JLabel mapImage = new JLabel(new ImageIcon("src//tiles//minimap.png"));
@@ -225,32 +227,32 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	}
 
 	public static void main(String[] args) throws IOException {
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
-	        @Override
-	        public void run() {
-	        	JFrame frame = new JFrame("RPG");
-	    		GamePanel gui = null;
+			@Override
+			public void run() {
+				JFrame frame = new JFrame("RPG");
+				GamePanel gui = null;
 				try {
 					gui = new GamePanel();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-	    		gui.setPreferredSize(new Dimension(gui.xSize, gui.ySize));
-	    		// frame.setUndecorated(true);
-	    		frame.add(gui);
-	    		frame.setVisible(true);
-	    		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    		frame.setFocusable(true);
-	    		frame.addKeyListener(gui);
-	    		frame.pack();
-	    		frame.setResizable(true);
-	    		frame.setLocationRelativeTo(null);
-	    		new Thread(gui).start();       
-	        }
-	    });
-		
+				gui.setPreferredSize(new Dimension(gui.xSize, gui.ySize));
+				// frame.setUndecorated(true);
+				frame.add(gui);
+				frame.setVisible(true);
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setFocusable(true);
+				frame.addKeyListener(gui);
+				frame.pack();
+				frame.setResizable(true);
+				frame.setLocationRelativeTo(null);
+				new Thread(gui).start();
+			}
+		});
+
 	}
 
 	public ArrayList<Character> inScreen() {
@@ -428,6 +430,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				invFrame.setVisible(!invFrame.isVisible());
 			}
 		}
+
 		@Override
 		public void keyTyped(KeyEvent arg0) {
 		}
@@ -435,7 +438,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		@Override
 		public void keyReleased(KeyEvent arg0) {
 			// TODO Auto-generated method stub
-			
+
 		}
 	}
 
@@ -648,12 +651,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			bp.actionPanel.setVisible(true);
 			new Thread(bp).start();
 			running = false;
+			p.info.mR = false;
+			p.info.mL = false;
+			p.info.mU = false;
+			p.info.mD = false;
+			p.setWait(p.true_wait);
+			while (bp.battling) {
+			}
+			running = true;
+			bp = null;
+			System.gc();
 		}
 	}
 
 	public Character createBear() {
 		Character c = new Character("bear1");
-		// ADD BEAR STATS HERE LATER
+		c.info.maxHealth = 100;
+		c.info.currentHealth = 100;
 		return c;
 	}
 
@@ -684,7 +698,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			while (state >= 4) {
 				if (state > 4) {
 					System.out.println(distanceTo);
-					// System.out.println("shit....");
 				}
 				state--;
 			}

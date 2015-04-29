@@ -1,16 +1,21 @@
 package main;
 
+import java.util.Random;
+
 public class Battle{
 	
 	Character p;
 	Character enemy;
 	boolean playerTurn;
+	Random r = new Random();
+	String damageMessage;
 	
 	public Battle(Character p, Character enemy) {
 		this.p = p;
 		this.enemy = enemy;
 		initialize();
 	}
+	
 
 	private void initialize() {
 		p.info.currentEnergy = p.info.maxEnergy/2;
@@ -25,6 +30,12 @@ public class Battle{
 	 * 			1 if enemy dies from attack
 	 */
 	public int attack (Attack a) {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Character c1 = null, c2 = null;
 		if(playerTurn) {
 			c1 = p;
@@ -33,6 +44,7 @@ public class Battle{
 			c1 = enemy;
 			c2 = p;
 		}
+		updateMessage(a.damage);
 		if(c1.info.currentEnergy - a.energy < 0) {
 			return -1;
 		}
@@ -42,5 +54,21 @@ public class Battle{
 			return 1;
 		}
 		return 0;
+	}
+	
+	private void updateMessage(double damage2) {
+		if(playerTurn) {
+			damageMessage = "You have dealt " + damage2 + " damage to the enemy";
+		} else {
+			damageMessage = "The Enemy has dealt " + damage2 + " damage to you";
+		}
+		
+	}
+
+
+	public void bearAttack() {
+		int attack = r.nextInt(10)+10;
+		Attack a = new Attack(attack, 0);
+		attack = this.attack(a);
 	}
 }

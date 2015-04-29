@@ -372,6 +372,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				}
 				System.out.println(p.info.RweaponEquipped + "  "
 						+ p.info.LweaponEquipped);
+				updateStats();
 			} else if (e.getActionCommand().equals("No")) {
 				dialogue.dispose();
 			} else if (e.getActionCommand().equals("Yes")) {
@@ -732,20 +733,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	}
 
 	public void updateStats() {
-		p.info.str = 0;
-		p.info.fort = 0;
-		p.info.damage = 0;
-		p.info.resil = 0;
-		for (int i = 0; i < p.Inventory.size(); i++) {
-			Equipable e = p.Inventory.get(i);
-			if (e.equipped) {
-				p.info.str += e.getStr();
-				p.info.fort += e.getFort();
-				p.info.damage += e.getDamage();
-				p.info.resil += e.getResil();
-			}
+		double lstr = 0, lfort = 0, ldmg = 0, lresil = 0, rstr = 0, rfort = 0, rdmg = 0, rresil = 0;
+		if (p.info.LweaponEquipped != null) {
+			lstr = p.info.LweaponEquipped.getStr();
+			lfort = p.info.LweaponEquipped.getFort();
+			ldmg = p.info.LweaponEquipped.getDamage();
+			lresil = p.info.LweaponEquipped.getResil();
 		}
-
+		if (p.info.RweaponEquipped != null) {
+			rstr = p.info.RweaponEquipped.getStr();
+			rfort = p.info.RweaponEquipped.getFort();
+			rdmg = p.info.RweaponEquipped.getDamage();
+			rresil = p.info.RweaponEquipped.getResil();
+		}
+		p.info.str = lstr + rstr;
+		p.info.fort = lfort + rfort;
+		p.info.damage = ldmg + rdmg;
+		p.info.resil = lresil + rresil;
 		str.setText(strText + p.info.str);
 		fort.setText(fortText + p.info.fort);
 		damage.setText(damageText + p.info.damage);

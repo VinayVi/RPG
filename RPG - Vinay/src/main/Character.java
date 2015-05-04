@@ -30,9 +30,6 @@ public class Character implements Serializable {
 	private double wait;
 
 	public Character(String name) {
-		Equipable weapon = new Equipable("Daniel's Weeny", ItemType.TWO, 1, 2,
-				3, 4, 5);
-		Inventory.addElement(weapon);
 		info = new Info();
 		info.mU = false;
 		info.mR = false;
@@ -43,20 +40,20 @@ public class Character implements Serializable {
 		sprites = new Image[4][4];
 		BufferedImage spritesheet = null;
 		try {
-			spritesheet = ImageIO.read(new File("src//sprites//"
-					+ name + ".png"));
-			spritesheet = ImageIO.read(new File("src//sprites//" + name + ".png"));
+			spritesheet = ImageIO.read(new File("src//sprites//" + name
+					+ ".png"));
+			spritesheet = ImageIO.read(new File("src//sprites//" + name
+					+ ".png"));
 		} catch (IOException e) {
 		}
-		if(spritesheet.getHeight()==768) {
+		if (spritesheet.getHeight() == 768) {
 			for (int i = 0; i <= 3; i++) {
 				for (int j = 0; j <= 3; j++) {
 					sprites[i][j] = spritesheet.getSubimage(0,
 							(4 * i + j) * 48, 48, 48);
 				}
 			}
-		}
-		else {
+		} else {
 			for (int i = 0; i <= 3; i++) {
 				for (int j = 0; j <= 3; j++) {
 					sprites[i][j] = spritesheet;
@@ -143,11 +140,7 @@ public class Character implements Serializable {
 			}
 			break;
 		case SHIELD:
-			if ((info.getRweaponEquipped() == null || info.getRweaponEquipped()
-					.getType().equals(ItemType.ONE))
-					&& info.getLweaponEquipped() == null) {
-				out = true;
-			}
+			out = false;
 			break;
 		}
 		return out;
@@ -158,20 +151,23 @@ public class Character implements Serializable {
 		boolean out = false;
 		switch (item.getType()) {
 		case DAGGER:
-			if (info.getRweaponEquipped().getType().equals(ItemType.DAGGER)
-					&& info.getLweaponEquipped() == null) {
+			if (info.getRweaponEquipped() == null) {
+				out = false;
+			} else if (info.getRweaponEquipped().getType()
+					.equals(ItemType.DAGGER)) {
 				out = true;
 			}
 			break;
 		case SHIELD:
-			if (info.getRweaponEquipped().getType().equals(ItemType.SHIELD)
+			if (info.getRweaponEquipped() == null
 					&& info.getLweaponEquipped() == null) {
+				out = true;
+			} else if (info.getRweaponEquipped().getType().equals(ItemType.ONE)) {
 				out = true;
 			}
 			break;
 		}
 		return out;
-
 	}
 
 	// Stat Accessors

@@ -4,19 +4,19 @@ import item.ItemType;
 
 public class Weapon extends Equipable{
 	protected ItemType type;
-	protected Special special;
+	protected Ability ability;
 	
 	public Weapon(String name, ItemType Type, double Str, double Fort,
-			double Damage, double Resil, double Stam, int proficiency, Special s, ItemType t) {
+			double Damage, double Resil, double Stam, int proficiency, Ability s, ItemType t) {
 		super(name, Type, Str, Fort, Damage, Resil, Stam, proficiency);
-		special = s;
+		ability = s;
 		type = t;
 	}
-	public Special getSpecial() {
-		return special;
+	public Ability getAbility() {
+		return ability;
 	}
-	public void setSpecial(Special special) {
-		this.special = special;
+	public void setAbility(Ability ability) {
+		this.ability = ability;
 	}
 	
 	

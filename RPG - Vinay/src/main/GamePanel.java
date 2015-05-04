@@ -70,8 +70,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		running = true;
 		loading = false;
 		drawnMaps = new ArrayList<Integer>();
-		map = new Map(1, true);
-		drawnMaps.add(1);
+		map = new Map(7, true);
+		drawnMaps.add(7);
 		p = new Character("Kirito");
 		mapPane = new JPanel();
 		mapFrame = new JFrame();
@@ -185,7 +185,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			}
 		});
 		mover.start();
-		p.info.setCurrMap(1);
+		p.info.setCurrMap(7);
 		loadingImage = ImageIO.read(new File("src//sprites/Loading.png"));
 	}
 
@@ -317,9 +317,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			} else if (e.getActionCommand().equals("Resume Game")) {
 				optFrame.setVisible(!optFrame.isVisible());
 			} else if (e.getActionCommand().equals("Equip")) {
-				ArrayList<Equipable> selected = (ArrayList<Equipable>) invData
-						.getSelectedValuesList();
+				ArrayList<Equipable> selected = (ArrayList<Equipable>) invData.getSelectedValuesList();
 				for (Equipable eq : selected) {
+					
 					eq.equipped = true;
 				}
 				updateStats();
@@ -562,6 +562,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	public void randomBattle() {
 		Random rand = new Random();
 		double chance = (double) (rand.nextInt(1000) + 1) / 10;
+		System.out.println(chance);
 		if (chance <= 5) {
 			p.setSpeed(0, 0);
 			Character bear = createBear();
@@ -586,7 +587,34 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	}
 
 	public Character createBear() {
-		Character c = new Character("bear1");
+		int currentMap=p.info.getCurrMap();
+		Character c = null;
+		switch (currentMap)
+		{	
+		case 1:
+			c = new Character("bear1");
+			break;
+		case 2:
+			c = new Character("DesertBear");
+			 break;
+		case 3:
+			c = new Character("BlackBear");
+			break;
+		case 4:
+			c = new Character("PandaBear");
+			break;
+		case 5:
+			c = new Character("PolarBear");
+			break;
+		case 6:
+			c = new Character("GoldenBear");
+			break;
+		case 7:
+			c = new Character("FireBear");
+			break;
+		case 8:
+		}
+		
 		// ADD BEAR STATS HERE LATER
 		return c;
 	}
@@ -641,7 +669,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 					loading = false;
 				}
 			}
-			if(p.getX() % 48==0 && p.getY() % 48==0 && map.getTile(p.info.getLoc()).getType() == 1) {
+			Tile currTile = map.getTile(p.info.getLoc());
+			if(p.getX() % 48==0 && p.getY() % 48==0 && ((currTile.getType() == 1) || currTile.getType() == 51)) {
 				randomBattle();
 			}
 		}		

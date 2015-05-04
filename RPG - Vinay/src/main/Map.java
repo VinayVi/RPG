@@ -54,6 +54,10 @@ public class Map {
 		final Color Snow = new Color(255, 255, 255);
 		final Color SnowRoad = new Color(194, 194, 194);
 		final Color Ice = new Color(109, 207, 246);
+		final Color Marble = new Color(200, 200, 200);
+		final Color Lava = new Color(242, 101, 34);
+		final Color LavaBridge = new Color(101, 71, 43);
+		final Color Volcano = new Color(121, 0, 0);
 		BufferedImage bi = null;
 		try {
 			bi = ImageIO.read(new File("src//tiles//Map" + num + ".gif"));
@@ -136,6 +140,14 @@ public class Map {
 					tiles[x][y] = new Tile(46, x * 48, y * 48, true);
 				} else if (c.equals(Ice)) {
 					tiles[x][y] = new Tile(47, x * 48, y * 48, true);
+				} else if (c.equals(Marble)) {
+					tiles[x][y] = new Tile(49, x * 48, y * 48, true);
+				} else if (c.equals(Lava)) {
+					tiles[x][y] = new Tile(50, x * 48, y * 48, false);
+				} else if (c.equals(Volcano)) {
+					tiles[x][y] = new Tile(51, x * 48, y * 48, true);
+				} else if (c.equals(LavaBridge)) {
+					tiles[x][y] = new Tile(52, x * 48, y * 48, true);
 				} else {
 					tiles[x][y] = new Tile(3, x * 48, y * 48, false);
 				}
@@ -319,6 +331,10 @@ public class Map {
 		Image Snow = null;
 		Image SnowRoad = null;
 		Image Ice = null;
+		Image Marble = null;
+		Image Lava = null;
+		Image Volcano = null;
+		Image LavaBridge = null;
 
 		try {
 			grass = ImageIO.read(new File("src//tiles//GrassTile.png"));
@@ -417,6 +433,10 @@ public class Map {
 			Snow = ImageIO.read(new File("src//tiles//SnowTile.png"));
 			SnowRoad = ImageIO.read(new File("src//tiles//SnowRoad3.png"));
 			Ice = ImageIO.read(new File("src//tiles//IceTile.png"));
+			Marble = ImageIO.read(new File("src//tiles//Marble Road.png"));
+			Lava = ImageIO.read(new File("src//tiles//Lava.png"));
+			Volcano = ImageIO.read(new File("src//tiles//VolcanoTile.png"));
+			LavaBridge = ImageIO.read(new File("src//tiles//Lava Bridge Tile.png"));
 			MarketPlant = ImageIO.read(new File(
 					"src//tiles//PottedBushBGMT.png"));
 			MarketCounter1 = ImageIO.read(new File(
@@ -559,6 +579,18 @@ public class Map {
 					break;
 				case 47:
 					g.drawImage(Ice, v.getX(), v.getY(), null);
+					break;
+				case 49:
+					g.drawImage(Marble, v.getX(), v.getY(), null);
+					break;
+				case 50:
+					g.drawImage(Lava, v.getX(), v.getY(), null);
+					break;
+				case 51:
+					g.drawImage(Volcano, v.getX(), v.getY(), null);
+					break;
+				case 52:
+					g.drawImage(LavaBridge, v.getX(), v.getY(), null);
 					break;
 				case 101:
 					g.drawImage(Bear, v.getX(), v.getY(), null);

@@ -56,6 +56,10 @@ public class Tile implements Serializable{
 	 * 46 = SnowRoad
 	 * 47 = Ice
 	 * 48 = Boat
+	 * 49 = Marble Road
+	 * 50 = Lava
+	 * 51 = Volcano
+	 * 52 = LavaBridge
 	 * 101 = Bear
 	 * 102 = Wolf
 	 * 201 = HouseBotLeft

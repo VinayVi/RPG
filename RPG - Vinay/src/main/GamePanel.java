@@ -57,7 +57,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	JLabel str, fort, damage, resil;
 	ArrayList<Character> NPCs;
 	final String strText, fortText, damageText, resilText;
-	private volatile boolean running;
+	protected volatile boolean running;
 	private boolean loading;
 	private Thread mover;
 	Toolkit tk = Toolkit.getDefaultToolkit();
@@ -72,9 +72,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		running = true;
 		loading = false;
 		drawnMaps = new ArrayList<Integer>();
-		map = new Map(1, true);
-		drawnMaps.add(1);
+		map = new Map(7, true);
+		drawnMaps.add(7);
 		p = new Character("Kirito");
+		p.info.maxHealth = 200;
+		p.info.currentHealth = 200;
 		mapPane = new JPanel();
 		mapFrame = new JFrame();
 		JLabel mapImage = new JLabel(new ImageIcon("src//tiles//minimap.png"));
@@ -190,7 +192,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			}
 		});
 		mover.start();
-		p.info.setCurrMap(1);
+		p.info.setCurrMap(7);
 		loadingImage = ImageIO.read(new File("src//sprites/Loading.png"));
 	}
 
@@ -351,6 +353,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				ArrayList<Equipable> selected = (ArrayList<Equipable>) invData
 						.getSelectedValuesList();
 				for (Equipable eq : selected) {
+
+					eq.equipped = true;
 					if (eq.isEquipped()) {
 
 					} else {
@@ -644,6 +648,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	public void randomBattle() {
 		Random rand = new Random();
 		double chance = (double) (rand.nextInt(1000) + 1) / 10;
+		System.out.println(chance);
 		if (chance <= 5) {
 			p.setSpeed(0, 0);
 			Character bear = createBear();
@@ -664,12 +669,51 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			bp.actionPanel.setVisible(true);
 			new Thread(bp).start();
 			running = false;
+			p.info.mR = false;
+			p.info.mL = false;
+			p.info.mU = false;
+			p.info.mD = false;
+			p.setWait(p.true_wait);
+			while (bp.battling) {
+			}
+			running = true;
+			bp = null;
+			System.gc();
 		}
 	}
 
 	public Character createBear() {
-		Character c = new Character("bear1");
+		int currentMap = p.info.getCurrMap();
+		Character c = null;
+		switch (currentMap) {
+		case 1:
+			c = new Character("bear1");
+			break;
+		case 2:
+			c = new Character("DesertBear");
+			break;
+		case 3:
+			c = new Character("BlackBear");
+			break;
+		case 4:
+			c = new Character("PandaBear");
+			break;
+		case 5:
+			c = new Character("PolarBear");
+			break;
+		case 6:
+			c = new Character("GoldenBear");
+			break;
+		case 7:
+			c = new Character("FireBear");
+			break;
+		case 8:
+		}
+
 		// ADD BEAR STATS HERE LATER
+		c = new Character("bear1");
+		c.info.maxHealth = 100;
+		c.info.currentHealth = 100;
 		return c;
 	}
 
@@ -700,7 +744,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			while (state >= 4) {
 				if (state > 4) {
 					System.out.println(distanceTo);
-					// System.out.println("shit....");
 				}
 				state--;
 			}
@@ -727,9 +770,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 					loading = false;
 				}
 			}
+			Tile currTile = map.getTile(p.info.getLoc());
 			if (p.getX() % 48 == 0 && p.getY() % 48 == 0
-					&& map.getTile(p.info.getLoc()).getType() == 1) {
-				randomBattle();
+					&& ((currTile.getType() == 1) || currTile.getType() == 51)) {
+				if (p.getX() % 48 == 0 && p.getY() % 48 == 0
+						&& map.getTile(p.info.getLoc()).getType() == 1) {
+					randomBattle();
+				}
 			}
 		}
 	}

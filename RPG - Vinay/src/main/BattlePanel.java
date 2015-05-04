@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -12,10 +13,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -28,6 +32,7 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 	private long currTime, prevTime = 0, deltaTime = 50000000L;
 	private Image image, kiritoBack;
 	private Graphics second;
+
 	Toolkit tk = Toolkit.getDefaultToolkit();
 	int xSize = ((int) tk.getScreenSize().getWidth());
 	int ySize = ((int) tk.getScreenSize().getHeight());
@@ -45,7 +50,7 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 		actionPanel = new ActionPanel();
 		actionPanel.setSize(xSize, 297);
 		actionPanel.setLocation(0, ySize - 297);
-		//actionPanel.setBackground(Color.DARK_GRAY);
+		//  actionPanel.setBackground(Color.DARK_GRAY);
 		actionPanel.addButtons();
 		this.getParent().setLayout(null);
 		this.getParent().add(actionPanel);
@@ -77,10 +82,12 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		//super.paintComponent(g);
-		actionPanel.buttonAttack.requestFocus();
-		image = createImage(this.getWidth(),
-				this.getHeight() - actionPanel.getHeight() - 1);
+		/*actionPanel.strongAttack.requestFocus();
+		actionPanel.mediumAttack.requestFocus();
+		actionPanel.lightAttack.requestFocus();*/
+
+		image = createImage(xSize,
+				ySize - actionPanel.getHeight() - 1);
 		second = image.getGraphics();
 		second.setColor(Color.LIGHT_GRAY);
 		second.fillRect(0, 0, image .getWidth(this), image.getHeight(this));
@@ -97,8 +104,12 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 		FontMetrics fm = second.getFontMetrics();
 		int width = fm.stringWidth("HEALTH") + 5;
 		second.setColor(Color.GREEN);
+		int rectWidth = kiritoBack.getWidth(this) - width;
+		int enemyHealth = (int) (rectWidth * (battle.enemy.info.currentHealth/ battle.enemy.info.maxHealth));
+		int playerHealth = (int) (rectWidth * (battle.p.info.currentHealth/battle.p.info.maxHealth));
 		second.fillRect(width, this.getHeight() - actionPanel.getHeight() - 15,
-				kiritoBack.getWidth(this) - width, 15);
+				playerHealth, 15);
+		second.fillRect(getWidth()*3/4+50, getHeight() / 4 - 150 + 192 + 15, enemyHealth, 15);
 		g.drawImage(image, 0, 0, this);
 	}
 
@@ -112,31 +123,86 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 				repaint();
 				//actionPanel.repaint();
 				prevTime = currTime;
-				if(!battle.playerTurn)
-					actionPanel.buttonAttack.setEnabled(false);
-				else
-					actionPanel.buttonAttack.setEnabled(true);
+				if(!battle.playerTurn) {
+					actionPanel.strongAttack.setEnabled(false);
+					actionPanel.mediumAttack.setEnabled(false);
+					actionPanel.lightAttack.setEnabled(false);
+					battle.bearAttack();
+					battle.playerTurn = true;
+					actionPanel.damageMessage.setText(battle.damageMessage);
+				}
+				else {
+					actionPanel.strongAttack.setEnabled(true);
+					actionPanel.mediumAttack.setEnabled(true);
+					actionPanel.lightAttack.setEnabled(true);
+					
+				}
 			}
 
 		}
 	}
 
 	public class ActionPanel extends JPanel implements ActionListener {
-		private JButton buttonAttack;
+		private JButton strongAttack;
+		private JButton mediumAttack;
+		private JButton lightAttack;
+		private JLabel damageMessage;
 
 		public void addButtons() {
-			buttonAttack = new JButton("Attack");
-			buttonAttack.addActionListener(this);
-			add(buttonAttack);
+			this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+			strongAttack = new JButton("Strong Attack");
+			strongAttack.addActionListener(this);
+			add(strongAttack);
+			mediumAttack = new JButton("Medium Attack");
+			mediumAttack.addActionListener(this);
+			add(mediumAttack);
+			lightAttack = new JButton("Light Attack");
+			lightAttack.addActionListener(this);
+			add(lightAttack);
+			damageMessage = new JLabel(""); 
+			add(damageMessage); 
 			validate();
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (e.getActionCommand().equals("Attack")) {
-				int attack = battle.attack(new Attack(10, 10));
+			Random r = new Random();
+			if (e.getActionCommand().equals("Strong Attack")) {
+				int attack = r.nextInt(50)+51;
+				Attack a = new Attack(attack, 0);
+				attack = battle.attack(a);
+				battle.playerTurn = false;
+				damageMessage.setText(battle.damageMessage);
+				if(attack == 1) {
+					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+					battling = false;
+					topFrame.dispose();
+				}
+			} else if (e.getActionCommand().equals("Medium Attack")) {
+				int attack = r.nextInt(50)+26;
+				Attack a = new Attack(attack, 0);
+				attack = battle.attack(a);
+				battle.playerTurn = false;
+				damageMessage.setText(battle.damageMessage);
+				if(attack == 1) {
+					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+					battling = false;
+					topFrame.dispose();
+				}
+			} else if (e.getActionCommand().equals("Light Attack")) {
+				int attack = r.nextInt(50)+1;
+				Attack a = new Attack(attack, 0);
+				attack = battle.attack(a);
+				battle.playerTurn = false;
+				damageMessage.setText(battle.damageMessage);
+				if(attack == 1) {
+					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+					battling = false;
+					topFrame.dispose();
+				}
 			}
-		}
+			
+		} 
 
 	}
 

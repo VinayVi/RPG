@@ -311,9 +311,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			if (e.getActionCommand().equals("Save Game")) {
 				try {
 					save(p.info);
+				/*	
+										
 					JOptionPane.showMessageDialog(new JFrame(),
 							"Successfully Saved");
+					
+					*/
 					optFrame.setVisible(!optFrame.isVisible());
+					running = true;
+					JFrame frame = (JFrame) GamePanel.this.getTopLevelAncestor();
+					frame.setFocusableWindowState(true);
+					frame.setFocusable(true);
+					frame.toFront();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -325,6 +334,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 						JOptionPane.showMessageDialog(new JFrame(),
 								"Successfully Loaded");
 						optFrame.setVisible(!optFrame.isVisible());
+						running = true;
+						JFrame frame = (JFrame) GamePanel.this.getTopLevelAncestor();
+						frame.setFocusableWindowState(true);
+						frame.setFocusable(true);
+						frame.toFront();
 					}
 				} catch (ClassNotFoundException | IOException e1) {
 					e1.printStackTrace();

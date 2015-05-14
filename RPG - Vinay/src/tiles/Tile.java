@@ -60,6 +60,9 @@ public class Tile implements Serializable{
 	 * 50 = Lava
 	 * 51 = Volcano
 	 * 52 = LavaBridge
+	 * 53 = LastTile
+	 * 54 = CrystalBot
+	 * 55 = CrystalTop
 	 * 101 = Bear
 	 * 102 = Wolf
 	 * 201 = HouseBotLeft

@@ -4,8 +4,8 @@ import java.util.Random;
 
 public class Battle{
 	
-	Character p;
-	Character enemy;
+	volatile Character p;
+	volatile Character enemy;
 	boolean playerTurn;
 	Random r = new Random();
 	String damageMessage;
@@ -30,12 +30,7 @@ public class Battle{
 	 * 			1 if enemy dies from attack
 	 */
 	public int attack (Attack a) {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+
 		Character c1 = null, c2 = null;
 		if(playerTurn) {
 			c1 = p;
@@ -49,7 +44,8 @@ public class Battle{
 			return -1;
 		}
 		c1.info.currentEnergy -= a.energy;
-		c2.info.currentHealth -= a.damage;
+		double damage = a.damage;
+		c2.info.currentHealth -= damage;
 		if(c2.info.currentHealth < 0) {
 			return 1;
 		}
@@ -66,9 +62,10 @@ public class Battle{
 	}
 
 
-	public void bearAttack() {
+	public int bearAttack() {
 		int attack = r.nextInt(10)+10;
 		Attack a = new Attack(attack, 0);
 		attack = this.attack(a);
+		return attack;
 	}
 }

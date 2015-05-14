@@ -68,12 +68,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	JPanel shoppane;
 	JFrame shop;
 
+	int bearCountre;
+
 	public GamePanel() throws IOException {
 		running = true;
 		loading = false;
 		drawnMaps = new ArrayList<Integer>();
 		map = new Map(1, true);
 		drawnMaps.add(1);
+		map = new Map(8, true);
+		drawnMaps.add(8);
 		p = new Character("Kirito");
 		p.info.maxHealth = 200;
 		p.info.currentHealth = 200;
@@ -193,6 +197,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		});
 		mover.start();
 		p.info.setCurrMap(1);
+		p.info.setCurrMap(8);
 		loadingImage = ImageIO.read(new File("src//sprites/Loading.png"));
 	}
 
@@ -409,6 +414,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				shop.setSize(400, 600);
 				shop.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				shop.setVisible(true);
+				p.info.currentHealth = p.info.maxHealth;
 			}
 		}
 
@@ -645,7 +651,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			return 3;
 	}
 
-	public void randomBattle() {
+	/*public void randomBattle() {
 		Random rand = new Random();
 		double chance = (double) (rand.nextInt(1000) + 1) / 10;
 		System.out.println(chance);
@@ -677,6 +683,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			while (bp.battling) {
 			}
 			running = true;
+			if (bp.playerWin) {
+				bearCountre++;
+			} else {
+				JOptionPane.showMessageDialog(new JFrame(), "You have killed "
+						+ bearCountre + " bears");
+				System.exit(1);
+			}
 			bp = null;
 			System.gc();
 		}
@@ -715,7 +728,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		c.info.maxHealth = 100;
 		c.info.currentHealth = 100;
 		return c;
-	}
+	}*/
 
 	public void update(Character c) throws IOException {
 		if (c.getSpeed().isZero())
@@ -775,7 +788,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 					&& ((currTile.getType() == 1) || currTile.getType() == 51)) {
 				if (p.getX() % 48 == 0 && p.getY() % 48 == 0
 						&& map.getTile(p.info.getLoc()).getType() == 1) {
-					randomBattle();
+					//randomBattle();
 				}
 			}*/
 		}

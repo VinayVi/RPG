@@ -59,6 +59,9 @@ public class Map {
 		final Color Lava = new Color(242, 101, 34);
 		final Color LavaBridge = new Color(101, 71, 43);
 		final Color Volcano = new Color(121, 0, 0);
+		final Color Last = new Color(0, 0, 0);
+		final Color CrystalBot = new Color(0, 0, 253);
+		final Color CrystalTop = new Color(0, 253, 255);
 		BufferedImage bi = null;
 		try {
 			bi = ImageIO.read(new File("src//tiles//Map" + num + ".gif"));
@@ -149,6 +152,12 @@ public class Map {
 					tiles[x][y] = new Tile(51, x * 48, y * 48, true);
 				} else if (c.equals(LavaBridge)) {
 					tiles[x][y] = new Tile(52, x * 48, y * 48, true);
+				} else if (c.equals(Last)) {
+					tiles[x][y] = new Tile(53, x * 48, y * 48, true);
+				} else if (c.equals(CrystalBot)) {
+					tiles[x][y] = new Tile(54, x * 48, y * 48, false);
+				} else if (c.equals(CrystalTop)) {
+					tiles[x][y] = new Tile(55, x * 48, y * 48, false);
 				} else {
 					tiles[x][y] = new Tile(3, x * 48, y * 48, false);
 				}
@@ -493,6 +502,9 @@ public class Map {
 		Image Lava = null;
 		Image Volcano = null;
 		Image LavaBridge = null;
+		Image LastTile = null;
+		Image CrystalBot = null;
+		Image CrystalTop = null;
 
 		try {
 			grass = ImageIO.read(new File("src//tiles//GrassTile.png"));
@@ -596,6 +608,10 @@ public class Map {
 			Volcano = ImageIO.read(new File("src//tiles//VolcanoTile.png"));
 			LavaBridge = ImageIO.read(new File(
 					"src//tiles//Lava Bridge Tile.png"));
+			LavaBridge = ImageIO.read(new File("src//tiles//Lava Bridge Tile.png"));
+			LastTile = ImageIO.read(new File("src//tiles//LastTile.png"));
+			CrystalBot = ImageIO.read(new File("src//tiles//CrystalBot.png"));
+			CrystalTop = ImageIO.read(new File("src//tiles//CrystalTop.png"));
 			MarketPlant = ImageIO.read(new File(
 					"src//tiles//PottedBushBGMT.png"));
 			MarketCounter1 = ImageIO.read(new File(
@@ -750,6 +766,15 @@ public class Map {
 					break;
 				case 52:
 					g.drawImage(LavaBridge, v.getX(), v.getY(), null);
+					break;
+				case 53:
+					g.drawImage(LastTile, v.getX(), v.getY(), null);
+					break;
+				case 54:
+					g.drawImage(CrystalBot, v.getX(), v.getY(), null);
+					break;
+				case 55:
+					g.drawImage(CrystalTop, v.getX(), v.getY(), null);
 					break;
 				case 101:
 					g.drawImage(Bear, v.getX(), v.getY(), null);

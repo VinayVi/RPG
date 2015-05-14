@@ -72,8 +72,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		running = true;
 		loading = false;
 		drawnMaps = new ArrayList<Integer>();
-		map = new Map(7, true);
-		drawnMaps.add(7);
+		map = new Map(1, true);
+		drawnMaps.add(1);
 		p = new Character("Kirito");
 		p.info.maxHealth = 200;
 		p.info.currentHealth = 200;
@@ -192,7 +192,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			}
 		});
 		mover.start();
-		p.info.setCurrMap(7);
+		p.info.setCurrMap(1);
 		loadingImage = ImageIO.read(new File("src//sprites/Loading.png"));
 	}
 
@@ -771,13 +771,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				}
 			}
 			Tile currTile = map.getTile(p.info.getLoc());
-			if (p.getX() % 48 == 0 && p.getY() % 48 == 0
+			/*if (p.getX() % 48 == 0 && p.getY() % 48 == 0
 					&& ((currTile.getType() == 1) || currTile.getType() == 51)) {
 				if (p.getX() % 48 == 0 && p.getY() % 48 == 0
 						&& map.getTile(p.info.getLoc()).getType() == 1) {
 					randomBattle();
 				}
-			}
+			}*/
 		}
 	}
 

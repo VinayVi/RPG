@@ -19,6 +19,7 @@ public class Map {
 	Tile tiles[][];
 	int length, width;
 	BufferedImage map;
+
 	public Map(int num, boolean draw) throws IOException {
 		final Color grass = new Color(0, 166, 81);
 		final Color road = new Color(226, 174, 127);
@@ -199,19 +200,8 @@ public class Map {
 			tiles[102][0].setType(20);
 			tiles[101][0].setType(20);
 			tiles[100][0].setType(20);
-			tiles[3][3] = new Portal(3 * 48, 3 * 48, true, new Vector(4 * 48,
-					149 * 48), 5);
-			tiles[149][80] = new Portal(149 * 48, 80 * 48, true, new Vector(0,
-					125 * 48), 3);
-			tiles[149][81] = new Portal(149 * 48, 81 * 48, true, new Vector(0,
-					126 * 48), 3);
-			tiles[149][82] = new Portal(149 * 48, 82 * 48, true, new Vector(0,
-					127 * 48), 3);
-			tiles[149][83] = new Portal(149 * 48, 83 * 48, true, new Vector(0,
-					128 * 48), 3);
-			tiles[15][15] = new Portal(15 * 48, 15 * 48, true, new Vector(
-					2 * 48, 5 * 48), 5);
 
+			// To raveyard
 			tiles[149][80] = new Portal(149 * 48, 80 * 48, true, new Vector(0,
 					125 * 48), 3);
 			tiles[149][81] = new Portal(149 * 48, 81 * 48, true, new Vector(0,
@@ -220,6 +210,11 @@ public class Map {
 					127 * 48), 3);
 			tiles[149][83] = new Portal(149 * 48, 83 * 48, true, new Vector(0,
 					128 * 48), 3);
+			tiles[149][80].setType(20);
+			tiles[149][81].setType(20);
+			tiles[149][82].setType(20);
+			tiles[149][83].setType(20);
+			// Houses
 			tiles[15][15] = new Portal(15 * 48, 15 * 48, true, new Vector(
 					2 * 48, 5 * 48), 101);
 			tiles[15][15].setType(202);
@@ -237,7 +232,36 @@ public class Map {
 			tiles[98][149].setType(20);
 			tiles[97][149].setType(20);
 			tiles[96][149].setType(20);
+
+			// To Lavaland
+			tiles[78][0] = new Portal(78 * 48, 0, true, new Vector(75 * 48,
+					149 * 48), 7);
+			tiles[78][0].setType(20);
+			tiles[77][0] = new Portal(77 * 48, 0, true, new Vector(74 * 48,
+					149 * 48), 7);
+			tiles[77][0].setType(20);
+			tiles[76][0] = new Portal(76 * 48, 0, true, new Vector(73 * 48,
+					149 * 48), 7);
+			tiles[76][0].setType(20);
+			tiles[75][0] = new Portal(75 * 48, 0, true, new Vector(72 * 48,
+					149 * 48), 7);
+			tiles[75][0].setType(20);
+
+			// To Sea World
+			tiles[149][65] = new Portal(149 * 48, 65 * 48, true, new Vector(0,
+					74 * 48), 4);
+			tiles[149][65].setType(20);
+			tiles[149][66] = new Portal(149 * 48, 66 * 48, true, new Vector(0,
+					75 * 48), 4);
+			tiles[149][66].setType(20);
+			tiles[149][67] = new Portal(149 * 48, 67 * 48, true, new Vector(0,
+					76 * 48), 4);
+			tiles[149][67].setType(20);
+			tiles[149][68] = new Portal(149 * 48, 68 * 48, true, new Vector(0,
+					77 * 48), 4);
+			tiles[149][68].setType(20);
 		} else if (num == 3) {
+			// To Grassland
 			tiles[0][125] = new Portal(0, 125 * 48, true, new Vector(149 * 48,
 					80 * 48), 1);
 			tiles[0][126] = new Portal(0, 126 * 48, true, new Vector(149 * 48,
@@ -246,6 +270,140 @@ public class Map {
 					82 * 48), 1);
 			tiles[0][128] = new Portal(0, 128 * 48, true, new Vector(149 * 48,
 					83 * 48), 1);
+			tiles[0][125].setType(38);
+			tiles[0][126].setType(38);
+			tiles[0][127].setType(38);
+			tiles[0][128].setType(38);
+
+			// To Tundra
+			tiles[79][0] = new Portal(79 * 48, 0, true, new Vector(78 * 48,
+					149 * 48), 5);
+			tiles[79][0].setType(38);
+			tiles[80][0] = new Portal(80 * 48, 0, true, new Vector(79 * 48,
+					149 * 48), 5);
+			tiles[80][0].setType(38);
+			tiles[81][0] = new Portal(81 * 48, 0, true, new Vector(80 * 48,
+					149 * 48), 5);
+			tiles[81][0].setType(38);
+			tiles[82][0] = new Portal(82 * 48, 0, true, new Vector(81 * 48,
+					149 * 48), 5);
+			tiles[82][0].setType(38);
+
+			// To Elfworld
+			tiles[149][129] = new Portal(149 * 48, 129 * 48, true, new Vector(
+					0, 122 * 48), 6);
+			tiles[149][129].setType(38);
+			tiles[149][130] = new Portal(149 * 48, 130 * 48, true, new Vector(
+					0, 123 * 48), 6);
+			tiles[149][130].setType(38);
+			tiles[149][131] = new Portal(149 * 48, 131 * 48, true, new Vector(
+					0, 124 * 48), 6);
+			tiles[149][131].setType(38);
+			tiles[149][132] = new Portal(149 * 48, 132 * 48, true, new Vector(
+					0, 125 * 48), 6);
+			tiles[149][132].setType(38);
+
+		} else if (num == 4) {
+			// To Desert
+			tiles[0][74] = new Portal(0, 74 * 48, true, new Vector(149 * 48,
+					65 * 48), 2);
+			tiles[0][74].setType(19);
+			tiles[0][75] = new Portal(0, 75 * 48, true, new Vector(149 * 48,
+					66 * 48), 2);
+			tiles[0][75].setType(19);
+			tiles[0][76] = new Portal(0, 76 * 48, true, new Vector(149 * 48,
+					67 * 48), 2);
+			tiles[0][76].setType(19);
+			tiles[0][77] = new Portal(0, 77 * 48, true, new Vector(149 * 48,
+					68 * 48), 2);
+			tiles[0][77].setType(19);
+			// To Elfworld
+			tiles[74][149] = new Portal(74 * 48, 149 * 48, true, new Vector(
+					71 * 48, 0), 6);
+			tiles[74][149].setType(19);
+			tiles[75][149] = new Portal(75 * 48, 149 * 48, true, new Vector(
+					72 * 48, 0), 6);
+			tiles[75][149].setType(19);
+			tiles[76][149] = new Portal(76 * 48, 149 * 48, true, new Vector(
+					73 * 48, 0), 6);
+			tiles[76][149].setType(19);
+			tiles[77][149] = new Portal(77 * 48, 149 * 48, true, new Vector(
+					74 * 48, 0), 6);
+			tiles[77][149].setType(19);
+		} else if (num == 5) {
+			// To raveyard
+			tiles[78][149] = new Portal(78 * 48, 0, true,
+					new Vector(79 * 48, 0), 3);
+			tiles[78][149].setType(46);
+			tiles[79][149] = new Portal(79 * 48, 0, true,
+					new Vector(80 * 48, 0), 3);
+			tiles[79][149].setType(46);
+			tiles[80][149] = new Portal(80 * 48, 0, true,
+					new Vector(81 * 48, 0), 3);
+			tiles[80][149].setType(46);
+			tiles[81][149] = new Portal(81 * 48, 0, true,
+					new Vector(82 * 48, 0), 3);
+			tiles[81][149].setType(46);
+			// To lavaland
+			tiles[0][87] = new Portal(0, 87 * 48, true, new Vector(149 * 48,
+					72 * 48), 7);
+			tiles[0][87].setType(46);
+			tiles[0][88] = new Portal(0, 88 * 48, true, new Vector(149 * 48,
+					73 * 48), 7);
+			tiles[0][88].setType(46);
+			tiles[0][89] = new Portal(0, 89 * 48, true, new Vector(149 * 48,
+					74 * 48), 7);
+			tiles[0][89].setType(46);
+			tiles[0][90] = new Portal(0, 90 * 48, true, new Vector(149 * 48,
+					75 * 48), 7);
+			tiles[0][90].setType(46);
+			// To dragon space
+		} else if (num == 6) {
+			// To raveyard
+			tiles[0][122] = new Portal(0, 122 * 48, true, new Vector(149 * 48,
+					129 * 48), 3);
+			tiles[0][122].setType(49);
+			tiles[0][123] = new Portal(0, 123 * 48, true, new Vector(149 * 48,
+					130 * 48), 3);
+			tiles[0][123].setType(49);
+			tiles[0][124] = new Portal(0, 124 * 48, true, new Vector(149 * 48,
+					131 * 48), 3);
+			tiles[0][124].setType(49);
+			tiles[0][125] = new Portal(0, 125 * 48, true, new Vector(149 * 48,
+					132 * 48), 3);
+			tiles[0][125].setType(49);
+			// To seaworld
+			tiles[71][0] = new Portal(71 * 48, 0, true, new Vector(74 * 48,
+					149 * 48), 4);
+			tiles[71][0].setType(49);
+			tiles[72][0] = new Portal(72 * 48, 0, true, new Vector(75 * 48,
+					149 * 48), 4);
+			tiles[72][0].setType(49);
+			tiles[73][0] = new Portal(73 * 48, 0, true, new Vector(76 * 48,
+					149 * 48), 4);
+			tiles[73][0].setType(49);
+			tiles[74][0] = new Portal(74 * 48, 0, true, new Vector(77 * 48,
+					149 * 48), 4);
+			tiles[74][0].setType(49);
+		} else if (num == 7) {
+			//To Desert
+			tiles[72][149]=new Portal(72*48,149*48,true,new Vector(75*48,0),2);
+			tiles[72][149].setType(2);
+			tiles[73][149]=new Portal(73*48,149*48,true,new Vector(76*48,0),2);
+			tiles[73][149].setType(2);
+			tiles[74][149]=new Portal(74*48,149*48,true,new Vector(77*48,0),2);
+			tiles[74][149].setType(2);
+			tiles[75][149]=new Portal(75*48,149*48,true,new Vector(78*48,0),2);
+			tiles[75][149].setType(2);
+			//To Tundra
+			tiles[149][72]=new Portal(149*48,72*48,true,new Vector(0,87*48),5);
+			tiles[149][72].setType(2);
+			tiles[149][73]=new Portal(149*48,73*48,true,new Vector(0,88*48),5);
+			tiles[149][73].setType(2);
+			tiles[149][74]=new Portal(149*48,74*48,true,new Vector(0,89*48),5);
+			tiles[149][74].setType(2);
+			tiles[149][75]=new Portal(149*48,75*48,true,new Vector(0,90*48),5);
+			tiles[149][75].setType(2);
 		} else if (num == 101) {
 			tiles[2][5] = new Portal(2 * 48, 5 * 48, true, new Vector(15 * 48,
 					16 * 48), 1);
@@ -256,9 +414,9 @@ public class Map {
 		}
 		length = bi.getWidth() * tileSize;
 		width = bi.getHeight() * tileSize;
-		if(draw)
+		if (draw)
 			map = drawMap(num);
-		else 
+		else
 			map = ImageIO.read(new File("src//tiles//map" + num + ".png"));
 	}
 
@@ -436,7 +594,8 @@ public class Map {
 			Marble = ImageIO.read(new File("src//tiles//Marble Road.png"));
 			Lava = ImageIO.read(new File("src//tiles//Lava.png"));
 			Volcano = ImageIO.read(new File("src//tiles//VolcanoTile.png"));
-			LavaBridge = ImageIO.read(new File("src//tiles//Lava Bridge Tile.png"));
+			LavaBridge = ImageIO.read(new File(
+					"src//tiles//Lava Bridge Tile.png"));
 			MarketPlant = ImageIO.read(new File(
 					"src//tiles//PottedBushBGMT.png"));
 			MarketCounter1 = ImageIO.read(new File(

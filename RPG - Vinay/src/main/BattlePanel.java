@@ -32,6 +32,9 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 	private long currTime, prevTime = 0, deltaTime = 50000000L;
 	private Image image, kiritoBack;
 	private Graphics second;
+	volatile double enemyHealthValue = 100;
+	boolean playerWin;
+	Random r = new Random();
 
 	Toolkit tk = Toolkit.getDefaultToolkit();
 	int xSize = ((int) tk.getScreenSize().getWidth());
@@ -50,8 +53,6 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 		actionPanel = new ActionPanel();
 		actionPanel.setSize(xSize, 297);
 		actionPanel.setLocation(0, ySize - 297);
-		//  actionPanel.setBackground(Color.DARK_GRAY);
-		actionPanel.addButtons();
 		this.getParent().setLayout(null);
 		this.getParent().add(actionPanel);
 		actionPanel.setVisible(true); 
@@ -85,7 +86,8 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 		/*actionPanel.strongAttack.requestFocus();
 		actionPanel.mediumAttack.requestFocus();
 		actionPanel.lightAttack.requestFocus();*/
-
+		if(actionPanel == null)
+			return;
 		image = createImage(xSize,
 				ySize - actionPanel.getHeight() - 1);
 		second = image.getGraphics();
@@ -105,12 +107,12 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 		int width = fm.stringWidth("HEALTH") + 5;
 		second.setColor(Color.GREEN);
 		int rectWidth = kiritoBack.getWidth(this) - width;
-		int enemyHealth = (int) (rectWidth * (battle.enemy.info.currentHealth/ battle.enemy.info.maxHealth));
-		int playerHealth = (int) (rectWidth * (battle.p.info.currentHealth/battle.p.info.maxHealth));
+		int enemyHealth = (int) (rectWidth * (battle.enemy.info.visibleHealth/ battle.enemy.info.maxHealth));
+		int playerHealth = (int) (rectWidth * (battle.p.info.visibleHealth/battle.p.info.maxHealth));
 		second.fillRect(width, this.getHeight() - actionPanel.getHeight() - 15,
 				playerHealth, 15);
 		second.fillRect(getWidth()*3/4+50, getHeight() / 4 - 150 + 192 + 15, enemyHealth, 15);
-		g.drawImage(image, 0, 0, this);
+		g.drawImage(image, 0,  0, this);
 	}
 
 	@Override
@@ -123,23 +125,59 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 				repaint();
 				//actionPanel.repaint();
 				prevTime = currTime;
-				if(!battle.playerTurn) {
-					actionPanel.strongAttack.setEnabled(false);
-					actionPanel.mediumAttack.setEnabled(false);
-					actionPanel.lightAttack.setEnabled(false);
-					battle.bearAttack();
-					battle.playerTurn = true;
-					actionPanel.damageMessage.setText(battle.damageMessage);
+				
+				//Calculate player health
+				if (battle.p.info.currentHealth < battle.p.info.visibleHealth) {
+					battle.p.info.visibleHealth -= 1;
 				}
-				else {
+				else if (battle.p.info.currentHealth != battle.p.info.visibleHealth) {
+				   // Make sure we don't go over
+					battle.p.info.visibleHealth = battle.p.info.currentHealth;
+				}
+				//Calculate enemy health;
+				if (battle.enemy.info.currentHealth < battle.enemy.info.visibleHealth) {
+					battle.enemy.info.visibleHealth -= 1;
+				}
+				else if (battle.enemy.info.currentHealth != battle.enemy.info.visibleHealth) {
+				   // Make sure we don't go over
+					battle.enemy.info.visibleHealth = battle.enemy.info.currentHealth;
+				}
+				
+				if(!battle.playerTurn) {
+					int damage = r.nextInt(10)+10;
+					Attack attack = new Attack(damage, 0);
+					int result = battle.attack(attack);
+					try {
+						Thread.sleep(damage*16);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if (result == 1) {
+						JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+						battling = false;
+						topFrame.dispose();
+						playerWin = false;
+					}
+					battle.playerTurn = true;
 					actionPanel.strongAttack.setEnabled(true);
 					actionPanel.mediumAttack.setEnabled(true);
 					actionPanel.lightAttack.setEnabled(true);
-					
-				}
-			}
 
+				}
+			} 
 		}
+	}
+	
+	public int playerAttack(double damage) {
+		int a = 0;
+		while(damage > 0) {
+			a = battle.attack(new Attack(1, 0));
+			enemyHealthValue = (battle.enemy.info.currentHealth);
+			damage--;
+			repaint();
+		}
+		return a;
 	}
 
 	public class ActionPanel extends JPanel implements ActionListener {
@@ -147,6 +185,10 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 		private JButton mediumAttack;
 		private JButton lightAttack;
 		private JLabel damageMessage;
+		
+		public ActionPanel() {
+			addButtons();
+		}
 
 		public void addButtons() {
 			this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -159,49 +201,45 @@ public class BattlePanel extends JPanel implements Runnable, KeyListener {
 			lightAttack = new JButton("Light Attack");
 			lightAttack.addActionListener(this);
 			add(lightAttack);
-			damageMessage = new JLabel(""); 
+			damageMessage = new JLabel("aaaaaaaaaaa"); 
 			add(damageMessage); 
 			validate();
 		}
+		
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Random r = new Random();
-			if (e.getActionCommand().equals("Strong Attack")) {
-				int attack = r.nextInt(50)+51;
-				Attack a = new Attack(attack, 0);
-				attack = battle.attack(a);
+			String str = e.getActionCommand();
+			if(str.contains("Attack")) {
+				int damage = 0;
+				if (e.getActionCommand().equals("Strong Attack")) {
+					damage = r.nextInt(50)+51;
+				} else if (e.getActionCommand().equals("Medium Attack")) {
+					damage = r.nextInt(50)+26;
+				} else if (e.getActionCommand().equals("Light Attack")) {
+					damage = r.nextInt(50)+1;
+				}
+				int result = playerAttack(damage);
 				battle.playerTurn = false;
 				damageMessage.setText(battle.damageMessage);
-				if(attack == 1) {
+				actionPanel.strongAttack.setEnabled(false);
+				actionPanel.mediumAttack.setEnabled(false);
+				actionPanel.lightAttack.setEnabled(false);
+				actionPanel.repaint(); 
+				try {
+					Thread.sleep(damage*16);
+				} catch (InterruptedException IE) {
+					// TODO Auto-generated catch block
+					IE.printStackTrace();
+				}
+				if(result == 1) {
+					playerWin = true;
 					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 					battling = false;
 					topFrame.dispose();
-				}
-			} else if (e.getActionCommand().equals("Medium Attack")) {
-				int attack = r.nextInt(50)+26;
-				Attack a = new Attack(attack, 0);
-				attack = battle.attack(a);
-				battle.playerTurn = false;
-				damageMessage.setText(battle.damageMessage);
-				if(attack == 1) {
-					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-					battling = false;
-					topFrame.dispose();
-				}
-			} else if (e.getActionCommand().equals("Light Attack")) {
-				int attack = r.nextInt(50)+1;
-				Attack a = new Attack(attack, 0);
-				attack = battle.attack(a);
-				battle.playerTurn = false;
-				damageMessage.setText(battle.damageMessage);
-				if(attack == 1) {
-					JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-					battling = false;
-					topFrame.dispose();
-				}
+				} 				
 			}
-			
+		
 		} 
 
 	}

@@ -11,6 +11,7 @@ public class Info implements Serializable {
 	private static final long serialVersionUID = 1L;
 	protected long lastHealed;
 	protected double currentHealth;
+	protected double visibleHealth;
 	protected double maxHealth;
 	protected double currentEnergy;
 	protected double maxEnergy;
@@ -19,7 +20,7 @@ public class Info implements Serializable {
 	protected double damage = 0;
 	protected double resil = 0;
 	protected double stam = 0;
-	protected ArrayList<Ability> moves = new ArrayList();
+	protected ArrayList<Ability> moves = new ArrayList<Ability>();
 	/** Directional Moving Booleans */
 	protected boolean mU;
 	protected boolean mR;

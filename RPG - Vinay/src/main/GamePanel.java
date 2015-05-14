@@ -68,6 +68,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	JPanel shoppane;
 	JFrame shop;
 
+	int bearCountre;
+
 	public GamePanel() throws IOException {
 		running = true;
 		loading = false;
@@ -395,6 +397,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				shop.setSize(400, 600);
 				shop.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				shop.setVisible(true);
+				p.info.currentHealth = p.info.maxHealth;
 			}
 		}
 
@@ -663,6 +666,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			while (bp.battling) {
 			}
 			running = true;
+			if (bp.playerWin) {
+				bearCountre++;
+			} else {
+				JOptionPane.showMessageDialog(new JFrame(), "You have killed "
+						+ bearCountre + " bears");
+				System.exit(1);
+			}
 			bp = null;
 			System.gc();
 		}
